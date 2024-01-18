@@ -1,5 +1,8 @@
 package com.project.itoon
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
@@ -50,10 +54,24 @@ fun UploadForm(){
     var cat2 by remember {
         mutableStateOf("")
     }
-    
+    var selectImages by remember { mutableStateOf(listOf<Uri>()) }
+    val galleryLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) {
+            selectImages = it
+        }
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)) {
+        Column {
+            Button(
+                onClick = { galleryLauncher.launch("image/*") },
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(10.dp)
+            ) {
+                Text(text = "Pick Image From Gallery")
+            }
+        }
         Text(text = "ประเภท")
         Column {
             Row {
@@ -87,7 +105,9 @@ fun UploadForm(){
         }
         Text(text = "อีเมล")
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-            Button(onClick = { /*TODO*/ }, modifier = Modifier.width(129.dp).align(Alignment.CenterHorizontally), colors = ButtonDefaults.buttonColors(
+            Button(onClick = { /*TODO*/ }, modifier = Modifier
+                .width(129.dp)
+                .align(Alignment.CenterHorizontally), colors = ButtonDefaults.buttonColors(
                 Color(184,0,0)
             )) {
                 Text(text = "ต่อไป", color = Color.White)
