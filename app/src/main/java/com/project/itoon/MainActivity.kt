@@ -1,5 +1,7 @@
 package com.project.itoon
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,10 +19,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -40,6 +56,10 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.project.itoon.ui.theme.ITOONTheme
 
 class MainActivity : ComponentActivity() {
@@ -52,65 +72,34 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+<<<<<<< HEAD
                     FirstPage()
+=======
+
+                    TestComposable()
+
+>>>>>>> a0c0459add2bb09f166fea0e116fc75c5a5cbd53
                 }
             }
         }
     }
 }
 
-@Composable
-fun LoginPage(email:String,onEmailChange:(String) -> Unit,
-              password:String,onPassChange:(String) -> Unit)
-{
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Image(painter = painterResource(id = R.drawable.logo), contentDescription = null ,modifier = Modifier.size(250.dp), contentScale = ContentScale.Fit)
-        Text(text = "เข้าสู่ระบบ",fontSize = 25.sp, fontWeight = FontWeight.Bold)
-        Column (modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            , horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.Center) {
-            Text(text = "อีเมล",fontSize = 16.sp,modifier = Modifier.padding(bottom = 5.dp))
-            BasicTextField(value = email , onValueChange = onEmailChange ,modifier = Modifier
-                .width(400.dp)
-                .border(
-                    border = BorderStroke(1.dp, color = Color.Red),
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(20.dp)
-            )
-            Text(text = "รหัสผ่าน",fontSize = 16.sp,modifier = Modifier.padding(bottom = 5.dp))
-            BasicTextField(value = password , onValueChange = onPassChange ,modifier = Modifier
-                .width(400.dp)
-                .border(
-                    border = BorderStroke(1.dp, color = Color.Red),
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(20.dp),
-                visualTransformation = PasswordVisualTransformation()
-            )
-        }
-        Column (modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            , horizontalAlignment = Alignment.End){
-            TextButton(onClick = {}) {
-                Text(text = "ลืมรหัสผ่าน",color = Color.Black,modifier = Modifier.alpha(0.5f))
-            }
-        }
-        TextButton(onClick = { /*TODO*/ },modifier = Modifier
-            .width(129.dp)
-            .background(color = Color(184, 0, 0), shape = RoundedCornerShape(20.dp))) {
-            Text(text = "เข้าสู่ระบบ",color = Color.White)
-        }
-        Spacer(modifier = Modifier.padding(8.dp))
-        Text(text = "หรือ",modifier =Modifier.alpha(0.5f))
-        TextButton(onClick = { /*TODO*/ },modifier = Modifier
-            .width(129.dp)
-        ) {
-            Text(text = "สมัครสมาชิก",color = Color.Black)
-        }
+sealed class PageITOON(val route:String){
+    object Login:PageITOON("Login_Page")
+    object SignUp:PageITOON("Signup_Page")
+}
 
+@Composable
+fun TestComposable(){
+    val navController = rememberNavController()
+    NavHost(navController = navController,startDestination = PageITOON.Login.route){
+        composable(PageITOON.Login.route){
+            LoginPage(navController)
+        }
+        composable(PageITOON.SignUp.route){
+            Signup(navController)
+        }
     }
 }
 
@@ -118,13 +107,26 @@ fun LoginPage(email:String,onEmailChange:(String) -> Unit,
 fun TestScreen(){
     var email by rememberSaveable{ mutableStateOf("") }
     var password by rememberSaveable{ mutableStateOf("") }
+    var name by rememberSaveable{ mutableStateOf("") }
+    var confirmpass by rememberSaveable{ mutableStateOf("") }
 
-    LoginPage(email = email, onEmailChange = { email = it }, password = password, onPassChange = {password})
+//    LoginPage(email = email, onEmailChange = { email = it }, password = password, onPassChange = {password = it})
+
+//    Signup(
+//        name = name,
+//        onNamechage = { name = it },
+//        email = email,
+//        onEmailchage = {email = it},
+//        password = password,
+//        onPasswordchage = { password = it },
+//        confirmpass = confirmpass,
+//        onConfirmchage = { confirmpass = it }
+//    )
 }
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Hello I am here For your$name!",
         modifier = modifier
     )
 }
@@ -133,6 +135,72 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     ITOONTheme {
-        Greeting(name = "Tharit")
+        TestScreen()
+    }
+}
+
+@SuppressLint("RestrictedApi")
+@Composable
+fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
+    val navigationItems = listOf(
+        BottomBar.Favorite,
+        BottomBar.MyCartoon,
+        BottomBar.Coin,
+        BottomBar.ETC
+    )
+    var selectScreen by remember {
+        mutableStateOf(0)
+    }
+    NavigationBar(modifier = Modifier.background(color = Color.Blue)) {
+        navigationItems.forEachIndexed { index, bottomBar ->
+            NavigationBarItem(selected = (selectScreen==index),
+                onClick = {
+                    if (navHostController.currentBackStack.value.size>=2){
+                        navHostController.popBackStack()
+                    }
+                    selectScreen = index
+                    navHostController.navigate(bottomBar.route)
+                }, label = { Text(text = bottomBar.name)} ,icon = { Icon(painter = painterResource(id = bottomBar.icon), contentDescription = null, modifier = Modifier.size(20.dp)
+                ) })
+        }
+    }
+
+
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
+    TopAppBar(
+        title = { Text(text = "การ์ตูนของฉัน") }, actions = {
+            IconButton(onClick = { navController.navigate(BottomBar.Favorite.route) },modifier = Modifier.size(20.dp)) {
+                Image(painter = painterResource(id = R.drawable.favorite), contentDescription = null)
+            }
+            IconButton(onClick = { navController.navigate(BottomBar.Favorite.route) },modifier = Modifier.size(20.dp)) {
+                Image(painter = painterResource(id = R.drawable.favorite), contentDescription = null)
+            }
+        }, colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(184,0,0)))
+}
+
+//eufa test bottom bar & screen funciton
+@Composable
+fun EufaScreen(){
+    val contextForToast = LocalContext.current.applicationContext
+    val navHostController = rememberNavController()
+    Scaffold(
+        topBar = { MyTopAppBar(navHostController, contextForToast )},
+        bottomBar = { MyBottomBar(navHostController, contextForToast)},
+        floatingActionButtonPosition = FabPosition.End
+    ) {
+            paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues = paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+        }
+        NavGraph(navHostController = navHostController)
     }
 }
