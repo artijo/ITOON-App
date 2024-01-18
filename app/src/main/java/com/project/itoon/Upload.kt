@@ -90,7 +90,7 @@ fun UploadForm(){
             Button(onClick = { /*TODO*/ }, modifier = Modifier.width(129.dp).align(Alignment.CenterHorizontally), colors = ButtonDefaults.buttonColors(
                 Color(184,0,0)
             )) {
-                Text(text = "เผยแพร่", color = Color.White)
+                Text(text = "ต่อไป", color = Color.White)
             }
         }
     }
