@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -87,12 +88,10 @@ fun Signup(name:String,onNamechage:(String)->Unit,email:String,onEmailchage:(Str
 
         }
         Spacer(modifier = Modifier.padding(8.dp))
-        TextButton(
-            onClick = { /*TODO*/ },
+        Button(
+            onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(Color(184,0,0)),
             modifier = Modifier
-                .width(129.dp)
-                .background(color = Color(184, 0, 0), shape = RoundedCornerShape(20.dp)),
-
+                .width(129.dp), shape = RoundedCornerShape(10.dp)
             ) {
             Text(text = "สมัครสมาชิก",color = Color.White) }
         Spacer(modifier = Modifier.padding(8.dp))

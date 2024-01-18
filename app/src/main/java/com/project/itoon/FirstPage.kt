@@ -41,7 +41,6 @@ fun SliderImage(modifier: Modifier = Modifier){
     ){
         Box(modifier = modifier.wrapContentSize()){
             HorizontalPager(state = pagerState,
-                modifier.
             ){
 
             }

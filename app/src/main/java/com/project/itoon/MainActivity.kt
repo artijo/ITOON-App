@@ -82,7 +82,7 @@ fun LoginPage(email:String,onEmailChange:(String) -> Unit,
                 )
                 .padding(20.dp)
             )
-            Text(text = "รหัสผ่าน",fontSize = 16.sp,modifier = Modifier.padding(bottom = 5.dp))
+            Text(text = "รหัสผ่าน",fontSize = 16.sp,modifier = Modifier.padding(bottom = 5.dp,top = 5.dp))
             BasicTextField(value = password , onValueChange = onPassChange ,modifier = Modifier
                 .width(400.dp)
                 .border(
@@ -101,9 +101,9 @@ fun LoginPage(email:String,onEmailChange:(String) -> Unit,
                 Text(text = "ลืมรหัสผ่าน",color = Color.Black,modifier = Modifier.alpha(0.5f))
             }
         }
-        TextButton(onClick = { /*TODO*/ },modifier = Modifier
+        Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(Color(184,0,0)),modifier = Modifier
             .width(129.dp)
-            .background(color = Color(184, 0, 0), shape = RoundedCornerShape(20.dp))) {
+            , shape = RoundedCornerShape(10.dp)) {
             Text(text = "เข้าสู่ระบบ",color = Color.White)
         }
         Spacer(modifier = Modifier.padding(8.dp))
@@ -127,8 +127,18 @@ fun TestScreen(){
     var name by rememberSaveable{ mutableStateOf("") }
     var confirmpass by rememberSaveable{ mutableStateOf("") }
 
-    LoginPage(email = email, onEmailChange = { email = it }, password = password, onPassChange = {password})
+//    LoginPage(email = email, onEmailChange = { email = it }, password = password, onPassChange = {password = it})
 
+    Signup(
+        name = name,
+        onNamechage = { name = it },
+        email = email,
+        onEmailchage = {email = it},
+        password = password,
+        onPasswordchage = { password = it },
+        confirmpass = confirmpass,
+        onConfirmchage = { confirmpass = it }
+    )
 }
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
