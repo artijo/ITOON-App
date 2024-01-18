@@ -62,6 +62,7 @@ dependencies {
 
     //Ohm
     implementation ("com.google.accompanist:accompanist-pager:0.12.0")
+    implementation("io.coil-kt:coil-compose:2.1.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
