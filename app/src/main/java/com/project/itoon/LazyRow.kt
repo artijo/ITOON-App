@@ -57,6 +57,6 @@ fun MyTopLazyRow(){
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(space = 12.dp), 
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp)){
-        
+
     }
 }
