@@ -101,7 +101,8 @@ fun Signup(navHostController: NavHostController){
         modifier = Modifier.padding(20.dp)
 
     ) {
-
+        Spacer(modifier = Modifier.padding(8.dp))
+        Text(text = "สมัครสมาชิก", fontSize = 25.sp,fontWeight = FontWeight.Bold)
         SignUpContent(
             name = name,
             onNamechage = { name = it },
@@ -113,8 +114,7 @@ fun Signup(navHostController: NavHostController){
             onConfirmchage = {confirmpass = it}
         )
 
-        Spacer(modifier = Modifier.padding(8.dp))
-        Text(text = "สมัครสมาชิก", fontSize = 25.sp,fontWeight = FontWeight.Bold)
+
         Spacer(modifier = Modifier.padding(8.dp))
 
         Spacer(modifier = Modifier.padding(8.dp))
