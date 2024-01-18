@@ -65,6 +65,9 @@ dependencies {
 
     //Ohm
     implementation ("com.google.accompanist:accompanist-pager:0.12.0")
+<<<<<<< HEAD
+    implementation("io.coil-kt:coil-compose:2.1.0")
+=======
     implementation ("androidx.compose.material3:material3:1.2.0-alpha04")
     implementation("androidx.compose.material3:material3-window-size-class:1.1.2")
     implementation("androidx.compose.foundation:foundation:1.5.4")
@@ -77,6 +80,7 @@ dependencies {
     implementation ("androidx.compose.material:material-icons-extended")
 
     implementation("androidx.compose.material3:material3")
+>>>>>>> a0c0459add2bb09f166fea0e116fc75c5a5cbd53
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

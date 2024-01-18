@@ -72,9 +72,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+<<<<<<< HEAD
+                    FirstPage()
+=======
 
                     TestComposable()
 
+>>>>>>> a0c0459add2bb09f166fea0e116fc75c5a5cbd53
                 }
             }
         }
