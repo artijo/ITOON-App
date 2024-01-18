@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+
+    id("kotlin-parcelize")
+
 }
 
 android {
@@ -62,6 +65,18 @@ dependencies {
 
     //Ohm
     implementation ("com.google.accompanist:accompanist-pager:0.12.0")
+    implementation ("androidx.compose.material3:material3:1.2.0-alpha04")
+    implementation("androidx.compose.material3:material3-window-size-class:1.1.2")
+    implementation("androidx.compose.foundation:foundation:1.5.4")
+    implementation("androidx.navigation:navigation-compose:2.5.7")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.7")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.7.5")
+    implementation ("androidx.navigation:navigation-compose:2.7.2")
+
+    implementation ("androidx.compose.material:material-icons-extended")
+
+    implementation("androidx.compose.material3:material3")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
