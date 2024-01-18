@@ -1,5 +1,7 @@
 package com.project.itoon
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,10 +22,20 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -43,6 +56,8 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.project.itoon.ui.theme.ITOONTheme
 
 class MainActivity : ComponentActivity() {
@@ -55,7 +70,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TestScreen()
+                    EufaScreen()
                 }
             }
         }
@@ -153,5 +168,71 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     ITOONTheme {
         TestScreen()
+    }
+}
+
+@SuppressLint("RestrictedApi")
+@Composable
+fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
+    val navigationItems = listOf(
+        BottomBar.Favorite,
+        BottomBar.MyCartoon,
+        BottomBar.Coin,
+        BottomBar.ETC
+    )
+    var selectScreen by remember {
+        mutableStateOf(0)
+    }
+    NavigationBar(modifier = Modifier.background(color = Color.Blue)) {
+        navigationItems.forEachIndexed { index, bottomBar ->
+            NavigationBarItem(selected = (selectScreen==index),
+                onClick = {
+                    if (navHostController.currentBackStack.value.size>=2){
+                        navHostController.popBackStack()
+                    }
+                    selectScreen = index
+                    navHostController.navigate(bottomBar.route)
+                }, label = { Text(text = bottomBar.name)} ,icon = { Icon(painter = painterResource(id = bottomBar.icon), contentDescription = null, modifier = Modifier.size(20.dp)
+                ) })
+        }
+    }
+
+
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
+    TopAppBar(
+        title = { Text(text = "การ์ตูนของฉัน") }, actions = {
+            IconButton(onClick = { navController.navigate(BottomBar.Favorite.route) },modifier = Modifier.size(20.dp)) {
+                Image(painter = painterResource(id = R.drawable.favorite), contentDescription = null)
+            }
+            IconButton(onClick = { navController.navigate(BottomBar.Favorite.route) },modifier = Modifier.size(20.dp)) {
+                Image(painter = painterResource(id = R.drawable.favorite), contentDescription = null)
+            }
+        }, colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(184,0,0)))
+}
+
+//eufa test bottom bar & screen funciton
+@Composable
+fun EufaScreen(){
+    val contextForToast = LocalContext.current.applicationContext
+    val navHostController = rememberNavController()
+    Scaffold(
+        topBar = { MyTopAppBar(navHostController, contextForToast )},
+        bottomBar = { MyBottomBar(navHostController, contextForToast)},
+        floatingActionButtonPosition = FabPosition.End
+    ) {
+            paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues = paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+        }
+        NavGraph(navHostController = navHostController)
     }
 }
