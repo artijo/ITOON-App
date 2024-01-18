@@ -43,6 +43,9 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.project.itoon.ui.theme.ITOONTheme
 
 class MainActivity : ComponentActivity() {
@@ -55,70 +58,30 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TestScreen()
+                    TestComposable()
                 }
             }
         }
     }
 }
 
-@Composable
-fun LoginPage(email:String,onEmailChange:(String) -> Unit,
-              password:String,onPassChange:(String) -> Unit)
-{
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Image(painter = painterResource(id = R.drawable.logo), contentDescription = null ,modifier = Modifier.size(250.dp), contentScale = ContentScale.Fit)
-        Text(text = "เข้าสู่ระบบ",fontSize = 25.sp, fontWeight = FontWeight.Bold)
-        Column (modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            , horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.Center) {
-            Text(text = "อีเมล",fontSize = 16.sp,modifier = Modifier.padding(bottom = 5.dp))
-            BasicTextField(value = email , onValueChange = onEmailChange ,modifier = Modifier
-                .width(400.dp)
-                .border(
-                    border = BorderStroke(1.dp, color = Color.Red),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(20.dp)
-            )
-            Text(text = "รหัสผ่าน",fontSize = 16.sp,modifier = Modifier.padding(bottom = 5.dp,top = 5.dp))
-            BasicTextField(value = password , onValueChange = onPassChange ,modifier = Modifier
-                .width(400.dp)
-                .border(
-                    border = BorderStroke(1.dp, color = Color.Red),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(20.dp),
-                visualTransformation = PasswordVisualTransformation()
-            )
-        }
-        Column (modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            , horizontalAlignment = Alignment.End){
-            TextButton(onClick = {}) {
-                Text(text = "ลืมรหัสผ่าน",color = Color.Black,modifier = Modifier.alpha(0.5f))
-            }
-        }
-        Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(Color(184,0,0)),modifier = Modifier
-            .width(129.dp)
-            , shape = RoundedCornerShape(10.dp)) {
-            Text(text = "เข้าสู่ระบบ",color = Color.White)
-        }
-        Spacer(modifier = Modifier.padding(8.dp))
-        Text(text = "หรือ",modifier =Modifier.alpha(0.5f))
-        TextButton(onClick = {
-
-        },modifier = Modifier
-            .width(129.dp)
-        ) {
-            Text(text = "สมัครสมาชิก",color = Color.Black)
-        }
-
-    }
+sealed class PageITOON(val route:String){
+    object Login:PageITOON("Login_Page")
+    object SignUp:PageITOON("Signup_Page")
 }
 
+@Composable
+fun TestComposable(){
+    val navController = rememberNavController()
+    NavHost(navController = navController,startDestination = PageITOON.Login.route){
+        composable(PageITOON.Login.route){
+            LoginPage(navController)
+        }
+        composable(PageITOON.SignUp.route){
+            Signup(navController)
+        }
+    }
+}
 
 @Composable
 fun TestScreen(){
@@ -129,16 +92,16 @@ fun TestScreen(){
 
 //    LoginPage(email = email, onEmailChange = { email = it }, password = password, onPassChange = {password = it})
 
-    Signup(
-        name = name,
-        onNamechage = { name = it },
-        email = email,
-        onEmailchage = {email = it},
-        password = password,
-        onPasswordchage = { password = it },
-        confirmpass = confirmpass,
-        onConfirmchage = { confirmpass = it }
-    )
+//    Signup(
+//        name = name,
+//        onNamechage = { name = it },
+//        email = email,
+//        onEmailchage = {email = it},
+//        password = password,
+//        onPasswordchage = { password = it },
+//        confirmpass = confirmpass,
+//        onConfirmchage = { confirmpass = it }
+//    )
 }
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
