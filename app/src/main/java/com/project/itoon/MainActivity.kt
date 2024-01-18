@@ -17,6 +17,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -75,7 +78,7 @@ fun LoginPage(email:String,onEmailChange:(String) -> Unit,
                 .width(400.dp)
                 .border(
                     border = BorderStroke(1.dp, color = Color.Red),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(10.dp)
                 )
                 .padding(20.dp)
             )
@@ -84,7 +87,7 @@ fun LoginPage(email:String,onEmailChange:(String) -> Unit,
                 .width(400.dp)
                 .border(
                     border = BorderStroke(1.dp, color = Color.Red),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(10.dp)
                 )
                 .padding(20.dp),
                 visualTransformation = PasswordVisualTransformation()
@@ -105,7 +108,9 @@ fun LoginPage(email:String,onEmailChange:(String) -> Unit,
         }
         Spacer(modifier = Modifier.padding(8.dp))
         Text(text = "หรือ",modifier =Modifier.alpha(0.5f))
-        TextButton(onClick = { /*TODO*/ },modifier = Modifier
+        TextButton(onClick = {
+
+        },modifier = Modifier
             .width(129.dp)
         ) {
             Text(text = "สมัครสมาชิก",color = Color.Black)
@@ -114,12 +119,16 @@ fun LoginPage(email:String,onEmailChange:(String) -> Unit,
     }
 }
 
+
 @Composable
 fun TestScreen(){
     var email by rememberSaveable{ mutableStateOf("") }
     var password by rememberSaveable{ mutableStateOf("") }
+    var name by rememberSaveable{ mutableStateOf("") }
+    var confirmpass by rememberSaveable{ mutableStateOf("") }
 
     LoginPage(email = email, onEmailChange = { email = it }, password = password, onPassChange = {password})
+
 }
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -133,6 +142,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     ITOONTheme {
-        Greeting(name = "Tharit")
+        TestScreen()
     }
 }
