@@ -73,8 +73,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    TestComposable()
-
+EufaScreen()
                 }
             }
         }
@@ -200,3 +199,4 @@ fun EufaScreen(){
         NavGraph(navHostController = navHostController)
     }
 }
+
