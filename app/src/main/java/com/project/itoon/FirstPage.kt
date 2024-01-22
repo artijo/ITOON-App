@@ -7,9 +7,11 @@ import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 
@@ -26,14 +28,17 @@ import androidx.compose.foundation.layout.width
 
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridItemInfo
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -44,12 +49,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -101,8 +109,8 @@ fun SliderImage(modifier: Modifier = Modifier){
                     modifier
                         .wrapContentSize()
                         .height(300.dp),
-                    elevation = CardDefaults.cardElevation(0.dp),
-
+                    shape = RoundedCornerShape(0.dp),
+                    elevation = CardDefaults.cardElevation(0    .dp),
                 ){
                     Image(
                         painter = painterResource(id = images[currentPage]),
@@ -141,103 +149,61 @@ private fun prepareCartoonList(): MutableList<CartoonHitzData>{
     return cartoonList
 }
 
-//@Composable
-//private fun CartoonHitzLayout(
-//    cartoonHitzList: CartoonHitzData,
-//    context: Context = LocalContext.current.applicationContext,
-//){
-//    LazyVerticalGrid(
-//        modifier = Modifier.fillMaxSize(),
-//        columns = GridCells.Fixed(count = 5),
-//        verticalArrangement = Arrangement.spacedBy(space = 10.dp),
-//        horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
-//    ){
-//        items(cartoonHitzList){
-//
-//        }
-//    }
-//
-//
-//    Card{
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .clickable {
-//                    Toast
-//                        .makeText(context, cartoonHitzList.cartoonName, Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//                .padding(horizontal = 5.dp),
-//                verticalAlignment = Alignment.CenterVertically
-//        ){
-//            Image(
-//                painter = painterResource(id = cartoonHitzList.cartoonImage),
-//                contentDescription = cartoonHitzList.cartoonName,
-//                modifier = Modifier.size(36.dp)
-//            )
-//            Spacer(modifier = Modifier.width(width = 12.dp))
-//            Column(modifier = Modifier.padding(vertical = 5.dp)) {
-//                Text(text = cartoonHitzList.cartoonName, fontSize = 14.sp)
-//                Text(text = cartoonHitzList.cartoonGenre, fontSize = 14.sp)
-//            }
-//        }
-//    }
-//}
 
 
 
-@Composable
-fun CartoonHitzList(){
-    val cartoonHitzList = prepareCartoonList()
-//    Column(
-//        verticalArrangement = Arrangement.spacedBy(10.dp),
-//        modifier = Modifier.padding(10.dp))
-//    {
-//
-//    }
-    LazyHorizontalGrid(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(space = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(space = 16.dp),
-        rows = GridCells.Fixed(count = 2) ,
-        contentPadding = PaddingValues(all = 10.dp),
-    ){
-        items(cartoonHitzList.size){ index ->
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(width = 100.dp),
-                contentAlignment = Alignment.Center
-            ){
-                Image(
-                    painter = painterResource(id = cartoonHitzList[index].cartoonImage),
-                    contentDescription = null,
-                )
-                Text(text = "${cartoonHitzList[index].cartoonGenre}")
-                Text(text = "${cartoonHitzList[index].cartoonName}")
-            }
-        }
-    }
 
-}
 
 @Composable
 fun CartoonHit(){
+    val cartoonListz = prepareCartoonList()
     Box(modifier = Modifier
         .fillMaxWidth()
-        .padding(16.dp)){
+        .padding(vertical = 10.dp, horizontal = 10.dp)
+    ){
         Text(
             text = "HIT STORY",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
     }
-    CartoonHitzList()
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(vertical = 0.25.dp)
+    ){
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(space = 0.dp),
+            contentPadding = PaddingValues(horizontal = 10.dp)
+        ){
+            items(cartoonListz){ item->
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .width(128.dp)
+                    .height(128.dp)
+                    .padding(end = 10.dp)
 
+                ){
+                    Image(
+                        painter = painterResource(id = item.cartoonImage) ,
+                        contentDescription = "",
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier.clip(RoundedCornerShape(10.dp))
+                    )
+                    Text(
+                        text = "Hello",
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(top = 8.dp),
+                        color = Color.White
+                    )
+                }
+
+            }
+        }
+
+    }
 }
-//cartoonHit ****************************************
-
-
 //Main page of first page...
 @Composable
 fun FirstPage(){
