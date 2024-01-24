@@ -99,7 +99,7 @@ fun SliderImage(modifier: Modifier = Modifier){
                             painter =  rememberAsyncImagePainter(images[currentPage]),
                             contentDescription = "Image ${currentPage+1}",
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().fillMaxSize()
                         )
                     }
                     Box(
@@ -129,24 +129,24 @@ fun SliderImage(modifier: Modifier = Modifier){
 
 //cartoonHit ****************************************
 
-data class CartoonHitzData(val cartoonImage: Int,val cartoonName: String, val cartoonGenre: String)
+data class CartoonHitzData(val cartoonImage: String,val cartoonName: String, val cartoonGenre: String)
 
 private fun prepareCartoonList(): MutableList<CartoonHitzData>{
     val cartoonListWow = listOf(
-        listOf(R.drawable.who_made_me_a_princess, "Who made me a princess", "Romance"),
-        listOf(R.drawable.lout_of_count_family, "Lout of count family", "Action"),
-        listOf(R.drawable.who_made_me_a_princess, "Who made me a princess", "Romance"),
-        listOf(R.drawable.the_beloved_little_princess, "The beloved little princess", "Fantasy"),
-        listOf(R.drawable.who_made_me_a_princess, "Who made me a princess", "Romance"),
-        listOf(R.drawable.lout_of_count_family, "Lout of count family", "Action"),
-        listOf(R.drawable.the_beloved_little_princess, "The beloved little princess", "Fantasy"),
-        listOf(R.drawable.who_made_me_a_princess, "Who made me a princess", "Romance"),
+        listOf("https://manhwatop.com/wp-content/uploads/2023/03/In-My-Death-I-Became-My-Brothers-Regret-193x278.jpg", "In My Death, I Became My Brother’s Regret","Action"),
+        listOf("https://reapertrans.com/wp-content/uploads/2024/01/A-Thought-Of-Freedom.jpg", "A Thought Of Freedom", "Action"),
+        listOf("https://reapertrans.com/wp-content/uploads/2023/12/Locked-Up.png", "Locked Up", "Adult"),
+        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
+        listOf("https://reapertrans.com/wp-content/uploads/2023/01/return-of-the-frozen-player-1.jpg", "Return of the Frozen Player", "Fastasy"),
+        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
+        listOf("https://reapertrans.com/wp-content/uploads/2023/02/Mato-Seihei-no-Slave.jpg", "Mato Seihei no Slave", "Shonen"),
+        listOf("https://reapertrans.com/wp-content/uploads/2023/01/Reaper-of-the-Drifting-Moon.jpg", "Reaper of the Drifting Moon", "Action-fastasy"),
     )
     val cartoonList  = mutableListOf<CartoonHitzData>()
     for (cartoonArr in cartoonListWow) {
         cartoonList.add(
             CartoonHitzData(
-                cartoonImage = cartoonArr[0] as Int,
+                cartoonImage = cartoonArr[0] as String,
                 cartoonName = cartoonArr[1] as String,
                 cartoonGenre = cartoonArr[2] as String
             )
@@ -207,10 +207,10 @@ fun NewCartoonHit(){
 
                     ){
                         Image(
-                            painter = painterResource(id = item.cartoonImage) ,
+                            painter = rememberAsyncImagePainter(item.cartoonImage) ,
                             contentDescription = "",
-                            contentScale = ContentScale.FillWidth,
-                            modifier = Modifier.clip(RoundedCornerShape(5.dp))
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.clip(RoundedCornerShape(5.dp)).fillMaxSize()
                         )
                     }
                     Text(
@@ -222,7 +222,7 @@ fun NewCartoonHit(){
                     )
                     Text(
                         text = "${item.cartoonName}",
-                        fontSize = 14.sp,
+                        fontSize = 12.sp,
                         color = Color.Black,
                         maxLines = 2,
                         style = LocalTextStyle.current.copy(lineHeight = 15.sp),
