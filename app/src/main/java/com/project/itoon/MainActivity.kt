@@ -72,13 +72,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-<<<<<<< Updated upstream
-       TestComposable()
-
-=======
                     FirstPage()
-                    TestComposable()
->>>>>>> Stashed changes
                 }
             }
         }
