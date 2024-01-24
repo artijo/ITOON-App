@@ -62,9 +62,9 @@ fun FirstPagePreview() {
 @Composable
 fun SliderImage(modifier: Modifier = Modifier){
     val images = listOf(
-        "https://citly.me/drgAT",
+        "https://reapertrans.com/wp-content/uploads/2023/01/Reaper-of-the-Drifting-Moon.png",
         "https://citly.me/7ShLx",
-        "https://citly.me/XQxzp",
+        "https://reapertrans.com/wp-content/uploads/2023/08/Martial-God-Regressed-to-Level-2-slide.png",
     )
 
     val pagerState = rememberPagerState(pageCount = {
@@ -93,7 +93,7 @@ fun SliderImage(modifier: Modifier = Modifier){
                             .wrapContentSize()
                             .height(200.dp),
                         shape = RoundedCornerShape(0.dp),
-                        elevation = CardDefaults.cardElevation(5.dp),
+                        elevation = CardDefaults.cardElevation(0.dp),
                     ){
                         Image(
                             painter =  rememberAsyncImagePainter(images[currentPage]),
@@ -104,17 +104,12 @@ fun SliderImage(modifier: Modifier = Modifier){
                     }
                     Box(
                         modifier = Modifier
-                            .padding(5.dp)
-                            .background(
-                                color = Color(208, 208, 208),
-                                shape = RoundedCornerShape(50.dp)
-                            )
-                            .padding(vertical = 1.dp, horizontal = 10.dp)
+                            .padding(end = 5.dp)
                             .align(Alignment.BottomEnd)
                     ){
                         Text(
                             text = "${currentPage+1} / ${images.size}",
-                            fontSize = 14.sp,
+                            fontSize = 12.sp,
                             color = Color.White,
 
                         )
