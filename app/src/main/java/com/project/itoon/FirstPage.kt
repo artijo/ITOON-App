@@ -9,6 +9,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -57,6 +59,7 @@ fun FirstPagePreview() {
     }
 }
 
+
 //sliderImage ****************************************
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -99,7 +102,9 @@ fun SliderImage(modifier: Modifier = Modifier){
                             painter =  rememberAsyncImagePainter(images[currentPage]),
                             contentDescription = "Image ${currentPage+1}",
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxWidth().fillMaxSize()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxSize()
                         )
                     }
                     Box(
@@ -111,20 +116,25 @@ fun SliderImage(modifier: Modifier = Modifier){
                             text = "${currentPage+1} / ${images.size}",
                             fontSize = 12.sp,
                             color = Color.White,
-
                         )
                     }
                 }
-
             }
         }
     }
 }
 //sliderImage ***************************************
 
+
+
+
+
 //cartoonHit ****************************************
 
 data class CartoonHitzData(val cartoonImage: String,val cartoonName: String, val cartoonGenre: String)
+
+data class CartoonAdultHitz(val cartoonImage: String,val cartoonName: String,val cartoonGenre: String)
+
 
 private fun prepareCartoonList(): MutableList<CartoonHitzData>{
     val cartoonListWow = listOf(
@@ -205,7 +215,9 @@ fun NewCartoonHit(){
                             painter = rememberAsyncImagePainter(item.cartoonImage) ,
                             contentDescription = "",
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.clip(RoundedCornerShape(5.dp)).fillMaxSize()
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(5.dp))
+                                .fillMaxSize()
                         )
                     }
                     Text(
@@ -219,6 +231,7 @@ fun NewCartoonHit(){
                         text = "${item.cartoonName}",
                         fontSize = 12.sp,
                         color = Color.Black,
+                        fontWeight = FontWeight.Medium,
                         maxLines = 2,
                         style = LocalTextStyle.current.copy(lineHeight = 15.sp),
                         overflow = TextOverflow.Ellipsis,
@@ -233,14 +246,51 @@ fun NewCartoonHit(){
 }
 
 @Composable
-private fun CartoonHitLayout(
-    cartoonList:CartoonHitzData
-){
-    val images = listOf(
-        R.drawable.who_made_me_a_princess,
-        R.drawable.lout_of_count_family,
-        R.drawable.the_beloved_little_princess,
-    )
+fun CartoonHitLayOut(){
+    var count:Int = 0
+    val cartoonList = prepareCartoonList()
+    Column{
+        cartoonList.forEach{ item ->
+            if(count > 4){
+                return@forEach
+            }
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Image(
+                    painter = rememberAsyncImagePainter(item.cartoonImage),
+                    contentDescription = item.cartoonName,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .width(45.dp)
+                        .height(45.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                )
+                Spacer(modifier = Modifier.width(width = 10.dp))
+                Column(Modifier.fillMaxWidth()) {
+                    Text(
+                        text="${item.cartoonName}",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black,
+                        lineHeight = 3.sp
+                    )
+                    Text(
+                        text="${item.cartoonGenre}",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Gray,
+                        lineHeight = 1.sp
+
+                    )
+                }
+            }
+            count++
+        }
+    }
 }
 
 
@@ -260,10 +310,14 @@ fun CartoonHit(){
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 15.dp)
     ){
-
+        CartoonHitLayOut()
     }
 }
+
+
+
 //Main page of first page...
 @Composable
 fun FirstPage(){
