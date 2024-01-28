@@ -74,8 +74,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MenuLazyrow()
-//                    EufaScreen()
+//                    MenuLazyrow()
+                    EufaScreen()
 
                 }
             }
@@ -141,13 +141,11 @@ fun GreetingPreview() {
 @Composable
 fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
     val navigationItems = listOf(
-        BottomBar.FirstPage,
         BottomBar.Favorite,
         BottomBar.MyCartoon,
         BottomBar.Coin,
         BottomBar.ETC,
     )
-    var index:Int=1
     var selectScreen by remember {
         mutableStateOf(0)
     }
@@ -160,7 +158,7 @@ fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
                     }
                     selectScreen = index
                     navHostController.navigate(bottomBar.route)
-                }, label = { Text(text = bottomBar.name)} ,icon = { Icon(painter = painterResource(id = bottomBar.icon), contentDescription = null, modifier = Modifier.size(20.dp)
+                }, label = { Text(text = bottomBar.name+selectScreen)} ,icon = { Icon(painter = painterResource(id = bottomBar.icon), contentDescription = null, modifier = Modifier.size(20.dp)
                 ) })
 
         }
