@@ -131,12 +131,12 @@ fun SliderImage(modifier: Modifier = Modifier){
 
 //cartoonHit ****************************************
 
-data class CartoonHitzData(val cartoonImage: String,val cartoonName: String, val cartoonGenre: String)
+data class CartoonHitData(val cartoonImage: String,val cartoonName: String, val cartoonGenre: String)
+data class CartoonHitAdult(val cartoonImage: String, val cartoonName: String, val cartoonGenre: String)
 
-data class CartoonAdultHitz(val cartoonImage: String,val cartoonName: String,val cartoonGenre: String)
 
 
-private fun prepareCartoonList(): MutableList<CartoonHitzData>{
+private fun prepareCartoonList(): MutableList<CartoonHitData>{
     val cartoonListWow = listOf(
         listOf("https://manhwatop.com/wp-content/uploads/2023/03/In-My-Death-I-Became-My-Brothers-Regret-193x278.jpg", "In My Death, I Became My Brother’s Regret","Action"),
         listOf("https://reapertrans.com/wp-content/uploads/2024/01/A-Thought-Of-Freedom.jpg", "A Thought Of Freedom", "Action"),
@@ -147,10 +147,10 @@ private fun prepareCartoonList(): MutableList<CartoonHitzData>{
         listOf("https://reapertrans.com/wp-content/uploads/2023/02/Mato-Seihei-no-Slave.jpg", "Mato Seihei no Slave", "Shonen"),
         listOf("https://reapertrans.com/wp-content/uploads/2023/01/Reaper-of-the-Drifting-Moon.jpg", "Reaper of the Drifting Moon", "Action-fastasy"),
     )
-    val cartoonList  = mutableListOf<CartoonHitzData>()
+    val cartoonList  = mutableListOf<CartoonHitData>()
     for (cartoonArr in cartoonListWow) {
         cartoonList.add(
-            CartoonHitzData(
+            CartoonHitData(
                 cartoonImage = cartoonArr[0] as String,
                 cartoonName = cartoonArr[1] as String,
                 cartoonGenre = cartoonArr[2] as String
@@ -177,11 +177,11 @@ fun NewCartoonHit(){
     }
     Box(modifier = Modifier
         .fillMaxWidth()
-        .padding(vertical = 12.dp, horizontal = 15.dp)
+        .padding(top = 12.dp, bottom = 5.dp,start = 15.dp,end = 15.dp)
     ){
         Text(
-            text = "New hit cartoon",
-            fontSize = 18.sp,
+            text = "เรื่องใหม่มาแรง",
+            fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
         )
     }
@@ -299,11 +299,11 @@ fun CartoonHit(){
     val cartoonList = prepareCartoonList()
     Box(modifier = Modifier
         .fillMaxWidth()
-        .padding(vertical = 12.dp, horizontal = 15.dp)
+        .padding(top = 12.dp,bottom = 5.dp, start = 15.dp , end = 15.dp)
     ){
         Text(
-            text = "Hit cartoon",
-            fontSize = 18.sp,
+            text = "เรื่องฮิต",
+            fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
         )
     }
@@ -334,7 +334,7 @@ fun FirstPage(){
         //Hit story
         CartoonHit()
 
-        //New Cartoon hitz
+        //New Cartoon hit
         NewCartoonHit()
     }
 }
