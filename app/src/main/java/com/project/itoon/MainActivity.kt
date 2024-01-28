@@ -72,7 +72,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FirstPage()
+                    EufaScreen()
                 }
             }
         }
@@ -140,7 +140,7 @@ fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
         BottomBar.Favorite,
         BottomBar.MyCartoon,
         BottomBar.Coin,
-        BottomBar.ETC
+        BottomBar.ETC,
     )
     var selectScreen by remember {
         mutableStateOf(0)
@@ -158,8 +158,6 @@ fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
                 ) })
         }
     }
-
-
 }
 
 
@@ -183,7 +181,7 @@ fun EufaScreen(){
     val contextForToast = LocalContext.current.applicationContext
     val navHostController = rememberNavController()
     Scaffold(
-        topBar = { MyTopAppBar(navHostController, contextForToast )},
+//        topBar = { MyTopAppBar(navHostController, contextForToast )},
         bottomBar = { MyBottomBar(navHostController, contextForToast)},
         floatingActionButtonPosition = FabPosition.End
     ) {

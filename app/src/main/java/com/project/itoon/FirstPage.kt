@@ -26,7 +26,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,6 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.ui.theme.ITOONTheme
 import kotlinx.coroutines.delay
@@ -177,7 +180,7 @@ fun NewCartoonHit(){
     }
     Box(modifier = Modifier
         .fillMaxWidth()
-        .padding(top = 12.dp, bottom = 5.dp,start = 15.dp,end = 15.dp)
+        .padding(top = 12.dp, bottom = 5.dp, start = 15.dp, end = 15.dp)
     ){
         Text(
             text = "เรื่องใหม่มาแรง",
@@ -299,7 +302,7 @@ fun CartoonHit(){
     val cartoonList = prepareCartoonList()
     Box(modifier = Modifier
         .fillMaxWidth()
-        .padding(top = 12.dp,bottom = 5.dp, start = 15.dp , end = 15.dp)
+        .padding(top = 12.dp, bottom = 5.dp, start = 15.dp, end = 15.dp)
     ){
         Text(
             text = "เรื่องฮิต",
@@ -321,6 +324,8 @@ fun CartoonHit(){
 //Main page of first page...
 @Composable
 fun FirstPage(){
+    val contextForToast = LocalContext.current.applicationContext
+    val navHostController = rememberNavController()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -336,5 +341,9 @@ fun FirstPage(){
 
         //New Cartoon hit
         NewCartoonHit()
+
+
+        //
+
     }
 }
