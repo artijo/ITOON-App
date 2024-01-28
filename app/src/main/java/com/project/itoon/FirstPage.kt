@@ -1,11 +1,15 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.project.itoon
 
 import android.widget.Toast
-
 import androidx.compose.foundation.ExperimentalFoundationApi
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+
 import androidx.compose.foundation.clickable
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,8 +21,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -26,9 +32,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FabPosition
+
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,10 +44,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+
 import androidx.compose.ui.graphics.Color
+
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,7 +71,6 @@ fun FirstPagePreview() {
 
 
 //sliderImage ****************************************
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SliderImage(modifier: Modifier = Modifier){
     val images = listOf(
@@ -135,12 +141,12 @@ fun SliderImage(modifier: Modifier = Modifier){
 //cartoonHit ****************************************
 
 data class CartoonHitData(val cartoonImage: String,val cartoonName: String, val cartoonGenre: String)
-data class CartoonHitAdult(val cartoonImage: String, val cartoonName: String, val cartoonGenre: String)
 
 
 
 private fun prepareCartoonList(): MutableList<CartoonHitData>{
-    val cartoonListWow = listOf(
+    val cartoonHitList  = mutableListOf<CartoonHitData>()
+    val cartoonList = listOf(
         listOf("https://manhwatop.com/wp-content/uploads/2023/03/In-My-Death-I-Became-My-Brothers-Regret-193x278.jpg", "In My Death, I Became My Brother’s Regret","Action"),
         listOf("https://reapertrans.com/wp-content/uploads/2024/01/A-Thought-Of-Freedom.jpg", "A Thought Of Freedom", "Action"),
         listOf("https://reapertrans.com/wp-content/uploads/2023/12/Locked-Up.png", "Locked Up", "Adult"),
@@ -150,18 +156,81 @@ private fun prepareCartoonList(): MutableList<CartoonHitData>{
         listOf("https://reapertrans.com/wp-content/uploads/2023/02/Mato-Seihei-no-Slave.jpg", "Mato Seihei no Slave", "Shonen"),
         listOf("https://reapertrans.com/wp-content/uploads/2023/01/Reaper-of-the-Drifting-Moon.jpg", "Reaper of the Drifting Moon", "Action-fastasy"),
     )
-    val cartoonList  = mutableListOf<CartoonHitData>()
-    for (cartoonArr in cartoonListWow) {
-        cartoonList.add(
+
+    for (cartoonArr in cartoonList) {
+        cartoonHitList.add(
             CartoonHitData(
-                cartoonImage = cartoonArr[0] as String,
-                cartoonName = cartoonArr[1] as String,
-                cartoonGenre = cartoonArr[2] as String
+                cartoonImage = cartoonArr[0],
+                cartoonName = cartoonArr[1] ,
+                cartoonGenre = cartoonArr[2]
             )
         )
     }
-    return cartoonList
+    return cartoonHitList
 }
+private fun prepareCartoonHitList(): MutableList<CartoonHitData>{
+    val cartoonHitList = mutableListOf<CartoonHitData>()
+    val cartoonList = listOf(
+        listOf("https://manhwatop.com/wp-content/uploads/2023/03/In-My-Death-I-Became-My-Brothers-Regret-193x278.jpg", "In My Death, I Became My Brother’s Regret","Action"),
+        listOf("https://reapertrans.com/wp-content/uploads/2024/01/A-Thought-Of-Freedom.jpg", "A Thought Of Freedom", "Action"),
+        listOf("https://reapertrans.com/wp-content/uploads/2023/12/Locked-Up.png", "Locked Up", "Adult"),
+        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
+        listOf("https://reapertrans.com/wp-content/uploads/2023/01/return-of-the-frozen-player-1.jpg", "Return of the Frozen Player", "Fastasy"),
+    )
+    for (cartoonArr in cartoonList) {
+        cartoonHitList.add(
+            CartoonHitData(
+                cartoonImage = cartoonArr[0] ,
+                cartoonName = cartoonArr[1] ,
+                cartoonGenre = cartoonArr[2]
+            )
+        )
+    }
+    return cartoonHitList
+}
+
+private fun prepareCartoonAdultList(): MutableList<CartoonHitData>{
+    val cartoonListAdult  = mutableListOf<CartoonHitData>()
+    val cartoonList = listOf(
+        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
+        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
+        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
+        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
+        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
+    )
+    for (cartoonArr in cartoonList) {
+        cartoonListAdult.add(
+            CartoonHitData(
+                cartoonImage = cartoonArr[0] ,
+                cartoonName = cartoonArr[1] ,
+                cartoonGenre = cartoonArr[2]
+            )
+        )
+    }
+    return cartoonListAdult
+}
+
+private fun prepareCartoonFastasyList(): MutableList<CartoonHitData>{
+    val cartoonListFastasy  = mutableListOf<CartoonHitData>()
+    val cartoonList = listOf(
+        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
+        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
+        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
+        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
+        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
+    )
+    for (cartoonArr in cartoonList) {
+        cartoonListFastasy.add(
+            CartoonHitData(
+                cartoonImage = cartoonArr[0] ,
+                cartoonName = cartoonArr[1] ,
+                cartoonGenre = cartoonArr[2]
+            )
+        )
+    }
+    return cartoonListFastasy
+}
+
 @Composable
 fun showTextTest(textFor: String){
     val context = LocalContext.current
@@ -169,11 +238,14 @@ fun showTextTest(textFor: String){
 }
 
 
+
+val fillMaxwidht = "Modifier.fillMaxWidth()"
+
 @Composable
 fun NewCartoonHit(){
     val cartoonList = prepareCartoonList()
     var isOpen by remember { mutableStateOf(false) }
-    var idTextCartoon = remember { mutableStateOf("") }
+    val idTextCartoon = remember { mutableStateOf("") }
     if(isOpen){
         showTextTest(textFor = idTextCartoon.value)
         isOpen = false
@@ -224,14 +296,14 @@ fun NewCartoonHit(){
                         )
                     }
                     Text(
-                        text="${item.cartoonGenre}",
+                        text= item.cartoonGenre,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.Gray,
                         modifier = Modifier.padding(top=100.dp)
                     )
                     Text(
-                        text = "${item.cartoonName}",
+                        text = item.cartoonName,
                         fontSize = 12.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Medium,
@@ -249,73 +321,239 @@ fun NewCartoonHit(){
 }
 
 @Composable
-fun CartoonHitLayOut(){
-    var count:Int = 0
-    val cartoonList = prepareCartoonList()
-    Column{
-        cartoonList.forEach{ item ->
-            if(count > 4){
-                return@forEach
-            }
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Image(
-                    painter = rememberAsyncImagePainter(item.cartoonImage),
-                    contentDescription = item.cartoonName,
-                    contentScale = ContentScale.Crop,
+fun CartoonHitColumn(){
+    val cartoonList = prepareCartoonHitList()
+        Column {
+            cartoonList.forEach{ item ->
+                Box(
                     modifier = Modifier
-                        .width(45.dp)
-                        .height(45.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                )
-                Spacer(modifier = Modifier.width(width = 10.dp))
-                Column(Modifier.fillMaxWidth()) {
-                    Text(
-                        text="${item.cartoonName}",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Black,
-                        lineHeight = 3.sp
-                    )
-                    Text(
-                        text="${item.cartoonGenre}",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Gray,
-                        lineHeight = 1.sp
+                        .fillMaxWidth()
+                ){
+                    Row(
+                        modifier = Modifier
+                            .width(360.dp)
+                            .padding(bottom = 10.dp)
+                    ){
+                        Image(
+                            painter = rememberAsyncImagePainter(item.cartoonImage),
+                            contentDescription = item.cartoonName,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .width(45.dp)
+                                .height(45.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                        )
+                        Spacer(modifier = Modifier.width(width = 10.dp))
+                        Column(
+                            Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text= item.cartoonName,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Black,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                lineHeight = 3.sp,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Text(
+                                text= item.cartoonGenre,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Gray,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                lineHeight = 1.sp,
+                                modifier = Modifier.fillMaxWidth()
 
-                    )
+                            )
+                        }
+                    }
                 }
             }
-            count++
+        }
+}
+
+@Composable
+fun CartoonAdultColumn(){
+    val cartoonList = prepareCartoonAdultList()
+    Box(
+        modifier = Modifier.fillMaxWidth()
+    ){
+        Column {
+            cartoonList.forEach{ item ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ){
+                    Row(
+                        modifier = Modifier
+                            .width(360.dp)
+                            .padding(bottom = 10.dp)
+                    ){
+                        Image(
+                            painter = rememberAsyncImagePainter(item.cartoonImage),
+                            contentDescription = item.cartoonName,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .width(45.dp)
+                                .height(45.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                        )
+                        Spacer(modifier = Modifier.width(width = 10.dp))
+                        Column(
+                            Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text= item.cartoonName,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Black,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                lineHeight = 3.sp,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Text(
+                                text= item.cartoonGenre,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Gray,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                lineHeight = 1.sp,
+                                modifier = Modifier.fillMaxWidth()
+
+                            )
+                        }
+                    }
+                }
+
+            }
         }
     }
 }
 
+@Composable
+fun CartoonFastasyColumn(){
+    val cartoonList = prepareCartoonFastasyList()
+    Box(
+        modifier = Modifier.fillMaxWidth()
+    ){
+        Column {
+            cartoonList.forEach{ item ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ){
+                    Row(
+                        modifier = Modifier
+                            .width(360.dp)
+                            .padding(bottom = 10.dp)
+                    ){
+                        Image(
+                            painter = rememberAsyncImagePainter(item.cartoonImage),
+                            contentDescription = item.cartoonName,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .width(45.dp)
+                                .height(45.dp)
+                                .clip(RoundedCornerShape(10.dp))
+
+                        )
+                        Spacer(modifier = Modifier.width(width = 10.dp))
+                        Column(
+                            Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text= item.cartoonName,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Black,
+                                lineHeight = 3.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.width(300.dp)
+                            )
+                            Text(
+                                text= item.cartoonGenre,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Gray,
+                                maxLines = 1,
+                                lineHeight = 1.sp,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun CartoonHit(){
-    val cartoonList = prepareCartoonList()
+    val pagerState = rememberPagerState(pageCount = {
+        3
+    })
+
+    var textHead by remember { mutableStateOf("") }
+
     Box(modifier = Modifier
         .fillMaxWidth()
         .padding(top = 12.dp, bottom = 5.dp, start = 15.dp, end = 15.dp)
     ){
         Text(
-            text = "เรื่องฮิต",
+            text = textHead,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
         )
     }
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 15.dp)
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
-        CartoonHitLayOut()
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+                .fillMaxSize()
+                .padding(horizontal = 15.dp)
+        ){
+            HorizontalPager(state = pagerState,
+            ){
+                currentPage ->
+
+                Card(
+                    Modifier
+                        .wrapContentSize()
+                        .background(color = Color.Transparent)
+                    ,
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.Transparent
+                    )
+                    )
+                {
+                    when(currentPage){
+                        0 -> {
+                            CartoonHitColumn()
+                            textHead = "เรื่องฮิต"
+                        }
+                        1 -> {
+                            CartoonAdultColumn()
+                            textHead = "เรื่องผู้ใหญ่ยอดฮิต"
+                        }
+
+                        2 -> {
+                            CartoonFastasyColumn()
+                            textHead = "เรื่องแฟนตาซียอดฮิต"
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -332,7 +570,6 @@ fun FirstPage(){
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //topappbar
 
         //Slide image
         SliderImage()
@@ -344,7 +581,6 @@ fun FirstPage(){
         NewCartoonHit()
 
 
-        //
 
     }
 }
