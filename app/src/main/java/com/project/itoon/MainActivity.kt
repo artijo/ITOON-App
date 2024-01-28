@@ -3,6 +3,7 @@ package com.project.itoon
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -11,6 +12,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -137,15 +139,17 @@ fun GreetingPreview() {
 @Composable
 fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
     val navigationItems = listOf(
+        BottomBar.FirstPage,
         BottomBar.Favorite,
         BottomBar.MyCartoon,
         BottomBar.Coin,
         BottomBar.ETC,
     )
+    var index:Int=1
     var selectScreen by remember {
         mutableStateOf(0)
     }
-    NavigationBar(modifier = Modifier.background(color = Color.Blue)) {
+    NavigationBar(modifier = Modifier.background(color = Color.Green)) {
         navigationItems.forEachIndexed { index, bottomBar ->
             NavigationBarItem(selected = (selectScreen==index),
                 onClick = {
@@ -156,6 +160,7 @@ fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
                     navHostController.navigate(bottomBar.route)
                 }, label = { Text(text = bottomBar.name)} ,icon = { Icon(painter = painterResource(id = bottomBar.icon), contentDescription = null, modifier = Modifier.size(20.dp)
                 ) })
+
         }
     }
 }
@@ -165,7 +170,10 @@ fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
 @Composable
 fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
     TopAppBar(
-        title = { Text(text = "การ์ตูนของฉัน") }, actions = {
+        title = { Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(painter = painterResource(id = R.drawable.logo), contentDescription = null)
+            Text(text = "ITOON", letterSpacing = 1.75.sp, fontWeight = FontWeight.SemiBold)
+        }}, actions = {
             IconButton(onClick = { navController.navigate(BottomBar.Favorite.route) },modifier = Modifier.size(20.dp)) {
                 Image(painter = painterResource(id = R.drawable.favorite), contentDescription = null)
             }
@@ -181,9 +189,8 @@ fun EufaScreen(){
     val contextForToast = LocalContext.current.applicationContext
     val navHostController = rememberNavController()
     Scaffold(
-//        topBar = { MyTopAppBar(navHostController, contextForToast )},
+        topBar = { MyTopAppBar(navHostController, contextForToast )},
         bottomBar = { MyBottomBar(navHostController, contextForToast)},
-        floatingActionButtonPosition = FabPosition.End
     ) {
             paddingValues ->
         Column(
@@ -192,8 +199,9 @@ fun EufaScreen(){
                 .padding(paddingValues = paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            NavGraph(navHostController = navHostController)
+
         }
-        NavGraph(navHostController = navHostController)
     }
 }
 
