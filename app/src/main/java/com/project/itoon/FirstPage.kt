@@ -3,15 +3,13 @@
 package com.project.itoon
 
 import android.widget.Toast
-import androidx.compose.animation.rememberSplineBasedDecay
-
 import androidx.compose.foundation.ExperimentalFoundationApi
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
-import androidx.compose.foundation.horizontalScroll
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,10 +21,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
+
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -34,9 +32,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FabPosition
+
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,14 +44,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
+
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -76,7 +71,6 @@ fun FirstPagePreview() {
 
 
 //sliderImage ****************************************
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SliderImage(modifier: Modifier = Modifier){
     val images = listOf(
@@ -166,9 +160,9 @@ private fun prepareCartoonList(): MutableList<CartoonHitData>{
     for (cartoonArr in cartoonList) {
         cartoonHitList.add(
             CartoonHitData(
-                cartoonImage = cartoonArr[0] as String,
-                cartoonName = cartoonArr[1] as String,
-                cartoonGenre = cartoonArr[2] as String
+                cartoonImage = cartoonArr[0],
+                cartoonName = cartoonArr[1] ,
+                cartoonGenre = cartoonArr[2]
             )
         )
     }
@@ -186,9 +180,9 @@ private fun prepareCartoonHitList(): MutableList<CartoonHitData>{
     for (cartoonArr in cartoonList) {
         cartoonHitList.add(
             CartoonHitData(
-                cartoonImage = cartoonArr[0] as String,
-                cartoonName = cartoonArr[1] as String,
-                cartoonGenre = cartoonArr[2] as String
+                cartoonImage = cartoonArr[0] ,
+                cartoonName = cartoonArr[1] ,
+                cartoonGenre = cartoonArr[2]
             )
         )
     }
@@ -207,9 +201,9 @@ private fun prepareCartoonAdultList(): MutableList<CartoonHitData>{
     for (cartoonArr in cartoonList) {
         cartoonListAdult.add(
             CartoonHitData(
-                cartoonImage = cartoonArr[0] as String,
-                cartoonName = cartoonArr[1] as String,
-                cartoonGenre = cartoonArr[2] as String
+                cartoonImage = cartoonArr[0] ,
+                cartoonName = cartoonArr[1] ,
+                cartoonGenre = cartoonArr[2]
             )
         )
     }
@@ -228,9 +222,9 @@ private fun prepareCartoonFastasyList(): MutableList<CartoonHitData>{
     for (cartoonArr in cartoonList) {
         cartoonListFastasy.add(
             CartoonHitData(
-                cartoonImage = cartoonArr[0] as String,
-                cartoonName = cartoonArr[1] as String,
-                cartoonGenre = cartoonArr[2] as String
+                cartoonImage = cartoonArr[0] ,
+                cartoonName = cartoonArr[1] ,
+                cartoonGenre = cartoonArr[2]
             )
         )
     }
@@ -251,7 +245,7 @@ val fillMaxwidht = "Modifier.fillMaxWidth()"
 fun NewCartoonHit(){
     val cartoonList = prepareCartoonList()
     var isOpen by remember { mutableStateOf(false) }
-    var idTextCartoon = remember { mutableStateOf("") }
+    val idTextCartoon = remember { mutableStateOf("") }
     if(isOpen){
         showTextTest(textFor = idTextCartoon.value)
         isOpen = false
@@ -302,14 +296,14 @@ fun NewCartoonHit(){
                         )
                     }
                     Text(
-                        text="${item.cartoonGenre}",
+                        text= item.cartoonGenre,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.Gray,
                         modifier = Modifier.padding(top=100.dp)
                     )
                     Text(
-                        text = "${item.cartoonName}",
+                        text = item.cartoonName,
                         fontSize = 12.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Medium,
@@ -354,7 +348,7 @@ fun CartoonHitColumn(){
                             Modifier.fillMaxWidth()
                         ) {
                             Text(
-                                text="${item.cartoonName}",
+                                text= item.cartoonName,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Black,
@@ -364,7 +358,7 @@ fun CartoonHitColumn(){
                                 modifier = Modifier.fillMaxWidth()
                             )
                             Text(
-                                text="${item.cartoonGenre}",
+                                text= item.cartoonGenre,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Gray,
@@ -412,7 +406,7 @@ fun CartoonAdultColumn(){
                             Modifier.fillMaxWidth()
                         ) {
                             Text(
-                                text="${item.cartoonName}",
+                                text= item.cartoonName,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Black,
@@ -422,7 +416,7 @@ fun CartoonAdultColumn(){
                                 modifier = Modifier.fillMaxWidth()
                             )
                             Text(
-                                text="${item.cartoonGenre}",
+                                text= item.cartoonGenre,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Gray,
@@ -473,7 +467,7 @@ fun CartoonFastasyColumn(){
                             Modifier.fillMaxWidth()
                         ) {
                             Text(
-                                text="${item.cartoonName}",
+                                text= item.cartoonName,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Black,
@@ -483,7 +477,7 @@ fun CartoonFastasyColumn(){
                                 modifier = Modifier.width(300.dp)
                             )
                             Text(
-                                text="${item.cartoonGenre}",
+                                text= item.cartoonGenre,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Gray,
@@ -512,7 +506,7 @@ fun CartoonHit(){
         .padding(top = 12.dp, bottom = 5.dp, start = 15.dp, end = 15.dp)
     ){
         Text(
-            text = "$textHead",
+            text = textHead,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
         )
@@ -576,7 +570,6 @@ fun FirstPage(){
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //topappbar
 
         //Slide image
         SliderImage()
@@ -588,7 +581,6 @@ fun FirstPage(){
         NewCartoonHit()
 
 
-        //
 
     }
 }
