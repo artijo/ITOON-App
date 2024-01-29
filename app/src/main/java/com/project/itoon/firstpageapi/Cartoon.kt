@@ -2,6 +2,8 @@ package com.project.itoon.firstpageapi
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.lang.ClassCastException
+import java.util.Objects
 
 data class Cartoon(
     @Expose
@@ -27,5 +29,8 @@ data class Cartoon(
 
     @Expose
     @SerializedName("genreId") val genreId :Int,
+
+    @Expose
+    @SerializedName("genres") val genres :Genres
 )
 

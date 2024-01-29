@@ -2,6 +2,7 @@
 
 package com.project.itoon
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 
@@ -60,11 +61,13 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
+import com.project.itoon.firstpageapi.Genres
 import com.project.itoon.ui.theme.ITOONTheme
 import kotlinx.coroutines.delay
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Objects
 import androidx.compose.foundation.layout.Box as Box
 
 @Preview(showBackground = true)
@@ -149,32 +152,6 @@ fun SliderImage(modifier: Modifier = Modifier){
 
 data class CartoonHitData(val cartoonImage: String,val cartoonName: String, val cartoonGenre: String)
 
-
-
-private fun prepareCartoonList(): MutableList<CartoonHitData>{
-    val cartoonHitList  = mutableListOf<CartoonHitData>()
-    val cartoonList = listOf(
-        listOf("https://manhwatop.com/wp-content/uploads/2023/03/In-My-Death-I-Became-My-Brothers-Regret-193x278.jpg", "In My Death, I Became My Brother’s Regret","Action"),
-        listOf("https://reapertrans.com/wp-content/uploads/2024/01/A-Thought-Of-Freedom.jpg", "A Thought Of Freedom", "Action"),
-        listOf("https://reapertrans.com/wp-content/uploads/2023/12/Locked-Up.png", "Locked Up", "Adult"),
-        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
-        listOf("https://reapertrans.com/wp-content/uploads/2023/01/return-of-the-frozen-player-1.jpg", "Return of the Frozen Player", "Fastasy"),
-        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
-        listOf("https://reapertrans.com/wp-content/uploads/2023/02/Mato-Seihei-no-Slave.jpg", "Mato Seihei no Slave", "Shonen"),
-        listOf("https://reapertrans.com/wp-content/uploads/2023/01/Reaper-of-the-Drifting-Moon.jpg", "Reaper of the Drifting Moon", "Action-fastasy"),
-    )
-
-    for (cartoonArr in cartoonList) {
-        cartoonHitList.add(
-            CartoonHitData(
-                cartoonImage = cartoonArr[0],
-                cartoonName = cartoonArr[1] ,
-                cartoonGenre = cartoonArr[2]
-            )
-        )
-    }
-    return cartoonHitList
-}
 private fun prepareCartoonHitList(): MutableList<CartoonHitData>{
     val cartoonHitList = mutableListOf<CartoonHitData>()
     val cartoonList = listOf(
@@ -245,12 +222,13 @@ fun showTextTest(textFor: String){
     Toast.makeText(context,"$textFor is a value from Onclick!!",Toast.LENGTH_SHORT).show()
 }
 
-fun genreIdTOString(genreID: Int): String {
-    when(genreID){
-        1000 -> return "Fastasy"
-        else -> return "Undefined"
-    }
+fun getGenreName(genres: List<Genres>): String {
+    // Assuming Genre has a property called 'name'
+    return genres.joinToString { it.name }
 }
+
+
+
 @Composable
 fun NewCartoonHit(){
     val createClient = CartoonAPI.create()
@@ -264,7 +242,7 @@ fun NewCartoonHit(){
                                     response: Response<List<Cartoon>>
             ){
              response.body()?.forEach{
-                 cartoonList.add(Cartoon(it.id , it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId))
+                 cartoonList.add(Cartoon(it.id , it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId, it.genres))
              }
             }
 
@@ -273,6 +251,7 @@ fun NewCartoonHit(){
             }
 
         })
+
 
 
 //    Open Toast Funtion  for test
@@ -328,7 +307,7 @@ fun NewCartoonHit(){
                         )
                     }
                     Text(
-                        text= genreIdTOString(item.genreId),
+                        text= item.genres.name,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.Gray,
@@ -354,7 +333,7 @@ fun NewCartoonHit(){
 
 @Composable
 fun CartoonHitColumn(){
-    val cartoonList = prepareCartoonHitList()
+    val cartoonList=prepareCartoonHitList()
         Column{
             cartoonList.forEach{ item ->
                 Box(
@@ -525,6 +504,7 @@ fun CartoonFastasyColumn(){
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CartoonHit(){
     val pagerState = rememberPagerState(pageCount = {
