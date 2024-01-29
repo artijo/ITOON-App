@@ -38,6 +38,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -57,8 +58,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.project.itoon.firstpageapi.Cartoon
+import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.ui.theme.ITOONTheme
 import kotlinx.coroutines.delay
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import androidx.compose.foundation.layout.Box as Box
 
 @Preview(showBackground = true)
@@ -71,6 +77,7 @@ fun FirstPagePreview() {
 
 
 //sliderImage ****************************************
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SliderImage(modifier: Modifier = Modifier){
     val images = listOf(
@@ -231,19 +238,44 @@ private fun prepareCartoonFastasyList(): MutableList<CartoonHitData>{
     return cartoonListFastasy
 }
 
+
 @Composable
 fun showTextTest(textFor: String){
     val context = LocalContext.current
     Toast.makeText(context,"$textFor is a value from Onclick!!",Toast.LENGTH_SHORT).show()
 }
 
-
-
-val fillMaxwidht = "Modifier.fillMaxWidth()"
-
+fun genreIdTOString(genreID: Int): String {
+    when(genreID){
+        1000 -> return "Fastasy"
+        else -> return "Undefined"
+    }
+}
 @Composable
 fun NewCartoonHit(){
-    val cartoonList = prepareCartoonList()
+    val createClient = CartoonAPI.create()
+    val cartoonList = remember { mutableStateListOf<Cartoon>() }
+    val contextForToast = LocalContext.current.applicationContext
+//    Query data from API
+    cartoonList.clear()
+    createClient.retrieveCartoon()
+        .enqueue(object: Callback<List<Cartoon>>{
+            override fun onResponse(call: Call<List<Cartoon>>,
+                                    response: Response<List<Cartoon>>
+            ){
+             response.body()?.forEach{
+                 cartoonList.add(Cartoon(it.id , it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId))
+             }
+            }
+
+            override fun onFailure(call: Call<List<Cartoon>>, t: Throwable) {
+                Toast.makeText(contextForToast,"Error on Failure" + t.message, Toast.LENGTH_LONG).show()
+            }
+
+        })
+
+
+//    Open Toast Funtion  for test
     var isOpen by remember { mutableStateOf(false) }
     val idTextCartoon = remember { mutableStateOf("") }
     if(isOpen){
@@ -275,7 +307,7 @@ fun NewCartoonHit(){
                         .clickable(
                             onClick = {
                                 isOpen = true
-                                idTextCartoon.value = item.cartoonName
+                                idTextCartoon.value = item.name
                             }
                         )
                 ){
@@ -287,7 +319,7 @@ fun NewCartoonHit(){
 
                     ){
                         Image(
-                            painter = rememberAsyncImagePainter(item.cartoonImage) ,
+                            painter = rememberAsyncImagePainter(item.thumbnail) ,
                             contentDescription = "",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -296,14 +328,14 @@ fun NewCartoonHit(){
                         )
                     }
                     Text(
-                        text= item.cartoonGenre,
+                        text= genreIdTOString(item.genreId),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.Gray,
                         modifier = Modifier.padding(top=100.dp)
                     )
                     Text(
-                        text = item.cartoonName,
+                        text = item.name,
                         fontSize = 12.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Medium,
@@ -323,7 +355,7 @@ fun NewCartoonHit(){
 @Composable
 fun CartoonHitColumn(){
     val cartoonList = prepareCartoonHitList()
-        Column {
+        Column{
             cartoonList.forEach{ item ->
                 Box(
                     modifier = Modifier
