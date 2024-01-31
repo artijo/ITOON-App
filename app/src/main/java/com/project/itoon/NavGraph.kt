@@ -7,9 +7,9 @@ import androidx.navigation.compose.composable
 
 @Composable
 fun NavGraph(navHostController: NavHostController) {
-    NavHost(navController = navHostController, startDestination = BottomBar.FirstPage.route) {
+    NavHost(navController = navHostController, startDestination = BottomBar.Favorite.route) {
         composable(route = BottomBar.Favorite.route) {
-            FavoritePage()
+            FirstPage()
         }
 
         composable(route = BottomBar.MyCartoon.route) {
@@ -21,9 +21,6 @@ fun NavGraph(navHostController: NavHostController) {
         }
         composable(route = BottomBar.ETC.route) {
             ETCPage()
-        }
-        composable(route = BottomBar.FirstPage.route){
-            FirstPage()
         }
     }
 }
