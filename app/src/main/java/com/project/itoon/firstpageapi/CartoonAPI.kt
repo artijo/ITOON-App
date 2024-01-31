@@ -6,8 +6,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface CartoonAPI {
-    @GET("allCartoon") ///    Call NodeJS : Query
+
+    @GET("recCartoon") // Call Recommend Cartoon from api
+    fun recCartoon(): Call<List<CartoonRec>>
+
+    @GET("allCartoon") ///    Call all cartoon from api
     fun retrieveCartoon(): Call<List<Cartoon>>
+
+
+
     companion object{
         fun create():CartoonAPI{
             val cartoonClient:CartoonAPI = Retrofit.Builder()

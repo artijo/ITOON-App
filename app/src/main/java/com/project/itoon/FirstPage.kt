@@ -43,6 +43,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -61,6 +62,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
+import com.project.itoon.firstpageapi.CartoonRec
 import com.project.itoon.firstpageapi.Genres
 import com.project.itoon.ui.theme.ITOONTheme
 import kotlinx.coroutines.delay
@@ -150,70 +152,9 @@ fun SliderImage(modifier: Modifier = Modifier){
 
 //cartoonHit ****************************************
 
-data class CartoonHitData(val cartoonImage: String,val cartoonName: String, val cartoonGenre: String)
 
-private fun prepareCartoonHitList(): MutableList<CartoonHitData>{
-    val cartoonHitList = mutableListOf<CartoonHitData>()
-    val cartoonList = listOf(
-        listOf("https://manhwatop.com/wp-content/uploads/2023/03/In-My-Death-I-Became-My-Brothers-Regret-193x278.jpg", "In My Death, I Became My Brother’s Regret","Action"),
-        listOf("https://reapertrans.com/wp-content/uploads/2024/01/A-Thought-Of-Freedom.jpg", "A Thought Of Freedom", "Action"),
-        listOf("https://reapertrans.com/wp-content/uploads/2023/12/Locked-Up.png", "Locked Up", "Adult"),
-        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
-        listOf("https://reapertrans.com/wp-content/uploads/2023/01/return-of-the-frozen-player-1.jpg", "Return of the Frozen Player", "Fastasy"),
-    )
-    for (cartoonArr in cartoonList) {
-        cartoonHitList.add(
-            CartoonHitData(
-                cartoonImage = cartoonArr[0] ,
-                cartoonName = cartoonArr[1] ,
-                cartoonGenre = cartoonArr[2]
-            )
-        )
-    }
-    return cartoonHitList
-}
 
-private fun prepareCartoonAdultList(): MutableList<CartoonHitData>{
-    val cartoonListAdult  = mutableListOf<CartoonHitData>()
-    val cartoonList = listOf(
-        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
-        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
-        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
-        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
-        listOf("https://reapertrans.com/wp-content/uploads/2024/01/a-delicate-relationship.jpg", "A Delicate Relationship", "Adult"),
-    )
-    for (cartoonArr in cartoonList) {
-        cartoonListAdult.add(
-            CartoonHitData(
-                cartoonImage = cartoonArr[0] ,
-                cartoonName = cartoonArr[1] ,
-                cartoonGenre = cartoonArr[2]
-            )
-        )
-    }
-    return cartoonListAdult
-}
 
-private fun prepareCartoonFastasyList(): MutableList<CartoonHitData>{
-    val cartoonListFastasy  = mutableListOf<CartoonHitData>()
-    val cartoonList = listOf(
-        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
-        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
-        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
-        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
-        listOf("https://reapertrans.com/wp-content/uploads/2023/02/My-Civil-Servant-Life-Reborn-in-the-Strange-WorldMage.jpg", "My Civil Servant Life Reborn in the Strange World", "Fastasy"),
-    )
-    for (cartoonArr in cartoonList) {
-        cartoonListFastasy.add(
-            CartoonHitData(
-                cartoonImage = cartoonArr[0] ,
-                cartoonName = cartoonArr[1] ,
-                cartoonGenre = cartoonArr[2]
-            )
-        )
-    }
-    return cartoonListFastasy
-}
 
 
 @Composable
@@ -226,8 +167,6 @@ fun getGenreName(genres: List<Genres>): String {
     // Assuming Genre has a property called 'name'
     return genres.joinToString { it.name }
 }
-
-
 
 @Composable
 fun NewCartoonHit(){
@@ -249,8 +188,7 @@ fun NewCartoonHit(){
             override fun onFailure(call: Call<List<Cartoon>>, t: Throwable) {
                 Toast.makeText(contextForToast,"Error on Failure" + t.message, Toast.LENGTH_LONG).show()
             }
-
-        })
+    })
 
 
 
@@ -333,7 +271,25 @@ fun NewCartoonHit(){
 
 @Composable
 fun CartoonHitColumn(){
-    val cartoonList=prepareCartoonHitList()
+    val createClient = CartoonAPI.create()
+    val cartoonList = remember { mutableStateListOf<CartoonRec>() }
+    val contextForToast = LocalContext.current.applicationContext
+//    Query data from API
+    cartoonList.clear()
+    createClient.recCartoon()
+        .enqueue(object: Callback<List<CartoonRec>>{
+            override fun onResponse(call: Call<List<CartoonRec>>,
+                                    response: Response<List<CartoonRec>>
+            ){
+                response.body()?.forEach{
+                    cartoonList.add(CartoonRec(it.id , it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId, it.genres))
+                }
+            }
+
+            override fun onFailure(call: Call<List<CartoonRec>>, t: Throwable) {
+                Toast.makeText(contextForToast,"Error on Failure" + t.message, Toast.LENGTH_LONG).show()
+            }
+        })
         Column{
             cartoonList.forEach{ item ->
                 Box(
@@ -346,8 +302,8 @@ fun CartoonHitColumn(){
                             .padding(bottom = 10.dp)
                     ){
                         Image(
-                            painter = rememberAsyncImagePainter(item.cartoonImage),
-                            contentDescription = item.cartoonName,
+                            painter = rememberAsyncImagePainter(item.thumbnail),
+                            contentDescription = item.name,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .width(45.dp)
@@ -359,7 +315,7 @@ fun CartoonHitColumn(){
                             Modifier.fillMaxWidth()
                         ) {
                             Text(
-                                text= item.cartoonName,
+                                text= item.name,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Black,
@@ -369,7 +325,7 @@ fun CartoonHitColumn(){
                                 modifier = Modifier.fillMaxWidth()
                             )
                             Text(
-                                text= item.cartoonGenre,
+                                text= item.genres.name,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Gray,
@@ -386,144 +342,22 @@ fun CartoonHitColumn(){
         }
 }
 
-@Composable
-fun CartoonAdultColumn(){
-    val cartoonList = prepareCartoonAdultList()
-    Box(
-        modifier = Modifier.fillMaxWidth()
-    ){
-        Column {
-            cartoonList.forEach{ item ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ){
-                    Row(
-                        modifier = Modifier
-                            .width(360.dp)
-                            .padding(bottom = 10.dp)
-                    ){
-                        Image(
-                            painter = rememberAsyncImagePainter(item.cartoonImage),
-                            contentDescription = item.cartoonName,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .width(45.dp)
-                                .height(45.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                        )
-                        Spacer(modifier = Modifier.width(width = 10.dp))
-                        Column(
-                            Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text= item.cartoonName,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = Color.Black,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                lineHeight = 3.sp,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                            Text(
-                                text= item.cartoonGenre,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = Color.Gray,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                lineHeight = 1.sp,
-                                modifier = Modifier.fillMaxWidth()
 
-                            )
-                        }
-                    }
-                }
 
-            }
-        }
-    }
-}
-
-@Composable
-fun CartoonFastasyColumn(){
-    val cartoonList = prepareCartoonFastasyList()
-    Box(
-        modifier = Modifier.fillMaxWidth()
-    ){
-        Column {
-            cartoonList.forEach{ item ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ){
-                    Row(
-                        modifier = Modifier
-                            .width(360.dp)
-                            .padding(bottom = 10.dp)
-                    ){
-                        Image(
-                            painter = rememberAsyncImagePainter(item.cartoonImage),
-                            contentDescription = item.cartoonName,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .width(45.dp)
-                                .height(45.dp)
-                                .clip(RoundedCornerShape(10.dp))
-
-                        )
-                        Spacer(modifier = Modifier.width(width = 10.dp))
-                        Column(
-                            Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text= item.cartoonName,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = Color.Black,
-                                lineHeight = 3.sp,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.width(300.dp)
-                            )
-                            Text(
-                                text= item.cartoonGenre,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = Color.Gray,
-                                maxLines = 1,
-                                lineHeight = 1.sp,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CartoonHit(){
-    val pagerState = rememberPagerState(pageCount = {
-        3
-    })
-
-    var textHead by remember { mutableStateOf("") }
-
+fun CartoonRecommend(){
     Box(modifier = Modifier
         .fillMaxWidth()
         .padding(top = 12.dp, bottom = 5.dp, start = 15.dp, end = 15.dp)
     ){
         Text(
-            text = textHead,
+            text = "เรื่องแนะนำ",
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
         )
     }
-
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -534,37 +368,7 @@ fun CartoonHit(){
                 .fillMaxSize()
                 .padding(horizontal = 15.dp)
         ){
-            HorizontalPager(state = pagerState,
-            ){
-                currentPage ->
-
-                Card(
-                    Modifier
-                        .wrapContentSize()
-                        .background(color = Color.Transparent)
-                    ,
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.Transparent
-                    )
-                    )
-                {
-                    when(currentPage){
-                        0 -> {
-                            CartoonHitColumn()
-                            textHead = "เรื่องฮิต"
-                        }
-                        1 -> {
-                            CartoonAdultColumn()
-                            textHead = "เรื่องผู้ใหญ่ยอดฮิต"
-                        }
-
-                        2 -> {
-                            CartoonFastasyColumn()
-                            textHead = "เรื่องแฟนตาซียอดฮิต"
-                        }
-                    }
-                }
-            }
+            CartoonHitColumn()
         }
     }
 }
@@ -587,11 +391,10 @@ fun FirstPage(){
         SliderImage()
 
         //Hit story
-        CartoonHit()
+        CartoonRecommend()
 
         //New Cartoon hit
         NewCartoonHit()
-
 
 
     }
