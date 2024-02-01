@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.project.itoon.firstpageapi.TestCall
 import com.project.itoon.ui.theme.ITOONTheme
 
 class MainActivity : ComponentActivity() {
@@ -55,6 +56,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //                    MenuLazyrow()
                     EufaScreen()
+//                    if you want to call first page just use TestCall() function
+//                    TestCall()
 
                 }
             }

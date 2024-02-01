@@ -2,9 +2,12 @@
 
 package com.project.itoon
 
+import android.R
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,7 +51,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
@@ -69,7 +72,7 @@ fun FirstPagePreview() {
 //sliderImage ****************************************
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SliderImage(modifier: Modifier = Modifier){
+private fun SliderImage(modifier: Modifier = Modifier){
     val images = listOf(
         "https://reapertrans.com/wp-content/uploads/2023/01/Reaper-of-the-Drifting-Moon.png",
         "https://citly.me/7ShLx",
@@ -132,10 +135,16 @@ fun SliderImage(modifier: Modifier = Modifier){
 
 
 @Composable
-fun CartoonRecommend(){
+private fun CartoonRecommend(){
     val createClient = CartoonAPI.create()
     val cartoonList = remember { mutableStateListOf<Cartoon>() }
     val contextForToast = LocalContext.current.applicationContext
+    var isOpen by remember { mutableStateOf(false) }
+    val idTextCartoon = remember { mutableStateOf("") }
+    if(isOpen){
+        ShowTextTest(textFor = idTextCartoon.value)
+        isOpen = false
+    }
 //    Query data from API
     LaunchedEffect(true){
         createClient.recAllCartoon()
@@ -153,84 +162,94 @@ fun CartoonRecommend(){
                 }
         })
     }
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 12.dp, bottom = 5.dp, start = 15.dp, end = 15.dp)
-    ){
-        Text(
-            text = "เรื่องแนะนำ",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-    }
-    Column(
-        Modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.Center
-    ){
-        cartoonList.forEach{ item ->
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 15.dp)
-            ){
-                Row(
+    Column {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp, bottom = 5.dp, start = 15.dp, end = 15.dp)
+        ){
+            Text(
+                text = "เรื่องแนะนำ",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+        Column(
+            Modifier
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Center
+        ){
+            cartoonList.forEach{ item ->
+                Box(
                     modifier = Modifier
-                        .width(360.dp)
-                        .padding(bottom = 10.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 15.dp)
+                        .clickable(
+                            onClick = {
+                                isOpen = true
+                                idTextCartoon.value = item.name
+                            }
+                        )
                 ){
-                    Image(
-                        painter = rememberAsyncImagePainter(item.thumbnail),
-                        contentDescription = item.name,
-                        contentScale = ContentScale.Crop,
+                    Row(
                         modifier = Modifier
-                            .width(45.dp)
-                            .height(45.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                    )
-                    Spacer(modifier = Modifier.width(width = 10.dp))
-                    Column(
-                        Modifier.fillMaxWidth()
-                            .padding(top = 10.dp)
-                    ) {
-                        Text(
-                            text= item.name,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.Black,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            lineHeight = 3.sp,
-                            modifier = Modifier.fillMaxWidth()
+                            .width(360.dp)
+                            .padding(bottom = 10.dp)
+                    ){
+                        Image(
+                            painter = rememberAsyncImagePainter(item.thumbnail),
+                            contentDescription = item.name,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .width(45.dp)
+                                .height(45.dp)
+                                .clip(RoundedCornerShape(10.dp))
                         )
-                        Text(
-                            text= item.genres.name,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.Gray,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            lineHeight = 1.sp,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        Spacer(modifier = Modifier.width(width = 10.dp))
+                        Column(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(top = 10.dp)
+                        ) {
+                            Text(
+                                text= item.name,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Black,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                lineHeight = 3.sp,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Text(
+                                text= item.genres.name,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Gray,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                lineHeight = 1.sp,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
                     }
                 }
             }
         }
     }
+
 }
 
 
 
 @Composable
-fun ShowTextTest(textFor: String){
+private fun ShowTextTest(textFor: String){
     val context = LocalContext.current
     Toast.makeText(context,"$textFor is a value from Onclick!!",Toast.LENGTH_SHORT).show()
 }
 
 
 @Composable
-fun NewCartoonHit(){
+private fun NewCartoonHit(): Int {
     val createClient = CartoonAPI.create()
     val cartoonList = remember { mutableStateListOf<Cartoon>() }
     val contextForToast = LocalContext.current.applicationContext
@@ -257,97 +276,111 @@ fun NewCartoonHit(){
         ShowTextTest(textFor = idTextCartoon.value)
         isOpen = false
     }
-
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 12.dp, bottom = 5.dp, start = 15.dp, end = 15.dp)
-    ){
-        Text(
-            text = "เรื่องฮิตใหม่",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-    }
-    Box(Modifier.fillMaxWidth()){
-        Column(
-            Modifier
-                .fillMaxSize()
+    Column {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp, bottom = 5.dp, start = 15.dp, end = 15.dp)
         ){
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(space = 0.dp),
-                contentPadding = PaddingValues(horizontal = 15.dp)
+            Text(
+                text = "การ์ตูนทั้งหมด",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
+        Box(Modifier.fillMaxWidth()){
+            Column(
+                Modifier
+                    .fillMaxSize()
             ){
-                items(cartoonList){ item->
-                    Box(
-                        Modifier
-                            .fillMaxSize()
-                            .clickable(
-                                onClick = {
-                                    isOpen = true
-                                    idTextCartoon.value = item.name
-                                }
-                            )
-                    ){
-                        Box(modifier = Modifier
-                            .fillMaxSize()
-                            .width(110.dp)
-                            .height(100.dp)
-                            .padding(end = 10.dp)
-
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(space = 0.dp),
+                    contentPadding = PaddingValues(horizontal = 15.dp)
+                ){
+                    items(cartoonList){ item->
+                        Box(
+                            Modifier
+                                .fillMaxSize()
+                                .clickable(
+                                    onClick = {
+                                        isOpen = true
+                                        idTextCartoon.value = item.name
+                                    }
+                                )
                         ){
-                            Image(
-                                painter = rememberAsyncImagePainter(item.thumbnail) ,
-                                contentDescription = "",
-                                contentScale = ContentScale.Crop,
+                            Box(modifier = Modifier
+                                .fillMaxSize()
+                                .width(110.dp)
+                                .height(100.dp)
+                                .padding(end = 10.dp)
+
+                            ){
+                                Image(
+                                    painter = rememberAsyncImagePainter(item.thumbnail) ,
+                                    contentDescription = "",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(5.dp))
+                                        .fillMaxSize()
+                                )
+                            }
+                            Text(
+                                text= item.genres.name,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Gray,
+                                modifier = Modifier.padding(top=100.dp)
+                            )
+                            Text(
+                                text = item.name,
+                                fontSize = 12.sp,
+                                color = Color.Black,
+                                fontWeight = FontWeight.Medium,
+                                maxLines = 2,
+                                style = LocalTextStyle.current.copy(lineHeight = 15.sp),
+                                overflow = TextOverflow.Ellipsis,
                                 modifier = Modifier
-                                    .clip(RoundedCornerShape(5.dp))
-                                    .fillMaxSize()
+                                    .padding(top = 118.dp)
+                                    .width(100.dp)
                             )
                         }
-                        Text(
-                            text= item.genres.name,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.Gray,
-                            modifier = Modifier.padding(top=100.dp)
-                        )
-                        Text(
-                            text = item.name,
-                            fontSize = 12.sp,
-                            color = Color.Black,
-                            fontWeight = FontWeight.Medium,
-                            maxLines = 2,
-                            style = LocalTextStyle.current.copy(lineHeight = 15.sp),
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .padding(top = 118.dp)
-                                .width(100.dp)
-                        )
                     }
                 }
             }
         }
     }
+    return cartoonList.size
 }
 
 
 
+
+
 //Main page of first page...
+
 @Composable
 fun FirstPage(){
-    val contextForToast = LocalContext.current.applicationContext
-    val navHostController = rememberNavController()
-    val countDown by remember {
-        mutableStateOf(false)
+    var count by remember {
+        mutableIntStateOf(0)
     }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 15.dp, bottom = 5.dp)
+        ){
+            Text(
+                text = "$count เรื่อง",
+                fontSize = 12.sp,
+                color = Color.Gray,
+            )
+        }
         SliderImage()
         CartoonRecommend()
-        NewCartoonHit()
+        count = NewCartoonHit()
     }
 }

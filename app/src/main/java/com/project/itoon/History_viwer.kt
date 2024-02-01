@@ -87,7 +87,6 @@ fun MenuLayout(
             navHostController.navigate(op.route)
         }) {
             Text(text = "${op.name}")
-
         }
     }
     }
