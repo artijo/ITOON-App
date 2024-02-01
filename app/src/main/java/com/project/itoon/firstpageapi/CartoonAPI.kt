@@ -7,13 +7,11 @@ import retrofit2.http.GET
 
 interface CartoonAPI {
 
-    @GET("recCartoon") // Call Recommend Cartoon from api
-    fun recCartoon(): Call<List<CartoonRec>>
-
-    @GET("allCartoon") ///    Call all cartoon from api
+    @GET("allCartoon")
     fun retrieveCartoon(): Call<List<Cartoon>>
 
-
+    @GET("recCartoon")
+    fun recAllCartoon(): Call<List<Cartoon>>
 
     companion object{
         fun create():CartoonAPI{
