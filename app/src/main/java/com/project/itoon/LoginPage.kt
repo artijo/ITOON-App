@@ -1,5 +1,9 @@
 package com.project.itoon
 
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -20,6 +24,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,7 +37,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+
+
+class LoginActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            val navHostController = rememberNavController()
+//            LoginPage(navHostController,this)
+        }
+    }
+}
+
+sealed class PageITOON(val route:String){
+    object Login:PageITOON("Login_Page")
+    object SignUp:PageITOON("Signup_Page")
+}
 
 @Composable
 fun LoginContent(email:String,onEmailChange:(String)->Unit,
@@ -67,6 +90,7 @@ fun LoginPage(navHostController: NavHostController)
 {   var email by rememberSaveable {
     mutableStateOf("")
 }
+    var login by rememberSaveable{mutableStateOf(false)}
     var password by rememberSaveable{ mutableStateOf("") }
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(id = R.drawable.logo), contentDescription = null ,modifier = Modifier.size(250.dp), contentScale = ContentScale.Fit)
@@ -87,7 +111,9 @@ fun LoginPage(navHostController: NavHostController)
                 Text(text = "ลืมรหัสผ่าน",color = Color.Black,modifier = Modifier.alpha(0.5f))
             }
         }
-        Button(onClick = {  },colors = ButtonDefaults.buttonColors(Color(184,0,0)),modifier = Modifier
+        Button(onClick = {
+
+        },colors = ButtonDefaults.buttonColors(Color(184,0,0)),modifier = Modifier
             .width(129.dp)
             , shape = RoundedCornerShape(10.dp)
         ) {
@@ -102,7 +128,6 @@ fun LoginPage(navHostController: NavHostController)
         ) {
             Text(text = "สมัครสมาชิก",color = Color.Black)
         }
-
     }
 }
 
