@@ -1,8 +1,7 @@
-package com.project.itoon
+package com.project.itoon.LoginAndSignUp
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,6 +31,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.project.itoon.API
+import com.project.itoon.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

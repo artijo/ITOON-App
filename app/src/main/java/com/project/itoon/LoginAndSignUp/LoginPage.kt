@@ -1,6 +1,5 @@
-package com.project.itoon
+package com.project.itoon.LoginAndSignUp
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +23,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -37,9 +35,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.project.itoon.R
 
 
 class LoginActivity : AppCompatActivity() {
@@ -53,8 +51,8 @@ class LoginActivity : AppCompatActivity() {
 }
 
 sealed class PageITOON(val route:String){
-    object Login:PageITOON("Login_Page")
-    object SignUp:PageITOON("Signup_Page")
+    object Login: PageITOON("Login_Page")
+    object SignUp: PageITOON("Signup_Page")
 }
 
 @Composable
