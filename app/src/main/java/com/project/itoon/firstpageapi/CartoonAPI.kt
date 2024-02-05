@@ -4,6 +4,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface CartoonAPI {
 
@@ -12,6 +13,7 @@ interface CartoonAPI {
 
     @GET("recCartoon")
     fun recAllCartoon(): Call<List<Cartoon>>
+
 
     companion object{
         fun create():CartoonAPI{
