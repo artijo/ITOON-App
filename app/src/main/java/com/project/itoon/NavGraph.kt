@@ -34,9 +34,8 @@ import androidx.navigation.compose.composable
 fun NavGraph(navHostController: NavHostController) {
     NavHost(navController = navHostController, startDestination = BottomBar.Favorite.route) {
         composable(route = BottomBar.Favorite.route) {
-            FirstPage()
+            FirstPage(navHostController)
         }
-
         composable(route = BottomBar.MyCartoon.route) {
             MyCarToonPage()
         }

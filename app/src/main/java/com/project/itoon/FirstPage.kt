@@ -61,13 +61,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-@Preview(showBackground = true)
-@Composable
-fun FirstPagePreview() {
-    ITOONTheme {
-        FirstPage()
-    }
-}
 
 
 //sliderImage ****************************************
@@ -250,7 +243,7 @@ private fun ShowTextTest(textFor: String){
 
 
 @Composable
-private fun NewCartoonHit(): Int {
+private fun NewCartoonHit(navHostController: NavHostController): Int {
     val createClient = CartoonAPI.create()
     val cartoonList = remember { mutableStateListOf<Cartoon>() }
     val contextForToast = LocalContext.current.applicationContext
@@ -303,8 +296,9 @@ private fun NewCartoonHit(): Int {
                                 .fillMaxSize()
                                 .clickable(
                                     onClick = {
-                                        isOpen = true
-                                        idTextCartoon.value = item.name
+//                                        isOpen = true
+//                                        idTextCartoon.value = item.name
+                                        navHostController.navigate( com.project.itoon.BottomBar.ETC.route)
                                     }
                                 )
                         ){
@@ -359,7 +353,7 @@ private fun NewCartoonHit(): Int {
 //Main page of first page...
 
 @Composable
-fun FirstPage(){
+fun FirstPage(navHostController: NavHostController){
     var count by remember {
         mutableIntStateOf(0)
     }
@@ -382,6 +376,7 @@ fun FirstPage(){
         }
         SliderImage()
         CartoonRecommend()
-        count = NewCartoonHit()
+        count = NewCartoonHit(navHostController)
     }
+
 }
