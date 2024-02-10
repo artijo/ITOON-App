@@ -14,6 +14,10 @@ interface CartoonAPI {
     @GET("recCartoon")
     fun recAllCartoon(): Call<List<Cartoon>>
 
+    @GET("Cartoon/{cartoonid}")
+    fun getCartoon(
+        @Path("cartoonid")id:Int
+    ):Call<Cartoon>
 
     companion object{
         fun create():CartoonAPI{

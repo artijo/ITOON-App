@@ -36,6 +36,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.project.itoon.R
 
@@ -44,8 +46,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navHostController = rememberNavController()
-//            LoginPage(navHostController,this)
+            LoginAndSignUp()
         }
     }
 }
@@ -125,6 +126,19 @@ fun LoginPage(navHostController: NavHostController)
             .width(129.dp)
         ) {
             Text(text = "สมัครสมาชิก",color = Color.Black)
+        }
+    }
+}
+
+@Composable
+fun LoginAndSignUp(){
+    val navController = rememberNavController()
+    NavHost(navController = navController,startDestination = PageITOON.Login.route){
+        composable(PageITOON.Login.route){
+            LoginPage(navController)
+        }
+        composable(PageITOON.SignUp.route){
+            Signup(navController)
         }
     }
 }

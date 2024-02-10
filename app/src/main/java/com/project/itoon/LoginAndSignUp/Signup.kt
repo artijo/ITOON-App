@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.project.itoon.API
-import com.project.itoon.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
