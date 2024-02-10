@@ -1,4 +1,4 @@
-package com.project.itoon.LoginAndSignUp
+package com.project.itoon.firstpageapi
 
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
