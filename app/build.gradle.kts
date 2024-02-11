@@ -75,6 +75,7 @@ dependencies {
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.5")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
     implementation ("androidx.navigation:navigation-compose:2.7.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 //    implementation API
 //    retrofit2
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
