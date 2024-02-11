@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.NavBottomBar.BottomBar
+import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
 import kotlinx.coroutines.delay
@@ -125,7 +126,7 @@ private fun SliderImage(modifier: Modifier = Modifier){
 
 
 @Composable
-private fun CartoonRecommend(){
+private fun CartoonRecommend(navHostController:NavHostController){
     val createClient = CartoonAPI.create()
     val cartoonList = remember { mutableStateListOf<Cartoon>() }
     val contextForToast = LocalContext.current.applicationContext
@@ -169,14 +170,19 @@ private fun CartoonRecommend(){
             verticalArrangement = Arrangement.Center
         ){
             cartoonList.forEach{ item ->
+                var clickCartoon : Cartoon
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 15.dp)
                         .clickable(
                             onClick = {
-                                isOpen = true
-                                idTextCartoon.value = item.name
+                                    clickCartoon = item
+                                    navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                        "data",
+                                        clickCartoon
+                                    )
+                                    navHostController.navigate(CartoonPage.CartoonEP.route)
                             }
                         )
                 ){
@@ -260,6 +266,7 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
         })
     }
 
+
     var isOpen by remember { mutableStateOf(false) }
     val idTextCartoon = remember { mutableStateOf("") }
     if(isOpen){
@@ -286,6 +293,7 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
                     horizontalArrangement = Arrangement.spacedBy(space = 0.dp),
                     contentPadding = PaddingValues(horizontal = 15.dp)
                 ){
+                    var clickCartoon : Cartoon
                     items(cartoonList){ item->
                         Box(
                             Modifier
@@ -295,6 +303,12 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
 //                                        isOpen = true
 //                                        idTextCartoon.value = item.name
                                         navHostController.navigate( BottomBar.ETC.route)
+                                        clickCartoon = item
+                                        navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                            "data",
+                                            clickCartoon
+                                        )
+                                        navHostController.navigate(CartoonPage.CartoonEP.route)
                                     }
                                 )
                         ){
@@ -372,7 +386,7 @@ fun FirstPage(navHostController: NavHostController){
             )
         }
         SliderImage()
-        CartoonRecommend()
+        CartoonRecommend(navHostController)
         count = NewCartoonHit(navHostController)
     }
 

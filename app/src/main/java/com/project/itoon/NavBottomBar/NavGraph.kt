@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,11 +44,20 @@ import androidx.navigation.compose.rememberNavController
 import com.project.itoon.FirstPage
 import com.project.itoon.R
 
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.project.itoon.LoginAndSignUp.LoginActivity
+import com.project.itoon.LoginAndSignUp.LoginPage
+import com.project.itoon.LoginAndSignUp.PageITOON
+import com.project.itoon.LoginAndSignUp.Signup
+import com.project.itoon.cartoonPage.CartoonPage
+import com.project.itoon.cartoonPage.CartoonThumbnail
+import com.project.itoon.cartoonPage.SelectPage
 
 @Composable
 fun NavGraph(navHostController: NavHostController) {
-    NavHost(navController = navHostController, startDestination = BottomBar.Favorite.route) {
-        composable(route = BottomBar.Favorite.route) {
+
+    NavHost(navController = navHostController, startDestination = BottomBar.FirstPage.route) {
+        composable(route = BottomBar.FirstPage.route) {
             FirstPage(navHostController)
 
         }
@@ -58,6 +71,15 @@ fun NavGraph(navHostController: NavHostController) {
         composable(route = BottomBar.ETC.route) {
             ETCPage()
         }
+        composable(route = PageITOON.Login.route){
+            LoginPage(navHostController)
+        }
+        composable(route = PageITOON.SignUp.route){
+            Signup(navHostController)
+        }
+        composable(route = CartoonPage.CartoonEP.route){
+            SelectPage(navHostController)
+        }
     }
 }
 
@@ -65,7 +87,7 @@ fun NavGraph(navHostController: NavHostController) {
 @Composable
 public fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
     val navigationItems = listOf(
-        BottomBar.Favorite,
+        BottomBar.FirstPage,
         BottomBar.MyCartoon,
         BottomBar.Coin,
         BottomBar.ETC,
@@ -102,12 +124,18 @@ fun wawa():String{
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
-
     TopAppBar(
         title = { Row(verticalAlignment = Alignment.CenterVertically) {
 //            Icon(painter = painterResource(id = R.drawable.logo), contentDescription = null
 //            ,tint = Color.Unspecified)
-            Text(text = "ITOON", letterSpacing = 1.75.sp, fontWeight = FontWeight.SemiBold)
+
+                Text(
+                    text = "ITOON",
+                    letterSpacing = 1.75.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White
+                )
+
         }
         }, actions = {
             IconButton(onClick = { navController.navigate(BottomBar.Favorite.route) },modifier = Modifier.size(20.dp)) {

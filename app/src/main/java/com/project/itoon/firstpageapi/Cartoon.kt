@@ -1,10 +1,11 @@
 package com.project.itoon.firstpageapi
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.lang.ClassCastException
-import java.util.Objects
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Cartoon(
     @Expose
     @SerializedName("id") val id:Int,
@@ -31,6 +32,7 @@ data class Cartoon(
     @SerializedName("genreId") val genreId :Int,
 
     @Expose
-    @SerializedName("genres") val genres :Genres
-)
+    @SerializedName("genres") val genres :Genres,
+
+): Parcelable
 
