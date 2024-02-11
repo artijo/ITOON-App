@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
 import com.project.itoon.MenuLazyrow
-import com.project.itoon.NavGraphTopApp
+import com.project.itoon.TopLazyRow.NavGraphTopApp
 
 @Composable
 fun MyCarToonPage(){

@@ -53,15 +53,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.project.itoon.API
 import com.project.itoon.LoginAndSignUp.User
-import com.project.itoon.MyTopAppBar
 import com.project.itoon.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-private fun <T> Call<T>.enqueue(callback: Callback<UserSetting>) {
-
-}
 
 @Composable
 fun Settingpage(navController:NavHostController){
@@ -135,7 +131,7 @@ fun Settingpage(navController:NavHostController){
                             )
                             .size(50.dp)
                     ){
-                        Image(painter = painterResource(R.drawable.testpic),
+                        Image(painter = painterResource(R.drawable.logo),
                             contentDescription = "testprofilepic",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier

@@ -1,4 +1,4 @@
-package com.project.itoon
+package com.project.itoon.TopLazyRow
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun Creator(){
+fun Like(){
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -17,7 +17,7 @@ fun Creator(){
 
     ) {
 
-        Text(text = "CreatorPage")
+        Text(text = "LikePage")
 
     }
 }

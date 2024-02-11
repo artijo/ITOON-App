@@ -1,21 +1,15 @@
-package com.project.itoon
+package com.project.itoon.TopLazyRow
 
-import android.annotation.SuppressLint
-import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.project.itoon.TopLazyRow.Bought
+import com.project.itoon.TopLazyRow.Comment
+import com.project.itoon.TopLazyRow.Creator
+import com.project.itoon.TopLazyRow.Like
+import com.project.itoon.TopLazyRow.Recently
+import com.project.itoon.TopLazyRow.TopLazyRow
 
 @Composable
 fun NavGraphTopApp(navHostController: NavHostController){
