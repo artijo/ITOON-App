@@ -146,7 +146,7 @@ fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
                 BottomBar.Favorite.route->BottomBar.Favorite.name
                 BottomBar.Coin.route->BottomBar.Coin.name
                 BottomBar.ETC.route->BottomBar.ETC.name
-                BottomBar.MyCartoon.route->BottomBar.MyCartoon.route
+                BottomBar.MyCartoon.route->BottomBar.MyCartoon.name
                 else->"ITOON"
             }
         }
