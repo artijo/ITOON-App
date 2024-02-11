@@ -1,4 +1,4 @@
-package com.project.itoon
+package com.project.itoon.NavBottomBar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -15,19 +15,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.project.itoon.R
 
 @Composable
-fun CoinPage(){
+fun ETCPage(){
     val contextForToast = LocalContext.current
+    val etcobj = BottomBar.ETC
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
 
     ) {
-        Image(painter = painterResource(id = R.drawable.user), contentDescription = null,
+        Image(painter = painterResource(id = R.drawable.etc), contentDescription = null,
             modifier = Modifier.padding(10.dp).size(200.dp).clip(shape = RoundedCornerShape(75.dp)))
-        Text(text = "หน้าเติมเหรียญ")
+        Text(text = "${etcobj.name}")
 
     }
 }

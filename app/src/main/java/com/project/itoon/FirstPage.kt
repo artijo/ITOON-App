@@ -2,12 +2,9 @@
 
 package com.project.itoon
 
-import android.R
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,14 +45,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.project.itoon.NavBottomBar.BottomBar
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
-import com.project.itoon.ui.theme.ITOONTheme
 import kotlinx.coroutines.delay
 import retrofit2.Call
 import retrofit2.Callback
@@ -236,7 +232,7 @@ private fun CartoonRecommend(){
 
 
 @Composable
-private fun ShowTextTest(textFor: String){
+fun ShowTextTest(textFor: String){
     val context = LocalContext.current
     Toast.makeText(context,"$textFor is a value from Onclick!!",Toast.LENGTH_SHORT).show()
 }
@@ -298,7 +294,7 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
                                     onClick = {
 //                                        isOpen = true
 //                                        idTextCartoon.value = item.name
-                                        navHostController.navigate( com.project.itoon.BottomBar.ETC.route)
+                                        navHostController.navigate( BottomBar.ETC.route)
                                     }
                                 )
                         ){
@@ -363,6 +359,7 @@ fun FirstPage(navHostController: NavHostController){
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
