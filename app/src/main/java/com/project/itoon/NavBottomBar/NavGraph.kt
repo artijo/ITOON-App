@@ -2,6 +2,7 @@ package com.project.itoon.NavBottomBar
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Parcelable
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -52,6 +53,13 @@ import com.project.itoon.LoginAndSignUp.Signup
 import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.cartoonPage.CartoonThumbnail
 import com.project.itoon.cartoonPage.SelectPage
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class Toptextclass(
+    var text:String
+):Parcelable
+
 
 @Composable
 fun NavGraph(navHostController: NavHostController) {
@@ -59,7 +67,8 @@ fun NavGraph(navHostController: NavHostController) {
     NavHost(navController = navHostController, startDestination = BottomBar.FirstPage.route) {
         composable(route = BottomBar.FirstPage.route) {
             FirstPage(navHostController)
-
+            navHostController.currentBackStackEntry?.savedStateHandle?.set("data",Toptextclass(BottomBar.FirstPage.name))
+//            Toptextclass(BottomBar.FirstPage.name)
         }
         composable(route = BottomBar.MyCartoon.route) {
             MyCarToonPage()
@@ -124,13 +133,28 @@ fun wawa():String{
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
+//    val data = navController.previousBackStackEntry?.savedStateHandle?.get<Toptextclass>("data")?:
+//    Toptextclass("Hi")
+    var toptext by remember {
+        mutableStateOf("ITOON")
+    }
+    val toptextstate by navController.currentBackStackEntryAsState()
+    val toptextnext = toptextstate?.destination
+    LaunchedEffect(key1 = toptextnext){
+        toptextnext?.let {
+            item -> toptext=when(item.route){
+                BottomBar.Favorite.route->BottomBar.Favorite.name
+                BottomBar.Coin.route->BottomBar.Coin.name
+                BottomBar.ETC.route->BottomBar.ETC.name
+                BottomBar.MyCartoon.route->BottomBar.MyCartoon.route
+                else->"ITOON"
+            }
+        }
+    }
     TopAppBar(
         title = { Row(verticalAlignment = Alignment.CenterVertically) {
-//            Icon(painter = painterResource(id = R.drawable.logo), contentDescription = null
-//            ,tint = Color.Unspecified)
-
                 Text(
-                    text = "ITOON",
+                    text = toptext,
                     letterSpacing = 1.75.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
@@ -153,7 +177,10 @@ fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
 public fun EufaScreen(){
     val contextForToast = LocalContext.current.applicationContext
     val navHostController = rememberNavController()
-
+    var toptextstat = navHostController.currentBackStackEntry?.destination
+    var toptext by remember {
+        mutableStateOf("")
+    }
 //    var toptext = "ITOON"
     Scaffold(
         topBar = { MyTopAppBar(navHostController, contextForToast) },
@@ -167,7 +194,6 @@ public fun EufaScreen(){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             NavGraph(navHostController = navHostController)
-            Toast.makeText(contextForToast,"",Toast.LENGTH_LONG).show()
 
         }
     }
