@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,9 +16,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -254,7 +257,7 @@ fun PaymentPage(){
         ) {
             Text(
                 text = "กรุณาเลือกแพ็กเกจที่ต้องการเติมเงิน ผ่านช่องทาง \n" +
-                        "'True Wallet'",
+                        "'True Wallet'(1 บาท = 0.5 เหรียญ)",
                 fontSize = 15.sp
             )
         }
@@ -272,15 +275,60 @@ fun PaymentPage(){
                         shape = RoundedCornerShape(10.dp)
                     )
                     .width(115.dp)
-                    .height(100.dp)
+                    .height(100.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ){
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "10")
+                    Spacer(modifier = Modifier.padding(start = 5.dp))
+                    Icon(painter = painterResource(id = R.drawable.coin),
+                        contentDescription = null,
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .size(15.dp))
+                }
+                    Text(
+                        textAlign = TextAlign.Center,
+                        text = "(20 บาท)",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 10.sp
+                    )
+            }
+            Column(
+                modifier = Modifier
+                    .border(
+                        width = 2.dp,
+                        color = Color.Red,
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                    .width(115.dp)
+                    .height(100.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "25")
+                    Spacer(modifier = Modifier.padding(start = 5.dp))
+                    Icon(painter = painterResource(id = R.drawable.coin),
+                        contentDescription = null,
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .size(15.dp))
+                }
                 Text(
-                    modifier = Modifier
-                        .padding(top = 37.dp,start = 30.dp),
                     textAlign = TextAlign.Center,
-                    text = "20 บาท",
+                    text = "(50 บาท)",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
+                    fontSize = 10.sp
                 )
             }
             Column(
@@ -291,34 +339,28 @@ fun PaymentPage(){
                         shape = RoundedCornerShape(10.dp)
                     )
                     .width(115.dp)
-                    .height(100.dp)
+                    .height(100.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ){
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "50")
+                    Spacer(modifier = Modifier.padding(start = 5.dp))
+                    Icon(painter = painterResource(id = R.drawable.coin),
+                        contentDescription = null,
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .size(15.dp))
+                }
                 Text(
-                    modifier = Modifier
-                        .padding(top = 37.dp,start = 30.dp),
                     textAlign = TextAlign.Center,
-                    text = "50 บาท",
+                    text = "(100 บาท)",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
-                )
-            }
-            Column(
-                modifier = Modifier
-                    .border(
-                        width = 2.dp,
-                        color = Color.Red,
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .width(115.dp)
-                    .height(100.dp)
-            ){
-                Text(
-                    modifier = Modifier
-                        .padding(top = 37.dp,start = 25.dp),
-                    textAlign = TextAlign.Center,
-                    text = "100 บาท",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
+                    fontSize = 10.sp
                 )
             }
         }
@@ -336,15 +378,28 @@ fun PaymentPage(){
                         shape = RoundedCornerShape(10.dp)
                     )
                     .width(115.dp)
-                    .height(100.dp)
+                    .height(100.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ){
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "150")
+                    Spacer(modifier = Modifier.padding(start = 5.dp))
+                    Icon(painter = painterResource(id = R.drawable.coin),
+                        contentDescription = null,
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .size(15.dp))
+                }
                 Text(
-                    modifier = Modifier
-                        .padding(top = 37.dp,start = 25.dp),
                     textAlign = TextAlign.Center,
-                    text = "300 บาท",
+                    text = "(300 บาท)",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
+                    fontSize = 10.sp
                 )
             }
             Column(
@@ -355,15 +410,28 @@ fun PaymentPage(){
                         shape = RoundedCornerShape(10.dp)
                     )
                     .width(115.dp)
-                    .height(100.dp)
+                    .height(100.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ){
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "250")
+                    Spacer(modifier = Modifier.padding(start = 5.dp))
+                    Icon(painter = painterResource(id = R.drawable.coin),
+                        contentDescription = null,
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .size(15.dp))
+                }
                 Text(
-                    modifier = Modifier
-                        .padding(top = 37.dp,start = 25.dp),
                     textAlign = TextAlign.Center,
-                    text = "500 บาท",
+                    text = "(500 บาท)",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
+                    fontSize = 10.sp
                 )
             }
             Column(
