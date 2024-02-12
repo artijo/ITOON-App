@@ -1,5 +1,6 @@
-package com.project.itoon
+package com.project.itoon.Commentpage
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -7,22 +8,29 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,7 +42,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.project.itoon.R
 import com.project.itoon.ui.theme.ITOONTheme
 
 @Preview(showBackground = true)
@@ -48,6 +59,7 @@ fun CommentPreview() {
 @Composable
 fun CommentPage(){
     var textFieldComment by remember{ mutableStateOf("") }
+    var commentList = remember{ mutableStateListOf<commentdata>() }
     Column {
         Row (
             verticalAlignment = Alignment.CenterVertically,
@@ -76,38 +88,73 @@ fun CommentPage(){
             OutlinedTextField(
                 value = textFieldComment,
                 onValueChange = {textFieldComment = it},
-                label = { Text(text = "Comment") },
+                label = { Text(text = "Comment", 
+                    modifier = Modifier
+                        .padding(top = 12.dp)) },
                 trailingIcon = { Icon(imageVector = Icons.Default.Edit,
                     contentDescription = null)},
                 modifier = Modifier
-                    .width(180.dp)
-                    .height(60.dp)
+                    .width(200.dp)
+                    .height(100.dp)
                     .padding(top = 10.dp)
             )
+        }
+        Spacer(modifier = Modifier.padding(top = 10.dp))
+        Row (
+            modifier = Modifier
+                .padding(start = 15.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Box {
+                TextButton(onClick = {
+                    commentList.add(commentdata(textFieldComment))
+                    textFieldComment = ""
+                },
+                    colors = ButtonDefaults.buttonColors(Color(80, 200, 120)),
+                    modifier = Modifier.padding(start = 213.dp)
+                    ) {
+                    Text(text = "Sent",
+                        fontSize = 20.sp
+                    )
+                }
+            }
         }
         Spacer(modifier = Modifier .padding(top = 50.dp))
         Row (
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ){
-            Box(
-                modifier = Modifier
-                    .padding(start = 12.dp,top = 15.dp)
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.user),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .border(
-                            width = 2.dp,
-                            color = Color.Black,
-                            shape = RoundedCornerShape(100.dp)
-                        )
-                        .size(50.dp)
-                        .padding(top = 10.dp)
-                )
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ){
+                itemsIndexed(items = commentList,
+                ){index,item->
+                    Card(
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp, vertical = 8.dp)
+                            .fillMaxWidth()
+                            .height(80.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.White,
+                        ),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 2.dp
+                        ),
+                        shape = RoundedCornerShape(corner = CornerSize(16.dp)),
+                    ){
+                        Row (
+                            Modifier
+                                .fillMaxWidth()
+                                .height(Dp(120f))
+                                .padding(10.dp)
+                        ){
+                            Text(
+                                text = "Comment : ${item.comment}",
+                                Modifier.weight(0.85f)
+                            )
+                        }
+                    }
+                }
             }
         }
     }
