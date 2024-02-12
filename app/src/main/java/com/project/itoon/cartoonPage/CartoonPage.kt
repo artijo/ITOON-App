@@ -1,44 +1,63 @@
 package com.project.itoon.cartoonPage
 
+import android.content.Context
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.project.itoon.firstpageapi.Creator
 import com.project.itoon.firstpageapi.Cartoon
+import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.firstpageapi.Genres
 import com.project.itoon.ui.theme.ITOONTheme
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 sealed class CartoonPage(val route:String,val name:String){
     data object CartoonEP: CartoonPage("CartoonEP_Page","หน้าเลือกตอน")
@@ -139,8 +158,104 @@ fun CartoonThumbnail(navController:NavHostController){
                     }
             }
         }
+        CartoonAllEp(navController)
+    }
+
+}
+
+
+
+
+@Composable
+private fun ItemLayOutColumn(
+    episode: CartoonAllEp,
+    context: Context = LocalContext.current.applicationContext
+){
+    Box(
+        Modifier.fillMaxWidth()
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    Toast
+                        .makeText(context, episode.name, Toast.LENGTH_SHORT)
+                        .show()
+                },
+            verticalAlignment = Alignment.Top
+        ) {
+            Spacer(modifier = Modifier.height(40.dp))
+            Image(
+                painter = rememberAsyncImagePainter(episode.thumbnail),
+                contentDescription = episode.name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .width(80.dp)
+                    .height(80.dp)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = "Ep.${episode.episodeNumber}"
+            )
+            Spacer(modifier = Modifier.width(200.dp))
+            Text(
+                text = "#${episode.episodeNumber}",
+                modifier = Modifier.fillMaxWidth()
+
+            )
+        }
     }
 }
+
+
+
+@Composable
+fun CartoonAllEp(navController:NavHostController){
+    val createClient = CartoonAPI.create()
+    val allEpisode = remember { mutableStateListOf<CartoonAllEp>() }
+    val contextForToast = LocalContext.current.applicationContext
+    val data = navController.previousBackStackEntry?.savedStateHandle?.get<Cartoon>("data")?:
+    Cartoon(0,"","","","",0,
+        0,0, Genres(0,"","","","")
+    )
+
+    LaunchedEffect(true){
+        createClient.getAEC(data.id)
+            .enqueue(object: Callback<List<CartoonAllEp>>{
+                override fun onResponse(call: Call<List<CartoonAllEp>>,
+                                        response: Response<List<CartoonAllEp>>
+                ){
+                    response.body()?.forEach{
+                       allEpisode.add(
+                           CartoonAllEp(
+                               it.id,
+                               it.name,
+                               it.episodeNumber,
+                               it.releaseDate,
+                               it.thumbnail,
+                               it.cartoonId
+                           )
+                       )
+                    }
+                }
+                override fun onFailure(call: Call<List<CartoonAllEp>>, t: Throwable) {
+                    Toast.makeText(contextForToast,"Error on Failure" + t.message, Toast.LENGTH_LONG).show()
+                }
+        })
+    }
+    Column(
+        Modifier.fillMaxWidth()
+    ) {
+        allEpisode.forEach{item->
+            ItemLayOutColumn(episode = item)
+            
+        }
+    }
+}
+
+
+
+
 @Preview (showBackground = true)
 @Composable
 fun Example(){

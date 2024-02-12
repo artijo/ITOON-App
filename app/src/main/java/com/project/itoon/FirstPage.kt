@@ -267,6 +267,7 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
     }
 
 
+
     var isOpen by remember { mutableStateOf(false) }
     val idTextCartoon = remember { mutableStateOf("") }
     if(isOpen){
