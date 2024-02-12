@@ -41,9 +41,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //                    MenuLazyrow()
-                    EufaScreen()
+//                    EufaScreen()
 //                    if you want to call first page just use TestCall() function
 //                    FirstPage()
+                    CommentPage()
                 }
             }
         }
@@ -100,7 +101,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     ITOONTheme {
-
     }
 }
 

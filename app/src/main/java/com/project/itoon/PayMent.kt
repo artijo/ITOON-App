@@ -1,9 +1,10 @@
 package com.project.itoon
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -62,6 +63,7 @@ fun PaymentPage(){
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
+            horizontalArrangement = Arrangement.Center
         ) {
             Text(
                 modifier = Modifier
@@ -83,54 +85,87 @@ fun PaymentPage(){
                 .padding(top = 22.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column {
-                Image(
-                    painter = painterResource(R.drawable.mastercard),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier.size(100.dp)
-                )
-                TextButton(onClick = {
-                    showMasterCard = true
-                }) {
+            Box (
+                modifier = Modifier
+                    .clickable(onClick = {
+                        showMasterCard = true
+                    })
+            ){
+                Column(
+                    modifier = Modifier
+                        .border(
+                            width = 2.dp,
+                            color = Color.Red,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.mastercard),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillHeight,
+                        modifier = Modifier
+                            .size(100.dp)
+                    )
                     Text(text = "Master Card",
                         color = Color.Black,
-                        fontSize = 15.sp)
+                        fontSize = 15.sp,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(top = 12.dp)
+                    )
                 }
             }
-            Column(
-                modifier = Modifier
-                    .border(
-                        width = 2.dp,
-                        color = Color.Green,
-                        shape = RoundedCornerShape(10.dp)
-                    )
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.wallet),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier.size(100.dp)
-                )
-                Text(text = "True Wallet",
+            Box {
+                Column(
                     modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(top = 12.dp))
+                        .border(
+                            width = 2.dp,
+                            color = Color.Red,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.wallet),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillHeight,
+                        modifier = Modifier
+                            .size(100.dp)
+                    )
+                    Text(text = "True Wallet",
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(top = 12.dp))
+                }
             }
-            Column {
-                Image(
-                    painter = painterResource(R.drawable.promtpay),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier.size(100.dp)
-                )
-                TextButton(onClick = {
-                    showPromtPay = true
-                }) {
+            Box(
+                modifier = Modifier
+                    .clickable(onClick = {
+                        showPromtPay = true
+                    })
+            ) {
+                Column (
+                    modifier = Modifier
+                        .border(
+                            width = 2.dp,
+                            color = Color.Red,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.promtpay),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillHeight,
+                        modifier = Modifier
+                            .size(100.dp)
+                    )
                     Text(text = "Promt Pay",
                         color = Color.Black,
-                        modifier = Modifier.padding(start = 5.dp),
-                        fontSize = 15.sp)
+                        fontSize = 15.sp,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(top = 12.dp)
+                    )
+
                 }
             }
             if (showMasterCard){
