@@ -1,5 +1,6 @@
 package com.project.itoon
 
+import com.project.itoon.Commentpage.commentdata
 import com.project.itoon.LoginAndSignUp.User
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -11,7 +12,6 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface API {
-
     @GET("all")
     fun getUser():Call<List<User>>
 
@@ -35,6 +35,9 @@ interface API {
         @Path("email")email:String,
         @Path("password")password: String
     ):Call<User>
+
+    @GET("comments")
+    fun getComment():Call<List<commentdata>>
 
     companion object{
         fun create():API{
