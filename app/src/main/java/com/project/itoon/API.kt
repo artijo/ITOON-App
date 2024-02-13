@@ -29,6 +29,13 @@ interface API {
         @Field("password")password:String,
         @Field("phone")phone:String
     ):Call<User>
+
+    @GET("users/{email}/{password}")
+    fun login(
+        @Path("email")email:String,
+        @Path("password")password: String
+    ):Call<User>
+
     companion object{
         fun create():API{
             val usr : API = Retrofit.Builder()
