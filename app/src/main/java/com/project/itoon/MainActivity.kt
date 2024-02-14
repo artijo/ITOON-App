@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //                    MenuLazyrow()
 //                    MainScreen()
-                    CartoonThisChapter()
+//                    CartoonThisChapter()
 //                    if you want to call first page just use TestCall() function
 //                    FirstPage()
                 }
@@ -56,6 +56,8 @@ sealed class PageITOON(val route:String){
     object Login:PageITOON("Login_Page")
     object SignUp:PageITOON("Signup_Page")
 }
+
+
 
 @Composable
 fun TestComposable(){
