@@ -42,8 +42,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //                    MenuLazyrow()
-                    MainScreen()
-
+//                    MainScreen()
+                    CartoonThisChapter()
 //                    if you want to call first page just use TestCall() function
 //                    FirstPage()
                 }

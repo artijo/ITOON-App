@@ -1,6 +1,7 @@
 package com.project.itoon.firstpageapi
 
 import com.project.itoon.cartoonPage.CartoonAllEp
+import com.project.itoon.cartoonPage.imgEp
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -26,7 +27,15 @@ interface CartoonAPI {
         @Path("cartoonId")id:Int
     ):Call<List<CartoonAllEp>>
 
+<<<<<<< Updated upstream
     @GET()
+=======
+
+    @GET("getImageEp/{epId}")
+    fun getImgCartoon(
+        @Path("epId") id: Int
+    ):Call<List<imgEp>>
+>>>>>>> Stashed changes
 
     companion object{
         fun create():CartoonAPI{
