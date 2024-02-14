@@ -26,8 +26,6 @@ interface CartoonAPI {
         @Path("cartoonId")id:Int
     ):Call<List<CartoonAllEp>>
 
-    @GET()
-
     companion object{
         fun create():CartoonAPI{
             val cartoonClient:CartoonAPI = Retrofit.Builder()

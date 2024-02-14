@@ -2,7 +2,9 @@ package com.project.itoon.Commentpage
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +22,9 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -40,7 +44,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.DarkGray
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
@@ -51,6 +57,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.project.itoon.API
 import com.project.itoon.R
 import com.project.itoon.ui.theme.ITOONTheme
@@ -58,16 +66,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-@Preview(showBackground = true)
 @Composable
-fun CommentPreview() {
-    ITOONTheme {
-        CommentPage()
-    }
-}
-
-@Composable
-fun CommentPage(){
+fun CommentPage(navController: NavHostController){
     var textFieldComment by remember{ mutableStateOf("") }
     var commentList = remember{ mutableStateListOf<commentdata>() }
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -135,7 +135,8 @@ fun CommentPage(){
                 onValueChange = {textFieldComment = it},
                 label = { Text(text = "Comment", 
                     modifier = Modifier
-                        .padding(top = 12.dp)) },
+                        .padding(top = 12.dp))
+                        },
                 trailingIcon = { Icon(imageVector = Icons.Default.Edit,
                     contentDescription = null)},
                 modifier = Modifier
@@ -147,20 +148,23 @@ fun CommentPage(){
         Spacer(modifier = Modifier.padding(top = 10.dp))
         Row (
             modifier = Modifier
-                .padding(start = 15.dp),
+                .padding(start = 219.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
-            Box {
-                TextButton(onClick = {
-                    //TODO///////////
-                    textFieldComment = ""
-                },
-                    colors = ButtonDefaults.buttonColors(Color(80, 200, 120)),
-                    modifier = Modifier.padding(start = 213.dp)
-                    ) {
-                    Text(text = "Sent",
-                        fontSize = 20.sp
-                    )
+            Box(
+                Modifier
+                    .clickable
+                    {
+                        //TODO///////////
+                        textFieldComment = ""
+                    }
+                    .height(30.dp)
+                    .width(70.dp)
+            ) {
+                Row {
+                    Text(text = "Sent")
+                    Spacer(modifier = Modifier .padding(start = 8.dp))
+                    Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = null)
                 }
             }
         }
@@ -175,9 +179,11 @@ fun CommentPage(){
                             .padding(horizontal = 8.dp, vertical = 8.dp)
                             .fillMaxWidth()
                             .height(100.dp)
-                            .border(width = 2.dp,
+                            .border(
+                                width = 2.dp,
                                 color = Color.Gray,
-                                shape = getBottomLineShape(2.dp)),
+                                shape = getBottomLineShape(2.dp)
+                            ),
                         colors = CardDefaults.cardColors(
                             containerColor = Color.White,
                         ),
