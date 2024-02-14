@@ -1,5 +1,6 @@
 package com.project.itoon.firstpageapi
 
+import com.project.itoon.cartoonPage.CartoonAllEp
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,6 +19,12 @@ interface CartoonAPI {
     fun getCartoon(
         @Path("cartoonid")id:Int
     ):Call<Cartoon>
+
+//Get All Ep Cartoon
+    @GET("getAllEpCartoon/{cartoonId}")
+    fun getAEC(
+        @Path("cartoonId")id:Int
+    ):Call<List<CartoonAllEp>>
 
     companion object{
         fun create():CartoonAPI{

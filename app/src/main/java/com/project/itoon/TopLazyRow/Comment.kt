@@ -16,8 +16,6 @@ fun Comment(){
         verticalArrangement = Arrangement.Center
 
     ) {
-
         Text(text = "CommentPage")
-
     }
 }
