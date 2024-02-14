@@ -1,5 +1,7 @@
 package com.project.itoon.NavBottomBar
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -47,7 +49,7 @@ import com.project.itoon.Setting.Settingpage
 @Composable
 fun ETCPage(navHostController: NavHostController){
     val contextForToast = LocalContext.current
-
+    val ctx = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -137,6 +139,13 @@ fun ETCPage(navHostController: NavHostController){
                     .border(1.dp, Color(0, 0, 0, 25))
                     .weight(1f, true)
                     .padding(top = 20.dp)
+                    .clickable {
+                        val urlIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://www.google.com")
+                        )
+                        ctx.startActivity(urlIntent)
+                    }
             ) {
                 Icon(painter = painterResource(id = R.drawable.edit), contentDescription = null,Modifier.size(25.dp))
                 Text(text = "วาดการ์ตูน")
