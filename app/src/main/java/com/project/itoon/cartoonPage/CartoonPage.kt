@@ -63,6 +63,8 @@ sealed class CartoonPage(val route:String,val name:String){
     data object CartoonEP: CartoonPage("CartoonEP_Page","หน้าเลือกตอน")
 }
 
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartoonThumbnail(navController:NavHostController){
@@ -171,6 +173,15 @@ private fun ItemLayOutColumn(
     episode: CartoonAllEp,
     context: Context = LocalContext.current.applicationContext
 ){
+    var callFuction by remember{
+        mutableStateOf(false)
+    }
+    if(callFuction){
+        CartoonThisChapter()
+        callFuction = false
+    }
+
+
     Box(
         Modifier.fillMaxWidth()
     ){
@@ -178,9 +189,7 @@ private fun ItemLayOutColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    Toast
-                        .makeText(context, episode.name, Toast.LENGTH_SHORT)
-                        .show()
+                    callFuction = true
                 },
             verticalAlignment = Alignment.Top
         ) {
@@ -193,16 +202,22 @@ private fun ItemLayOutColumn(
                     .width(80.dp)
                     .height(80.dp)
             )
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = "Ep.${episode.episodeNumber}"
-            )
-            Spacer(modifier = Modifier.width(200.dp))
-            Text(
-                text = "#${episode.episodeNumber}",
-                modifier = Modifier.fillMaxWidth()
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                Text(
+                    text = "Ep.${episode.episodeNumber}"
+                )
+                Spacer(Modifier.weight(1f))
+                Text(
+                    text = "#${episode.episodeNumber}"
 
-            )
+                )
+            }
+
         }
     }
 }
@@ -248,7 +263,6 @@ fun CartoonAllEp(navController:NavHostController){
     ) {
         allEpisode.forEach{item->
             ItemLayOutColumn(episode = item)
-            
         }
     }
 }
