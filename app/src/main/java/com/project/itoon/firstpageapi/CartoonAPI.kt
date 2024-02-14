@@ -26,10 +26,7 @@ interface CartoonAPI {
         @Path("cartoonId")id:Int
     ):Call<List<CartoonAllEp>>
 
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
     companion object{
         fun create():CartoonAPI{
             val cartoonClient:CartoonAPI = Retrofit.Builder()
