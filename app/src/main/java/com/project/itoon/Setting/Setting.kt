@@ -21,13 +21,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.NotificationsOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -69,8 +72,12 @@ fun Settingpage(navController:NavHostController){
     val userId by remember{ mutableStateOf(data.id) }
     val initialuser = User(0,"","","","")
     var userItems by remember { mutableStateOf(initialuser) }
+    var updateprofile = remember { mutableStateListOf<User>() }
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+    var showDialog by remember { mutableStateOf(false) }
+    var textFieldEmail by remember { mutableStateOf("")  }
+    var textFieldName by remember { mutableStateOf("")  }
 
     LaunchedEffect(lifecycleState){
         when(lifecycleState){
@@ -152,13 +159,83 @@ fun Settingpage(navController:NavHostController){
                     )
                     Spacer(modifier = Modifier.padding(5.dp))
                 }
-                IconButton(onClick = { /*TODO*/ },
+                IconButton(onClick = {
+                    showDialog=true
+                        createClient.updateProfile(userId.toString(),"","")
+                            .enqueue(
+                                object :Callback<User>{
+                                    override fun onResponse(
+                                        call: Call<User>,
+                                        response: Response<User>
+                                    ) {
+                                        if(response.isSuccessful){
+                                            Toast.makeText(contextForToast,
+                                                "Successfully Updated",
+                                                Toast.LENGTH_LONG).show()
+                                        }
+                                        else{
+                                            Toast.makeText(contextForToast,
+                                                "Update Failure",
+                                                Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<User>, t: Throwable) {
+                                        Toast.makeText(contextForToast,
+                                            "Error on Failure"+t.message,
+                                            Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            )
+                },
                     modifier = Modifier.padding(end = 5.dp) ) {
                     Icon(imageVector = Icons.Default.Edit,
                         contentDescription = "edit",
                         tint =Color.Black
                     )
                 }
+            }
+            if(showDialog){
+                AlertDialog(
+                    onDismissRequest = {showDialog=false},
+                    title = { Text(text ="เปลี่ยนชื่อขอคุณ")},
+                    text = {
+                        OutlinedTextField(
+                            value = textFieldName,
+                            onValueChange ={textFieldName=it} ,
+                            label= {Text(text ="โปรดใส่ชื่อใหม่ของคุณ" )}
+                            )
+                        OutlinedTextField(
+                            value = textFieldEmail,
+                            onValueChange ={textFieldEmail=it} ,
+                            label= {Text(text ="โปรดใส่ชื่อใหม่ของคุณ" )}
+                        )
+                    },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            showDialog=false
+                            updateprofile.add(User(userId,textFieldEmail,textFieldName,"",""))
+                            textFieldName=""
+                            textFieldEmail=""
+                        }) {
+                            Text(text = "Save")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = {
+                            showDialog=false
+                            textFieldName=""
+                            textFieldEmail=""
+                        }) {
+                            Text(text = "Cancle")
+                        }
+                    }
+
+
+
+
+                    )
+
             }
             Spacer(modifier = Modifier.padding(5.dp))
             Divider(color = Color.LightGray, thickness = 1.dp)

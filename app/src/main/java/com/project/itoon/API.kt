@@ -9,6 +9,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface API {
@@ -38,6 +39,13 @@ interface API {
 
     @GET("comments")
     fun getComment():Call<List<commentdata>>
+//    updateprofile
+    @PUT("profile/{id}")
+    fun updateProfile(
+    @Path("id") id:String,
+    @Field("email") email: String,
+    @Field("name") name: String
+    ):Call<User>
 
     companion object{
         fun create():API{
