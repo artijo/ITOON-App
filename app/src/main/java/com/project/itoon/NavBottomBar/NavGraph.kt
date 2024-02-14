@@ -57,10 +57,6 @@ import com.project.itoon.cartoonPage.CartoonThumbnail
 import com.project.itoon.cartoonPage.SelectPage
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class Toptextclass(
-    var text:String
-):Parcelable
 
 
 @Composable
@@ -68,18 +64,18 @@ fun NavGraph(navHostController: NavHostController) {
     NavHost(navController = navHostController, startDestination = BottomBar.FirstPage.route) {
         composable(route = BottomBar.FirstPage.route) {
             FirstPage(navHostController)
-            navHostController.currentBackStackEntry?.savedStateHandle?.set("data",Toptextclass(BottomBar.FirstPage.name))
+//            navHostController.currentBackStackEntry?.savedStateHandle?.set("data",Toptextclass(BottomBar.FirstPage.name))
 //            Toptextclass(BottomBar.FirstPage.name)
         }
         composable(route = BottomBar.MyCartoon.route) {
-            MyCarToonPage()
+            MyCarToonPage(navHostController)
         }
 
         composable(route = BottomBar.Coin.route) {
-            CoinPage()
+            CoinPage(navHostController)
         }
         composable(route = BottomBar.ETC.route) {
-            ETCPage()
+            ETCPage(navHostController)
         }
         composable(route = PageITOON.Login.route){
             LoginPage(navHostController)
@@ -124,15 +120,11 @@ public fun MyBottomBar(navHostController: NavHostController, contextForToast: Co
                         contentDescription = null,
                         modifier = Modifier.size(20.dp)
                     ) })
-
         }
     }
 }
 
-fun wawa():String{
-    var a = "AAAA"
-    return a
-}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -178,14 +170,13 @@ fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
 
 @SuppressLint("RestrictedApi", "StateFlowValueCalledInComposition")
 @Composable
-public fun EufaScreen(){
+public fun MainScreen(){
     val contextForToast = LocalContext.current.applicationContext
     val navHostController = rememberNavController()
     var toptextstat = navHostController.currentBackStackEntry?.destination
     var toptext by remember {
         mutableStateOf("")
     }
-//    var toptext = "ITOON"
     Scaffold(
         topBar = { MyTopAppBar(navHostController, contextForToast) },
         bottomBar = { MyBottomBar(navHostController, contextForToast) },

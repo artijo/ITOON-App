@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,27 +39,28 @@ import androidx.compose.ui.unit.sp
 import com.project.itoon.R
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+
+import com.project.itoon.Setting.SettingClass
 import com.project.itoon.Setting.Settingpage
 
 
 @Composable
-fun ETCPage(){
+fun ETCPage(navHostController: NavHostController){
     val contextForToast = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .border(1.dp, Color.Blue)
+//            .border(1.dp, Color.Blue)
     ) {
         Row (modifier = Modifier
             .fillMaxWidth()
-//            .border(1.dp, Color.DarkGray)
             .align(Alignment.Start)
-            .background(Color(211,211,211,50))
+            .background(Color(211, 211, 211, 50))
             , horizontalArrangement = Arrangement.SpaceBetween
         ){
             Column(
                 Modifier
-//                    .border(1.dp, Color.Magenta)
                     .padding(10.dp)
             ) {
                 Row {
@@ -96,24 +98,33 @@ fun ETCPage(){
         Row (
             Modifier
 //                .border(1.dp, Color.Blue)
-                .fillMaxWidth().padding(top = 10.dp)
+                .fillMaxWidth()
             , horizontalArrangement = Arrangement.SpaceAround,
 
         ){
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.border(1.dp, Color(0,0,0,25)).weight(1f,true)
+                modifier = Modifier
+                    .border(1.dp, Color(0, 0, 0, 25))
+                    .weight(1f, true)
+                    .padding(top = 20.dp)
+                    .clickable {
+
+                    }
             ) {
-                
+
                 Icon(imageVector = Icons.Default.Search, contentDescription = null,Modifier.size(25.dp))
                 Text(text = "ค้นหา")
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.border(1.dp, Color(0,0,0,25)).weight(1f,true)
-
+                modifier = Modifier
+                    .border(1.dp, Color(0, 0, 0, 25))
+                    .weight(1f, true)
+                    .padding(top = 20.dp)
+                    .clickable { navHostController.navigate(SettingClass.Setting.route) }
             ) {
                 Icon(imageVector = Icons.Default.Settings, contentDescription = null,Modifier.size(25.dp))
                 Text(text = "ตั้งค่า")
@@ -122,12 +133,16 @@ fun ETCPage(){
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.border(1.dp, Color(0,0,0,25)).weight(1f,true)
-
+                modifier = Modifier
+                    .border(1.dp, Color(0, 0, 0, 25))
+                    .weight(1f, true)
+                    .padding(top = 20.dp)
             ) {
                 Icon(painter = painterResource(id = R.drawable.edit), contentDescription = null,Modifier.size(25.dp))
                 Text(text = "วาดการ์ตูน")
             }
+            
+            
         }
     }
 }

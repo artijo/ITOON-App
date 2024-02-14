@@ -8,12 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.project.itoon.MenuLazyrow
 import com.project.itoon.TopLazyRow.NavGraphTopApp
 
 @Composable
-fun MyCarToonPage(){
+fun MyCarToonPage(navHostController: NavHostController){
     val contextForToast = LocalContext.current.applicationContext
     var navHostController = rememberNavController()
     Scaffold(

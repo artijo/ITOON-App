@@ -8,10 +8,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
 import com.project.itoon.PaymentPage
 
 @Composable
-fun CoinPage(){
+fun CoinPage(navHostController: NavHostController){
     val contextForToast = LocalContext.current
     Column(
         modifier = Modifier

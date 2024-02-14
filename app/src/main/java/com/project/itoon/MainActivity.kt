@@ -24,7 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.project.itoon.LoginAndSignUp.LoginPage
 import com.project.itoon.LoginAndSignUp.Signup
-import com.project.itoon.NavBottomBar.EufaScreen
+import com.project.itoon.NavBottomBar.MainScreen
 import com.project.itoon.NavBottomBar.MyBottomBar
 import com.project.itoon.NavBottomBar.MyTopAppBar
 import com.project.itoon.NavBottomBar.NavGraph
@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //                    MenuLazyrow()
-                    EufaScreen()
+                    MainScreen()
 //                    if you want to call first page just use TestCall() function
 //                    FirstPage()
                 }
