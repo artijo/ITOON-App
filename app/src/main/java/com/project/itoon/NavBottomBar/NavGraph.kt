@@ -50,6 +50,8 @@ import com.project.itoon.LoginAndSignUp.LoginActivity
 import com.project.itoon.LoginAndSignUp.LoginPage
 import com.project.itoon.LoginAndSignUp.PageITOON
 import com.project.itoon.LoginAndSignUp.Signup
+import com.project.itoon.Setting.SettingClass
+import com.project.itoon.Setting.Settingpage
 import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.cartoonPage.CartoonThumbnail
 import com.project.itoon.cartoonPage.SelectPage
@@ -63,7 +65,6 @@ data class Toptextclass(
 
 @Composable
 fun NavGraph(navHostController: NavHostController) {
-
     NavHost(navController = navHostController, startDestination = BottomBar.FirstPage.route) {
         composable(route = BottomBar.FirstPage.route) {
             FirstPage(navHostController)
@@ -88,6 +89,9 @@ fun NavGraph(navHostController: NavHostController) {
         }
         composable(route = CartoonPage.CartoonEP.route){
             SelectPage(navHostController)
+        }
+        composable(route = SettingClass.Setting.route){
+            Settingpage(navHostController)
         }
     }
 }
