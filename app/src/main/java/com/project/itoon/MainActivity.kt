@@ -28,6 +28,7 @@ import com.project.itoon.NavBottomBar.MainScreen
 import com.project.itoon.NavBottomBar.MyBottomBar
 import com.project.itoon.NavBottomBar.MyTopAppBar
 import com.project.itoon.NavBottomBar.NavGraph
+import com.project.itoon.cartoonPage.CartoonThisChapter
 import com.project.itoon.ui.theme.ITOONTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //                    MenuLazyrow()
                     MainScreen()
+
 //                    if you want to call first page just use TestCall() function
 //                    FirstPage()
                 }
