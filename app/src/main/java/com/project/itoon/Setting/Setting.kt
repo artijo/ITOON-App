@@ -62,6 +62,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun Settingpage(navController:NavHostController){
     val navHostController = rememberNavController()
@@ -161,32 +162,6 @@ fun Settingpage(navController:NavHostController){
                 }
                 IconButton(onClick = {
                     showDialog=true
-                        createClient.updateProfile(userId.toString(),"","")
-                            .enqueue(
-                                object :Callback<User>{
-                                    override fun onResponse(
-                                        call: Call<User>,
-                                        response: Response<User>
-                                    ) {
-                                        if(response.isSuccessful){
-                                            Toast.makeText(contextForToast,
-                                                "Successfully Updated",
-                                                Toast.LENGTH_LONG).show()
-                                        }
-                                        else{
-                                            Toast.makeText(contextForToast,
-                                                "Update Failure",
-                                                Toast.LENGTH_LONG).show()
-                                        }
-                                    }
-
-                                    override fun onFailure(call: Call<User>, t: Throwable) {
-                                        Toast.makeText(contextForToast,
-                                            "Error on Failure"+t.message,
-                                            Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                            )
                 },
                     modifier = Modifier.padding(end = 5.dp) ) {
                     Icon(imageVector = Icons.Default.Edit,
@@ -200,21 +175,53 @@ fun Settingpage(navController:NavHostController){
                     onDismissRequest = {showDialog=false},
                     title = { Text(text ="เปลี่ยนชื่อขอคุณ")},
                     text = {
-                        OutlinedTextField(
-                            value = textFieldName,
-                            onValueChange ={textFieldName=it} ,
-                            label= {Text(text ="โปรดใส่ชื่อใหม่ของคุณ" )}
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally)
+                        {
+                            OutlinedTextField(
+                                value = textFieldName,
+                                onValueChange = { textFieldName = it },
+                                label = { Text(text = "โปรดใส่ชื่อใหม่ของคุณ") }
                             )
-                        OutlinedTextField(
-                            value = textFieldEmail,
-                            onValueChange ={textFieldEmail=it} ,
-                            label= {Text(text ="โปรดใส่ชื่อใหม่ของคุณ" )}
-                        )
+
+                            OutlinedTextField(
+                                value = textFieldEmail,
+                                onValueChange = { textFieldEmail = it },
+                                label = { Text(text = "โปรดใส่อีเมลใหม่ของคุณ") }
+                            )
+                        }
                     },
                     confirmButton = {
                         TextButton(onClick = {
                             showDialog=false
                             updateprofile.add(User(userId,textFieldEmail,textFieldName,"",""))
+                            createClient.updateProfile(userId.toString(),"","")
+                                .enqueue(
+                                    object :Callback<User>{
+                                        override fun onResponse(
+                                            call: Call<User>,
+                                            response: Response<User>
+                                        ) {
+                                            if(response.isSuccessful){
+                                                Toast.makeText(contextForToast,
+                                                    "Successfully Updated",
+                                                    Toast.LENGTH_LONG).show()
+                                            }
+                                            else{
+                                                Toast.makeText(contextForToast,
+                                                    "Update Failure",
+                                                    Toast.LENGTH_LONG).show()
+                                            }
+                                        }
+
+                                        override fun onFailure(call: Call<User>, t: Throwable) {
+                                            Toast.makeText(contextForToast,
+                                                "Error on Failure"+t.message,
+                                                Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                                )
                             textFieldName=""
                             textFieldEmail=""
                         }) {
@@ -230,10 +237,6 @@ fun Settingpage(navController:NavHostController){
                             Text(text = "Cancle")
                         }
                     }
-
-
-
-
                     )
 
             }
