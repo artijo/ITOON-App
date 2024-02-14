@@ -27,15 +27,12 @@ interface CartoonAPI {
         @Path("cartoonId")id:Int
     ):Call<List<CartoonAllEp>>
 
-<<<<<<< Updated upstream
-    @GET()
-=======
+
 
     @GET("getImageEp/{epId}")
     fun getImgCartoon(
         @Path("epId") id: Int
     ):Call<List<imgEp>>
->>>>>>> Stashed changes
 
     companion object{
         fun create():CartoonAPI{

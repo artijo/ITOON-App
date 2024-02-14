@@ -50,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
@@ -173,11 +174,12 @@ private fun ItemLayOutColumn(
     episode: CartoonAllEp,
     context: Context = LocalContext.current.applicationContext
 ){
+    val navController = rememberNavController()
     var callFuction by remember{
         mutableStateOf(false)
     }
     if(callFuction){
-        CartoonThisChapter()
+        CartoonThisChapter(navHostController = navController)
         callFuction = false
     }
 
