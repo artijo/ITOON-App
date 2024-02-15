@@ -47,11 +47,13 @@ import com.project.itoon.R
 
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.project.itoon.LoginAndSignUp.LoginActivity
+import com.project.itoon.LoginAndSignUp.LoginAndSignUp
 import com.project.itoon.LoginAndSignUp.LoginPage
 import com.project.itoon.LoginAndSignUp.PageITOON
 import com.project.itoon.LoginAndSignUp.Signup
 import com.project.itoon.Setting.SettingClass
 import com.project.itoon.Setting.Settingpage
+import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.cartoonPage.CartoonThumbnail
 import com.project.itoon.cartoonPage.SelectPage
@@ -59,16 +61,18 @@ import kotlinx.parcelize.Parcelize
 
 
 
+
 @Composable
 fun NavGraph(navHostController: NavHostController) {
-    NavHost(navController = navHostController, startDestination = BottomBar.FirstPage.route) {
+    val context = LocalContext.current.applicationContext
+    lateinit var share : SharedPreferencesManager
+    share = SharedPreferencesManager(context)
+    NavHost(navController = navHostController, startDestination = BottomBar.FirstPage.route , route = "MainPage") {
         composable(route = BottomBar.FirstPage.route) {
             FirstPage(navHostController)
-//            navHostController.currentBackStackEntry?.savedStateHandle?.set("data",Toptextclass(BottomBar.FirstPage.name))
-//            Toptextclass(BottomBar.FirstPage.name)
         }
         composable(route = BottomBar.MyCartoon.route) {
-            MyCarToonPage(navHostController)
+                MyCarToonPage()
         }
 
         composable(route = BottomBar.Coin.route) {
@@ -77,24 +81,23 @@ fun NavGraph(navHostController: NavHostController) {
         composable(route = BottomBar.ETC.route) {
             ETCPage(navHostController)
         }
-        composable(route = PageITOON.Login.route){
-            LoginPage(navHostController)
-        }
-        composable(route = PageITOON.SignUp.route){
-            Signup(navHostController)
-        }
         composable(route = CartoonPage.CartoonEP.route){
             SelectPage(navHostController)
         }
         composable(route = SettingClass.Setting.route){
             Settingpage(navHostController)
         }
+        composable(route = PageITOON.Login.route) {
+            LoginPage(navHostController)
+        }
+        composable(route = PageITOON.SignUp.route) {
+            Signup(navHostController)
+        }
     }
 }
-
 @SuppressLint("RestrictedApi")
 @Composable
-public fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
+fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
     val navigationItems = listOf(
         BottomBar.FirstPage,
         BottomBar.MyCartoon,
@@ -155,6 +158,8 @@ fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
                 )
+            PrintCurrentRoute(navController)
+
 
         }
         }, actions = {
@@ -170,16 +175,16 @@ fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
 
 @SuppressLint("RestrictedApi", "StateFlowValueCalledInComposition")
 @Composable
-public fun MainScreen(){
+fun MainScreen(){
     val contextForToast = LocalContext.current.applicationContext
-    val navHostController = rememberNavController()
-    var toptextstat = navHostController.currentBackStackEntry?.destination
-    var toptext by remember {
-        mutableStateOf("")
-    }
+    val navHostControllers = rememberNavController()
     Scaffold(
-        topBar = { MyTopAppBar(navHostController, contextForToast) },
-        bottomBar = { MyBottomBar(navHostController, contextForToast) },
+        topBar = {
+                MyTopAppBar(navHostControllers, contextForToast)
+        },
+        bottomBar = {
+                MyBottomBar(navHostControllers, contextForToast)
+        }
     ) {
             paddingValues ->
         Column(
@@ -188,8 +193,14 @@ public fun MainScreen(){
                 .padding(paddingValues = paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            NavGraph(navHostController = navHostController)
+            NavGraph(navHostController = navHostControllers)
 
         }
     }
+}
+
+@Composable
+fun PrintCurrentRoute(navController: NavHostController) {
+    val currentRoute = navController.currentDestination?.route
+    println("Current Route: $currentRoute")
 }

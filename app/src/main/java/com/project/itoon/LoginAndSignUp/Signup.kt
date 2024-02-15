@@ -210,7 +210,9 @@ fun Signup(navHostController: NavHostController){
         Spacer(modifier = Modifier.padding(8.dp))
         Text(text = "หรือ",modifier =Modifier.alpha(0.5f))
 
-        TextButton(onClick = { /*TODO*/ },
+        TextButton(onClick = {
+                             navHostController.navigateUp()
+        },
             modifier = Modifier
                 .width(129.dp)
         ) {

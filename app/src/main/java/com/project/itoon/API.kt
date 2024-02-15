@@ -1,6 +1,7 @@
 package com.project.itoon
 
 import com.project.itoon.Commentpage.commentdata
+import com.project.itoon.LoginAndSignUp.LoginClass
 import com.project.itoon.LoginAndSignUp.User
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -35,7 +36,7 @@ interface API {
     fun login(
         @Path("email")email:String,
         @Path("password")password: String
-    ):Call<User>
+    ):Call<LoginClass>
 
     @GET("comments")
     fun getComment():Call<List<commentdata>>

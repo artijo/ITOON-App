@@ -33,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.ShowTextTest
 import com.project.itoon.firstpageapi.Cartoon
@@ -42,7 +43,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun Recently(){
+fun Recently(navHostController: NavHostController){
     val createClient = CartoonAPI.create()
     val cartoonList  = remember {
         mutableStateListOf<Cartoon>()

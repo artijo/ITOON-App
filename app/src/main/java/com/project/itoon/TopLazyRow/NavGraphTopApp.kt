@@ -15,22 +15,22 @@ import com.project.itoon.TopLazyRow.TopLazyRow
 fun NavGraphTopApp(navHostController: NavHostController){
     NavHost(navController = navHostController, startDestination = TopLazyRow.Recently.route){
         composable(route = TopLazyRow.Recently.route){
-            Recently()
+            Recently(navHostController)
         }
         composable(route = TopLazyRow.Like.route){
-            Like()
+            Like(navHostController)
         }
 
         composable(route = TopLazyRow.Bought.route){
-            Bought()
+            Bought(navHostController)
         }
 
         composable(route = TopLazyRow.Creator.route){
-            Creator()
+            Creator(navHostController)
         }
 
         composable(route = TopLazyRow.Comment.route){
-            Comment()
+            Comment(navHostController)
         }
     }
 }

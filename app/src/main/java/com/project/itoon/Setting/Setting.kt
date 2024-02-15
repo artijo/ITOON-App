@@ -56,6 +56,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.project.itoon.API
 import com.project.itoon.LoginAndSignUp.User
+import com.project.itoon.NavBottomBar.BottomBar
 import com.project.itoon.R
 import retrofit2.Call
 import retrofit2.Callback
@@ -79,6 +80,9 @@ fun Settingpage(navController:NavHostController){
     var showDialog by remember { mutableStateOf(false) }
     var textFieldEmail by remember { mutableStateOf("")  }
     var textFieldName by remember { mutableStateOf("")  }
+
+    lateinit var sharedPreferenceManager : SharedPreferencesManager
+    sharedPreferenceManager = SharedPreferencesManager(context = contextForToast)
 
     LaunchedEffect(lifecycleState){
         when(lifecycleState){
@@ -283,6 +287,14 @@ fun Settingpage(navController:NavHostController){
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 10.sp)
+                }
+            }
+            Row (Modifier.fillMaxWidth()){
+                TextButton(onClick = {
+                    sharedPreferenceManager.clearUserAll()
+                    navController.navigate(BottomBar.FirstPage.route)
+                }) {
+                    Text(text = "Logout")
                 }
             }
         }
