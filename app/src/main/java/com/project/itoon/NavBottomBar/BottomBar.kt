@@ -9,4 +9,6 @@ sealed class BottomBar(val route:String,val name:String,val icon: Int){
     object Coin: BottomBar(route = "coinpage_screen", name = "เติมเหรียญ", icon = R.drawable.coin)
     object ETC: BottomBar(route = "etcpage_screen", name = "อื่นๆ", icon = R.drawable.etc)
     object FirstPage: BottomBar(route = "firstpage_screen", name = "หน้าหลัก", icon = R.drawable.logo)
+
+    object SearchPage:BottomBar(route = "searchpage_screen" ,name ="ค้นหา", icon = R.drawable.search_interface_symbol)
 }

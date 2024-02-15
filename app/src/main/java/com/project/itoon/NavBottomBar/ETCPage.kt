@@ -112,7 +112,7 @@ fun ETCPage(navHostController: NavHostController){
                     .weight(1f, true)
                     .padding(top = 20.dp)
                     .clickable {
-
+                        navHostController.navigate(BottomBar.SearchPage.route)
                     }
             ) {
 
@@ -142,7 +142,7 @@ fun ETCPage(navHostController: NavHostController){
                     .clickable {
                         val urlIntent = Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse("https://www.google.com")
+                            Uri.parse("https://blog.artijo.com")
                         )
                         ctx.startActivity(urlIntent)
                     }

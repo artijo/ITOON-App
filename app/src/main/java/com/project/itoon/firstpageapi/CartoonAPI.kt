@@ -27,7 +27,10 @@ interface CartoonAPI {
         @Path("cartoonId")id:Int
     ):Call<List<CartoonAllEp>>
 
-
+    @GET("searchCartoon/{name}")
+    fun SearchCartoon(
+        @Path("name")name:String
+    ):Call<List<Cartoon>>
 
     @GET("getImageEp/{epId}")
     fun getImgCartoon(

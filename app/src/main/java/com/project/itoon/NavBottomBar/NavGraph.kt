@@ -93,6 +93,13 @@ fun NavGraph(navHostController: NavHostController) {
         composable(route = PageITOON.SignUp.route) {
             Signup(navHostController)
         }
+        composable(route = PageITOON.SignUp.route) {
+            Signup(navHostController)
+        }
+        composable(route = BottomBar.SearchPage.route) {
+            SearchPage(navHostController)
+        }
+
     }
 }
 @SuppressLint("RestrictedApi")
