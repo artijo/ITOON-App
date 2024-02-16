@@ -13,7 +13,7 @@ data class Genres(
     @Expose
     @SerializedName("name")val name: String,
     @Expose
-    @SerializedName("createAt")val createdAt: String,
+    @SerializedName("createdAt")val createdAt: String,
     @Expose
     @SerializedName("updatedAt")val updatedAt: String,
     @Expose

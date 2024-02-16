@@ -38,8 +38,17 @@ interface API {
         @Path("password")password: String
     ):Call<LoginClass>
 
+//Comment
     @GET("comments")
     fun getComment():Call<List<commentdata>>
+    @FormUrlEncoded
+    @POST("insertcomment")
+    fun insertComment(
+        @Field("content") content:String,
+        @Field("userId") userid: Int,
+        @Field("episodeId") epid: Int
+    ):Call<commentdata>
+
 //    updateprofile
     @PUT("profile/{id}")
     fun updateProfile(

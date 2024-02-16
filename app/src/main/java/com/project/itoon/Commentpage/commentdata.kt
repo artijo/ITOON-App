@@ -9,11 +9,11 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class commentdata(
     @Expose
-    @SerializedName("episodeId") val episodeId:Int,
+    @SerializedName("content") val content:String,
 
     @Expose
     @SerializedName("userId") val userId:Int,
 
     @Expose
-    @SerializedName("content") val content:String,
+    @SerializedName("episodeId") val episodeId:Int,
 ):Parcelable

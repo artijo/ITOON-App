@@ -14,7 +14,7 @@ data class Creator(
     @Expose
     @SerializedName("userId") val userid:Int,
     @Expose
-    @SerializedName("createAt")val createdAt: String,
+    @SerializedName("createdAt")val createdAt: String,
     @Expose
     @SerializedName("updatedAt")val updatedAt: String,
     @Expose

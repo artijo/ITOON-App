@@ -3,8 +3,6 @@ package com.project.itoon.Setting
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 
 class SharedPreferencesManager(context: Context) {
     companion object{

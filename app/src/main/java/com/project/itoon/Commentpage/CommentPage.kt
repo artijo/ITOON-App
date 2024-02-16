@@ -1,6 +1,8 @@
 package com.project.itoon.Commentpage
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -44,64 +46,48 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.DarkGray
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.project.itoon.API
+import com.project.itoon.EpisodeNav.EpisodeBottom
+import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.R
-import com.project.itoon.ui.theme.ITOONTheme
+import com.project.itoon.Setting.SharedPreferencesManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun CommentPage(navController: NavHostController){
+fun CommentPage(navController: NavHostController,epid : Int){
     var textFieldComment by remember{ mutableStateOf("") }
+    val contextForToast = LocalContext.current.applicationContext
+    lateinit var sharedPreferences: SharedPreferencesManager
+    sharedPreferences = SharedPreferencesManager(contextForToast)
+    val userId by remember { mutableStateOf(sharedPreferences.userId) }
+    val initialcomment = commentdata("",0,0)
+    var commentItems by remember { mutableStateOf(initialcomment) }
     var commentList = remember{ mutableStateListOf<commentdata>() }
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
     val createClient = API.create()
 
     LaunchedEffect(lifecycleState) {
-
         when (lifecycleState) {
             Lifecycle.State.DESTROYED -> {}
             Lifecycle.State.INITIALIZED -> {}
             Lifecycle.State.CREATED -> {}
             Lifecycle.State.STARTED -> {}
             Lifecycle.State.RESUMED -> {
-                createClient.getComment().enqueue(
-                    object : Callback<List<commentdata>> {
-                        @SuppressLint("RestrictedApi")
-                        override fun onResponse(
-                            call: Call<List<commentdata>>,
-                            response: Response<List<commentdata>>
-                        ) {
-                            if (response.isSuccessful){
-                                commentList.clear()
-                                response.body()?.forEach {
-                                    commentList.add(commentdata(it.episodeId,it.userId,it.content))
-                                }
-                            }else{
-
-                            }
-                        }
-                        override fun onFailure(call: Call<List<commentdata>>, t: Throwable) {
-                        }
-                    }
-                )
+                showAllData(commentList,contextForToast)
             }
         }
     }
@@ -155,8 +141,18 @@ fun CommentPage(navController: NavHostController){
                 Modifier
                     .clickable
                     {
-                        //TODO///////////
-                        textFieldComment = ""
+                        createClient.insertComment(textFieldComment,userId,epid)
+                            .enqueue(object : Callback<commentdata>{
+                                override fun onResponse(call: Call<commentdata>, response: Response<commentdata>) {
+                                    if(response.isSuccessful){
+                                        textFieldComment = ""
+                                    }
+                                }
+                                override fun onFailure(call: Call<commentdata>, t: Throwable) {
+                                    Toast.makeText(contextForToast,"Cant Upload Comment To Server", Toast.LENGTH_LONG).show()
+                                }
+                            })
+                        navController.navigate(EpisodeBottom.Comment.route)
                     }
                     .height(30.dp)
                     .width(70.dp)
@@ -219,4 +215,23 @@ fun getBottomLineShape(lineThicknessDp: Dp) : Shape {
         // 4) Top-left corner
         lineTo(0f, size.height - lineThicknessPx)
     }
+}
+
+fun showAllData(studentItemList:MutableList<commentdata>,context: Context){
+    val createClient = API.create()
+    createClient.getComment()
+        .enqueue(object : Callback<List<commentdata>> {
+            override fun onResponse(call: Call<List<commentdata>>,
+                                    response: Response<List<commentdata>>
+            ) {
+                studentItemList.clear()
+                response.body()?.forEach {
+                    studentItemList.add(commentdata(it.content,it.userId,it.episodeId,))
+                }
+            }
+            override fun onFailure(call: Call<List<commentdata>>, t: Throwable) {
+                Toast.makeText(context,"Error onFailure"+t.message,
+                    Toast.LENGTH_LONG).show()
+            }
+        })
 }

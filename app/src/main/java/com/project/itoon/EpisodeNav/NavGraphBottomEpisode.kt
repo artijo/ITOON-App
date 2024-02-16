@@ -46,7 +46,7 @@ fun NavGraphEpisode(navController:NavHostController,epId:Int){
         composable(
             route = EpisodeBottom.Comment.route
         ){
-            CommentPage(navController)
+            CommentPage(navController,epId)
         }
         composable(
             route = EpisodeBottom.Next.route
