@@ -110,4 +110,9 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
+    implementation ("com.github.kittinunf.fuel:fuel:2.3.1")
+    implementation ("com.github.kittinunf.fuel:fuel-json:2.3.1")
+
+    implementation("com.stripe:stripe-android:20.37.3")
+
 }
