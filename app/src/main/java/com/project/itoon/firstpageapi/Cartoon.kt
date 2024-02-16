@@ -34,5 +34,8 @@ data class Cartoon(
     @Expose
     @SerializedName("genres") val genres :Genres,
 
+    @Expose
+    @SerializedName("creator")val creator:Creator?,
+
 ): Parcelable
 

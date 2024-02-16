@@ -18,6 +18,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,7 +40,7 @@ import com.project.itoon.R
 import com.project.itoon.cartoonPage.CartoonThisChapter
 
 @Composable
-fun NavGraphEpisode(navController:NavHostController){
+fun NavGraphEpisode(navController:NavHostController,epId:Int){
     NavHost(navController = navController,
         startDestination = EpisodeBottom.Cartoon.route){
         composable(
@@ -60,7 +61,7 @@ fun NavGraphEpisode(navController:NavHostController){
         composable(
             route = EpisodeBottom.Cartoon.route
         ){
-            CartoonThisChapter(navController)
+            CartoonThisChapter(navController,epId)
         }
     }
 }

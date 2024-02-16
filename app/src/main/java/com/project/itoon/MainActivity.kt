@@ -19,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.project.itoon.LoginAndSignUp.LoginPage
 import com.project.itoon.LoginAndSignUp.Signup
+import com.project.itoon.NavBottomBar.MainScreen
 import com.project.itoon.ui.theme.ITOONTheme
 
 class MainActivity : ComponentActivity() {
@@ -32,8 +33,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //                    MenuLazyrow()
-//                    MainScreen()
-                    TestPayment()
+                    MainScreen()
+//                    TestPayment()
 //                    CartoonThisChapter()
 //                    if you want to call first page just use TestCall() function
 //                    FirstPage()

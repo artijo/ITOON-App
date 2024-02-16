@@ -55,7 +55,8 @@ fun Recently(navHostController: NavHostController){
         .enqueue(object :Callback<List<Cartoon>>{
             override fun onResponse(call: Call<List<Cartoon>>, response: Response<List<Cartoon>>) {
                 response.body()?.forEach {
-                    cartoonList.add(Cartoon(it.id, it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId, it.genres))
+                    cartoonList.add(Cartoon(it.id, it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId, it.genres
+                    ,it.creator))
                 }
             }
 

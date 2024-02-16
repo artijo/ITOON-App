@@ -32,7 +32,7 @@ fun TestPayment(){
     var paymentIntentClientSecret by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(context) {
-        "http://192.168.0.100:3000/payment-sheet".httpPost().responseJson { _, _, result ->
+        "http://10.0.2.2:3000/payment-sheet".httpPost().responseJson { _, _, result ->
             if (result is Result.Success) {
                 Log.d("test", "result: ${result.get()}")
                 val responseJson = result.get().obj()

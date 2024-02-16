@@ -1,7 +1,10 @@
 package com.project.itoon.cartoonPage
 
 import android.graphics.Color
+import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,7 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,28 +32,58 @@ import com.project.itoon.EpisodeNav.EpisodeTopBar
 import com.project.itoon.EpisodeNav.NavGraphEpisode
 
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import coil.compose.rememberAsyncImagePainter
+import com.project.itoon.LoginAndSignUp.LoginAndSignUp
+import com.project.itoon.LoginAndSignUp.LoginPage
+import com.project.itoon.LoginAndSignUp.PageITOON
+import com.project.itoon.LoginAndSignUp.Signup
+import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.firstpageapi.CartoonAPI
+import com.project.itoon.ui.theme.ITOONTheme
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
+class EpisodeActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            var context = LocalContext.current.applicationContext
+            val episodeId = intent.getIntExtra("EPISODE_ID", 0)
+            ITOONTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ){
+                    EpisodeScaffoldLayout(episodeId)
+                }
+            }
+
+        }
+    }
+}
+
 @Composable
-private fun CallApi(): SnapshotStateList<imgEp> {
+private fun CallApi(epId:Int): SnapshotStateList<imgEp> {
     val createClient = CartoonAPI.create()
     val pageImgList = remember { mutableStateListOf<imgEp>() }
     val contextForToast = LocalContext.current.applicationContext
 //    Set data here and path id ep here
     LaunchedEffect(true){
-        createClient.getImgCartoon(3)
+        createClient.getImgCartoon(epId)
             .enqueue(object: Callback<List<imgEp>>{
                 override fun onResponse(call: Call<List<imgEp>>, response: Response<List<imgEp>>) {
                     response.body()?.forEach{
@@ -70,8 +105,9 @@ private fun CallApi(): SnapshotStateList<imgEp> {
 }
 
 @Composable
-fun CartoonThisChapter(navHostController: NavHostController){
-    val pageImgList = CallApi()
+fun CartoonThisChapter(navHostController: NavHostController,epId: Int){
+
+    val pageImgList = CallApi(epId)
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
@@ -91,14 +127,14 @@ fun CartoonThisChapter(navHostController: NavHostController){
                     contentDescription = null,
                     Modifier.fillMaxSize()
                 )
-                Text(text = "kuy")
             }
         }
     }
 }
 @Composable
-fun EpisodeScaffoldLayout(){
+fun EpisodeScaffoldLayout(epId:Int){
     val navController = rememberNavController()
+    val Episode = epId
     Scaffold(
         topBar = { EpisodeTopBar()},
         bottomBar = { EpisodeBottomBar(navController) },
@@ -110,7 +146,9 @@ fun EpisodeScaffoldLayout(){
                 .padding(paddingValues = paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            NavGraphEpisode(navController = navController)
+            NavGraphEpisode(navController = navController,Episode)
         }
     }
 }
+
+

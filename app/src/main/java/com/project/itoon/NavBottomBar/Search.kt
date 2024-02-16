@@ -41,8 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
+import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
+import com.project.itoon.firstpageapi.Creator
 import com.project.itoon.firstpageapi.Genres
 import retrofit2.Call
 import retrofit2.Callback
@@ -136,7 +138,9 @@ fun SearchPage(navHostController: NavHostController){
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            var itemClick = Cartoon(0,"","","","",0,0,0, Genres(0,"","","",""))
+            var itemClick = Cartoon(0,"","","","",0,0,0, Genres(0,"","","",""),
+                Creator(0,0,"","","", User(0,"","","",""))
+            )
             itemsIndexed(
                 items = cartoonItemsList,
                 itemContent = { index, item ->
@@ -200,7 +204,8 @@ private fun showAllCartoon(cartoonItemsList: MutableList<Cartoon>, context: Cont
                             it.totalEpisodes,
                             it.creatorId,
                             it.genreId,
-                            it.genres
+                            it.genres,
+                            it.creator
                         )
                     )
                 }

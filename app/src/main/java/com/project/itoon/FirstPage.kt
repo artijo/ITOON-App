@@ -144,7 +144,8 @@ private fun CartoonRecommend(navHostController:NavHostController){
                                         response: Response<List<Cartoon>>
                 ){
                     response.body()?.forEach{
-                        cartoonList.add(Cartoon(it.id , it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId, it.genres))
+                        cartoonList.add(Cartoon(it.id , it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId, it.genres,
+                            it.creator))
                     }
                 }
 
@@ -256,7 +257,8 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
                                         response: Response<List<Cartoon>>
                 ){
                     response.body()?.forEach{
-                        cartoonList.add(Cartoon(it.id , it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId, it.genres))
+                        cartoonList.add(Cartoon(it.id , it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId, it.genres,
+                            it.creator))
                     }
                 }
 

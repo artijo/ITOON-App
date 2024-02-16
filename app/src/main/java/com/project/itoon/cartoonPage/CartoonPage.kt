@@ -1,6 +1,7 @@
 package com.project.itoon.cartoonPage
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -26,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -52,8 +54,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.project.itoon.LoginAndSignUp.LoginActivity
+import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
+import com.project.itoon.firstpageapi.Creator
 import com.project.itoon.firstpageapi.Genres
 import com.project.itoon.ui.theme.ITOONTheme
 import retrofit2.Call
@@ -71,7 +76,8 @@ sealed class CartoonPage(val route:String,val name:String){
 fun CartoonThumbnail(navController:NavHostController){
     val data = navController.previousBackStackEntry?.savedStateHandle?.get<Cartoon>("data")?:
     Cartoon(0,"","","","",0,
-        0,0, Genres(0,"","","","")
+        0,0, Genres(0,"","","",""),
+        Creator(0,0,"","","", User(0,"","","",""))
     )
 
     var name by remember{ mutableStateOf(data.name) }
@@ -97,7 +103,7 @@ fun CartoonThumbnail(navController:NavHostController){
                     Card(
                         Modifier
                             .wrapContentSize()
-                            .height(400.dp),
+                            .height(350.dp),
                         shape = RoundedCornerShape(0.dp),
                         elevation = CardDefaults.cardElevation(0.dp),
                     ) {
@@ -156,6 +162,19 @@ fun CartoonThumbnail(navController:NavHostController){
                                     color = Color.White,
                                     lineHeight = 20.sp
                                 )
+                                Text(
+                                    text = "${data.creator?.user?.name}",
+                                    fontSize = 20.sp,
+                                    color = Color.White,
+                                    lineHeight = 20.sp
+                                )
+                                Spacer(modifier = Modifier.padding(20.dp))
+                                Text(
+                                    text="${data.description}",
+                                    fontSize = 17.sp,
+                                    color = Color.White,
+                                    lineHeight = 5.sp
+                                )
                             }
                         }
                     }
@@ -175,14 +194,16 @@ private fun ItemLayOutColumn(
     context: Context = LocalContext.current.applicationContext
 ){
     val navController = rememberNavController()
-    var callFuction by remember{
-        mutableStateOf(false)
-    }
-    if(callFuction){
-        CartoonThisChapter(navHostController = navController)
-        callFuction = false
-    }
+    val thumbnailtext by remember{ mutableStateOf(episode.thumbnail) }
 
+    var episodeurl by remember { mutableStateOf(
+        if (thumbnailtext.isNotEmpty()) {
+            Uri.parse("http://10.0.2.2:3000/"+"${thumbnailtext}")
+        } else {
+            null
+        }
+    )
+    }
 
     Box(
         Modifier.fillMaxWidth()
@@ -191,13 +212,12 @@ private fun ItemLayOutColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    callFuction = true
+                    startEpisodeActivity(context,episode.id)
                 },
-            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
             Image(
-                painter = rememberAsyncImagePainter(episode.thumbnail),
+                painter = rememberAsyncImagePainter(episodeurl),
                 contentDescription = episode.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -208,10 +228,11 @@ private fun ItemLayOutColumn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ){
                 Text(
-                    text = "Ep.${episode.episodeNumber}"
+                    text = "Ep.${episode.episodeNumber}"+"- ${episode.name}"
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
@@ -221,7 +242,9 @@ private fun ItemLayOutColumn(
             }
 
         }
+
     }
+    Divider(color = Color.LightGray, thickness = 1.dp)
 }
 
 
@@ -234,6 +257,7 @@ fun CartoonAllEp(navController:NavHostController){
     val data = navController.previousBackStackEntry?.savedStateHandle?.get<Cartoon>("data")?:
     Cartoon(0,"","","","",0,
         0,0, Genres(0,"","","","")
+            , Creator(0,0,"","","" ,User(0,"","","",""))
     )
 
     LaunchedEffect(true){
@@ -293,4 +317,11 @@ fun SelectPage(navHostController:NavHostController){
     }
 }
 
+fun startEpisodeActivity(c: Context,episodeId:Int){
+    val intent = Intent(c, EpisodeActivity::class.java).apply {
+        putExtra("EPISODE_ID",episodeId)
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    }
+    c.startActivity(intent)
+}
 
