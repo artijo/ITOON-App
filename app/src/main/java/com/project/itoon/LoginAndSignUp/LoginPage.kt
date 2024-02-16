@@ -2,6 +2,7 @@ package com.project.itoon.LoginAndSignUp
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -206,7 +207,8 @@ fun LoginPage(navHostController: NavHostController)
                             if (loginContent!!.success == 1) {
                                 sharePreferences.isLoggedIn = true
                                 sharePreferences.userEmail = loginContent.email
-                                println(sharePreferences.isLoggedIn)
+                                sharePreferences.userId = loginContent.id
+                                println(sharePreferences.userId.toString())
 
                                 val intent = Intent(contextForToast, MainActivity::class.java)
                                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -261,5 +263,11 @@ fun LoginAndSignUp(){
             Signup(navController)
         }
     }
+}
+
+fun startLoginActivity(c: Context){
+    val intent = Intent(c, LoginActivity::class.java)
+    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    c.startActivity(intent)
 }
 

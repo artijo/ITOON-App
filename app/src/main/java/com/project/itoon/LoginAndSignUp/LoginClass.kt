@@ -8,5 +8,8 @@ data class LoginClass (
     @SerializedName("success")val success:Int,
 
     @Expose
-    @SerializedName("email")val email:String
+    @SerializedName("email")val email:String,
+
+    @Expose
+    @SerializedName("id")val id:Int
 )

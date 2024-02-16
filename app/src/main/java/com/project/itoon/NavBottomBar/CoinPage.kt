@@ -1,6 +1,7 @@
 package com.project.itoon.NavBottomBar
 
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import com.project.itoon.LoginAndSignUp.LoginActivity
+import com.project.itoon.LoginAndSignUp.startLoginActivity
 import com.project.itoon.PaymentPage
 import com.project.itoon.Setting.SharedPreferencesManager
 
@@ -35,9 +37,7 @@ fun CoinPage(navHostController: NavHostController){
             Lifecycle.State.CREATED -> {}
             Lifecycle.State.STARTED -> {
                 if(!sharedPreferences.isLoggedIn){
-                val intent = Intent(contextForToast, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                contextForToast.startActivity(intent)
+                startLoginActivity(contextForToast)
             }}
             Lifecycle.State.RESUMED -> {}
         }
@@ -51,3 +51,4 @@ fun CoinPage(navHostController: NavHostController){
 
     }
 }
+
