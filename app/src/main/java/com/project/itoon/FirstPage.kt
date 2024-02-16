@@ -54,6 +54,7 @@ import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
 import kotlinx.coroutines.delay
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -298,6 +299,7 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
                 ){
                     var clickCartoon : Cartoon
                     items(cartoonList){ item->
+                        val urltext = item.thumbnail
                         Box(
                             Modifier
                                 .fillMaxSize()
@@ -322,6 +324,21 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
                                 .padding(end = 10.dp)
 
                             ){
+                                if (urltext.startsWith("uploads")){
+                                    val replace = urltext.replace("\\","/")
+                                    item.thumbnail = "http://10.0.2.2:3000/"+"$replace"
+                                    val pathUrl = item.thumbnail.toHttpUrl()
+                                    println(pathUrl)
+                                    Image(
+                                        painter = rememberAsyncImagePainter(pathUrl) ,
+                                        contentDescription = "",
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(5.dp))
+                                            .fillMaxSize()
+                                    )
+                                }else{
+                                    println(item.thumbnail)
                                 Image(
                                     painter = rememberAsyncImagePainter(item.thumbnail) ,
                                     contentDescription = "",
@@ -330,6 +347,7 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
                                         .clip(RoundedCornerShape(5.dp))
                                         .fillMaxSize()
                                 )
+                                }
                             }
                             Text(
                                 text= item.genres.name,

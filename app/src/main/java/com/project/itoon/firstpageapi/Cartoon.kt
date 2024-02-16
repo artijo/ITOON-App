@@ -20,7 +20,7 @@ data class Cartoon(
     @SerializedName("releaseDate") val releaseDate:String,
 
     @Expose
-    @SerializedName("thumbnail") val thumbnail:String,
+    @SerializedName("thumbnail") var thumbnail:String,
 
     @Expose
     @SerializedName("totalEpisodes") val totalEpisodes:Int,
@@ -37,5 +37,5 @@ data class Cartoon(
     @Expose
     @SerializedName("creator")val creator:Creator?,
 
-): Parcelable
+    ): Parcelable
 
