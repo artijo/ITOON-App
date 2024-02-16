@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,9 +15,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -56,6 +61,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.project.itoon.API
 import com.project.itoon.LoginAndSignUp.User
+import com.project.itoon.LoginAndSignUp.startLoginActivity
 import com.project.itoon.NavBottomBar.BottomBar
 import com.project.itoon.R
 import retrofit2.Call
@@ -69,9 +75,8 @@ fun Settingpage(navController:NavHostController){
     val navHostController = rememberNavController()
     val contextForToast = LocalContext.current.applicationContext
     val createClient = API.create()
-    val data = navController.previousBackStackEntry?.savedStateHandle?.get<User>("data")?:
-    User(0,"","","","")
-    val userId by remember{ mutableStateOf(data.id) }
+
+
     val initialuser = User(0,"","","","")
     var userItems by remember { mutableStateOf(initialuser) }
     var updateprofile = remember { mutableStateListOf<User>() }
@@ -83,6 +88,7 @@ fun Settingpage(navController:NavHostController){
 
     lateinit var sharedPreferenceManager : SharedPreferencesManager
     sharedPreferenceManager = SharedPreferencesManager(context = contextForToast)
+    val userId by remember{ mutableStateOf(sharedPreferenceManager.userId) }
 
     LaunchedEffect(lifecycleState){
         when(lifecycleState){
@@ -91,21 +97,22 @@ fun Settingpage(navController:NavHostController){
             Lifecycle.State.CREATED ->{}
             Lifecycle.State.STARTED ->{}
             Lifecycle.State.RESUMED ->{
-                createClient.getUSerbyID(userId.toString())
+                createClient.getUSerbyID(userId)
                     .enqueue(object: Callback<User> {
                         override fun onResponse(call: Call<User>,
                                                 response: Response<User>
                         ){
                             if(response.isSuccessful){
-                                userItems= User(
-                                    response.body()!!.id,
-                                    response.body()!!.email,
-                                    response.body()!!.name,
-                                    response.body()!!.password,
-                                    response.body()!!.phone
-                                )
+                                if(sharedPreferenceManager.isLoggedIn)
+                                    userItems= User(
+                                        response.body()!!.id,
+                                        response.body()!!.email,
+                                        response.body()!!.name,
+                                        response.body()!!.password,
+                                        response.body()!!.phone
+                                    )
                             }else{
-                                Toast.makeText(contextForToast,"User ID Not Found", Toast.LENGTH_LONG).show()
+
                             }
                         }
                         override fun onFailure(call: Call<User>,t: Throwable){
@@ -121,10 +128,25 @@ fun Settingpage(navController:NavHostController){
         modifier = Modifier.fillMaxHeight()
         , horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.padding(5.dp))
         Column (
             modifier = Modifier.padding(10.dp)
         ){
+            if(!sharedPreferenceManager.isLoggedIn){
+                Row (
+                    Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .clickable {
+                            startLoginActivity(contextForToast)
+                        }
+                        .background(Color(184,0,0)),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically)
+                {
+                    Text(text = "Login",color = Color.White,fontSize = 20.sp)
+                }
+            }else{
+                Spacer(modifier = Modifier.padding(5.dp))
             Text(text = "บัญชีผู้ใช้",
                 fontSize = 15.sp
             )
@@ -158,7 +180,7 @@ fun Settingpage(navController:NavHostController){
 
                     }
                     Text(
-                        text = "${data.name} Hello",
+                        text = "${userItems.name}",
                         fontSize = 15.sp,
                         modifier = Modifier.padding(top = 10.dp,start = 5.dp)
                     )
@@ -256,10 +278,11 @@ fun Settingpage(navController:NavHostController){
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = "${data.email} Hi",
+                    text = "${userItems.email}",
                     modifier = Modifier.padding(start = 5.dp, top = 5.dp))
             }
             Spacer(modifier = Modifier.padding(5.dp))
+                }
             Divider(color = Color.LightGray, thickness = 1.dp)
             Text(text = "การแจ้งเตือน",
                 fontSize = 15.sp,
@@ -289,6 +312,7 @@ fun Settingpage(navController:NavHostController){
                         fontSize = 10.sp)
                 }
             }
+            if(sharedPreferenceManager.isLoggedIn){
             Row (Modifier.fillMaxWidth()){
                 TextButton(onClick = {
                     sharedPreferenceManager.clearUserAll()
@@ -296,7 +320,7 @@ fun Settingpage(navController:NavHostController){
                 }) {
                     Text(text = "Logout")
                 }
-            }
+            } }
         }
     }
 }

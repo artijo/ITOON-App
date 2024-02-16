@@ -18,9 +18,9 @@ interface API {
     fun getUser():Call<List<User>>
 
 //    getuserByID
-    @GET("user/{id}")
+    @GET("users/{id}")
     fun getUSerbyID(
-       @Path("id") id:String
+       @Path("id") id:Int
     ):Call<User>
 
     @FormUrlEncoded
