@@ -173,7 +173,7 @@ fun CartoonThumbnail(navController:NavHostController){
                                     text="${data.description}",
                                     fontSize = 17.sp,
                                     color = Color.White,
-                                    lineHeight = 5.sp
+                                    lineHeight = 18.sp
                                 )
                             }
                         }
