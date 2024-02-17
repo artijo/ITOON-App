@@ -38,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.layout.ContentScale
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -120,12 +121,13 @@ fun CartoonThisChapter(navHostController: NavHostController,epId: Int){
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .height(400.dp)
+                    .height(550.dp)
             ) {
                 Image(
                     painter = rememberAsyncImagePainter(pathURL),
                     contentDescription = null,
-                    Modifier.fillMaxSize()
+                    Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Fit
                 )
             }
         }
