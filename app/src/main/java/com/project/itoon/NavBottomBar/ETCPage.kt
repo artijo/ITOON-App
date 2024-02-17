@@ -87,7 +87,13 @@ fun ETCPage(navHostController: NavHostController){
                     .padding(start = 10.dp, end = 15.dp, top = 10.dp, bottom = 10.dp)
 
             ) {
-                Button(onClick = { /*TODO*/ },colors=ButtonDefaults.buttonColors(Color(184,0,0)),
+                Button(onClick = {
+                    val urlIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("http://10.176.100.59:5173/coin-transaction")
+                    )
+                    ctx.startActivity(urlIntent)
+                                 },colors=ButtonDefaults.buttonColors(Color(184,0,0)),
                     shape = RoundedCornerShape(15,15,15,15)
                 ) {
                     Text(text = "เติมเหรียญ", fontSize = 15.sp)
@@ -142,7 +148,7 @@ fun ETCPage(navHostController: NavHostController){
                     .clickable {
                         val urlIntent = Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse("https://blog.artijo.com")
+                            Uri.parse("http://10.176.100.60:5173/upload/cartoon")
                         )
                         ctx.startActivity(urlIntent)
                     }
