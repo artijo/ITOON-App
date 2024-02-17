@@ -1,8 +1,11 @@
 package com.project.itoon.cartoonPage
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class CartoonAllEp(
     @Expose
     @SerializedName("id") val id:Int,
@@ -21,4 +24,4 @@ data class CartoonAllEp(
 
     @Expose
     @SerializedName("cartoonId") val cartoonId:Int,
-)
+): Parcelable

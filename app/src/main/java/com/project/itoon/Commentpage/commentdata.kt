@@ -1,9 +1,11 @@
 package com.project.itoon.Commentpage
 
 import android.os.Parcelable
+import com.google.gson.Gson
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import java.util.Objects
 
 
 @Parcelize
@@ -16,4 +18,13 @@ data class commentdata(
 
     @Expose
     @SerializedName("episodeId") val episodeId:Int,
+
+    @Expose
+    @SerializedName("episode") val episode:Episode,
 ):Parcelable
+
+@Parcelize
+data class Episode(
+    @Expose
+    @SerializedName("episodeNumber") val episodeNumber: Int
+) : Parcelable

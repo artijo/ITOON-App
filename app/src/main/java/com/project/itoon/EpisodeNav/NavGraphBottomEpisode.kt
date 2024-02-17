@@ -40,13 +40,13 @@ import com.project.itoon.R
 import com.project.itoon.cartoonPage.CartoonThisChapter
 
 @Composable
-fun NavGraphEpisode(navController:NavHostController,epId:Int){
+fun NavGraphEpisode(navController:NavHostController,epId:Int,epNum:Int){
     NavHost(navController = navController,
         startDestination = EpisodeBottom.Cartoon.route){
         composable(
             route = EpisodeBottom.Comment.route
         ){
-            CommentPage(navController,epId)
+            CommentPage(navController,epId,epNum)
         }
         composable(
             route = EpisodeBottom.Next.route

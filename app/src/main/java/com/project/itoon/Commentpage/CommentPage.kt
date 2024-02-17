@@ -2,6 +2,7 @@ package com.project.itoon.Commentpage
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -67,13 +68,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun CommentPage(navController: NavHostController,epid : Int){
+fun CommentPage(navController: NavHostController,epid : Int,epNum:Int){
     var textFieldComment by remember{ mutableStateOf("") }
     val contextForToast = LocalContext.current.applicationContext
     lateinit var sharedPreferences: SharedPreferencesManager
     sharedPreferences = SharedPreferencesManager(contextForToast)
     val userId by remember { mutableStateOf(sharedPreferences.userId) }
-    val initialcomment = commentdata("",0,0)
+    val initialcomment = commentdata("",0,0,Episode(0))
     var commentItems by remember { mutableStateOf(initialcomment) }
     var commentList = remember{ mutableStateListOf<commentdata>() }
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -192,7 +193,7 @@ fun CommentPage(navController: NavHostController,epid : Int){
                         ){
                             Text(
                                 text ="User ID : ${item.userId}\n"
-                                        +"Episode : ${item.episodeId}\n"
+                                        +"Episode : ${item.episode.episodeNumber}\n"
                                         +"Comment : ${item.content}",
                                 Modifier.weight(0.85f)
                             )
@@ -226,11 +227,12 @@ fun showAllData(studentItemList:MutableList<commentdata>,context: Context){
             ) {
                 studentItemList.clear()
                 response.body()?.forEach {
-                    studentItemList.add(commentdata(it.content,it.userId,it.episodeId,))
+                    studentItemList.add(commentdata(it.content,it.userId,it.episodeId,it.episode))
+                    Log.i("episodeID",it.episode.toString())
                 }
             }
             override fun onFailure(call: Call<List<commentdata>>, t: Throwable) {
-                Toast.makeText(context,"Error onFailure"+t.message,
+                Toast.makeText(context,"ShowFailonFailure"+t.message,
                     Toast.LENGTH_LONG).show()
             }
         })
