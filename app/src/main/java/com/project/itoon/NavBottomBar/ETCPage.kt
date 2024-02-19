@@ -90,7 +90,7 @@ fun ETCPage(navHostController: NavHostController){
                 Button(onClick = {
                     val urlIntent = Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("http://10.176.100.59:5173/coin-transaction")
+                        Uri.parse("http://10.199.122.60:5173/coin-transaction")
                     )
                     ctx.startActivity(urlIntent)
                                  },colors=ButtonDefaults.buttonColors(Color(184,0,0)),
@@ -148,7 +148,7 @@ fun ETCPage(navHostController: NavHostController){
                     .clickable {
                         val urlIntent = Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse("http://10.176.100.60:5173/upload/cartoon")
+                            Uri.parse("http://10.199.122.60:5173/upload/cartoon")
                         )
                         ctx.startActivity(urlIntent)
                     }

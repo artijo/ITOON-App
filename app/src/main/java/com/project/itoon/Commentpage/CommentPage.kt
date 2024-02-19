@@ -67,6 +67,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun CommentPage(navController: NavHostController,epid : Int,epNum:Int){
     var textFieldComment by remember{ mutableStateOf("") }
@@ -153,6 +154,9 @@ fun CommentPage(navController: NavHostController,epid : Int,epNum:Int){
                                     Toast.makeText(contextForToast,"Cant Upload Comment To Server", Toast.LENGTH_LONG).show()
                                 }
                             })
+                        if (navController.currentBackStack.value.size >= 2){
+                            navController.popBackStack()
+                        }
                         navController.navigate(EpisodeBottom.Comment.route)
                     }
                     .height(30.dp)

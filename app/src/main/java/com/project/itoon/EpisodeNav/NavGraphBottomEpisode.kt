@@ -85,7 +85,7 @@ fun EpisodeBottomBar(navController: NavHostController){
                 icon = { Icon(imageVector = screen.icon,contentDescription = null, tint = Color.White) },
                 selected = (false),
                 onClick = {
-                    if (navController.currentBackStack.value.size >= 3){
+                    if (navController.currentBackStack.value.size >= 2){
                         navController.popBackStack()
                     }
                     navController.navigate(screen.route)

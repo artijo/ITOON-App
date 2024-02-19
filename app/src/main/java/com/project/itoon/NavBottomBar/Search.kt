@@ -1,5 +1,6 @@
 package com.project.itoon.NavBottomBar
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.KeyEvent
@@ -55,6 +56,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.LoginAndSignUp.User
+import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.firstpageapi.Creator
@@ -63,6 +65,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@SuppressLint("RestrictedApi")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchPage(navHostController: NavHostController){
@@ -118,6 +121,7 @@ fun SearchPage(navHostController: NavHostController){
                                         call: Call<List<Cartoon>>,
                                         response: Response<List<Cartoon>>
                                     ) {
+
                                         if (response.isSuccessful) {
                                             Toast.makeText(
                                                 contextForToast,
@@ -153,12 +157,10 @@ fun SearchPage(navHostController: NavHostController){
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            var itemClick = Cartoon(0,"","","","",0,0,0, Genres(0,"","","",""),
-                Creator(0,0,"","","", User(0,"","","",""))
-            )
             itemsIndexed(
                 items = cartoonItemsList,
                 itemContent = { index, item ->
+                    var clickCartoon : Cartoon
                     Card(
                         modifier = Modifier
                             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -169,16 +171,21 @@ fun SearchPage(navHostController: NavHostController){
                         ),
                         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
                         onClick = {
-                            Toast.makeText(
-                                contextForToast, "Click on ${item.name}.",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            if (navHostController.currentBackStack.value.size >= 2){
+                                navHostController.popBackStack()
+                            }
+                            clickCartoon = item
+                            navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                "data",
+                                clickCartoon
+                            )
+                            navHostController.navigate(CartoonPage.CartoonEP.route)
                         }) {
                         Row(
                             Modifier
                                 .fillMaxWidth()
                                 .height(Dp(value = 130f))
-                                .padding(16.dp)
+                                .padding(end = 16.dp)
                             ,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -187,8 +194,8 @@ fun SearchPage(navHostController: NavHostController){
                                 contentDescription = item.name,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
-                                    .width(60.dp)
-                                    .height(60.dp)
+                                    .width(100.dp)
+                                    .height(100.dp)
                                     .clip(RoundedCornerShape(10.dp))
                             )
 
