@@ -3,6 +3,7 @@ package com.project.itoon
 import com.project.itoon.Commentpage.commentdata
 import com.project.itoon.LoginAndSignUp.LoginClass
 import com.project.itoon.LoginAndSignUp.User
+import com.project.itoon.Setting.Profile
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -61,7 +62,7 @@ interface API {
     @Path("id") id:String,
     @Field("email") email: String,
     @Field("name") name: String
-    ):Call<User>
+    ):Call<Profile>
 
 
 

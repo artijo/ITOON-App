@@ -72,23 +72,21 @@ import retrofit2.Response
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun Settingpage(navController:NavHostController){
-    val navHostController = rememberNavController()
     val contextForToast = LocalContext.current.applicationContext
     val createClient = API.create()
-
-
+    val data = navController.previousBackStackEntry?.savedStateHandle?.get<User>("data")?:
+    User(0,"","","","")
     val initialuser = User(0,"","","","")
     var userItems by remember { mutableStateOf(initialuser) }
     var updateprofile = remember { mutableStateListOf<User>() }
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
-    var textFieldEmail by remember { mutableStateOf("")  }
-    var textFieldName by remember { mutableStateOf("")  }
-
     lateinit var sharedPreferenceManager : SharedPreferencesManager
     sharedPreferenceManager = SharedPreferencesManager(context = contextForToast)
-    val userId by remember{ mutableStateOf(sharedPreferenceManager.userId) }
+    val userId = sharedPreferenceManager.userId
+    var textFieldEmail by remember { mutableStateOf(data.email)  }
+    var textFieldName by remember { mutableStateOf(data.name)  }
 
     LaunchedEffect(lifecycleState){
         when(lifecycleState){
@@ -97,32 +95,9 @@ fun Settingpage(navController:NavHostController){
             Lifecycle.State.CREATED ->{}
             Lifecycle.State.STARTED ->{}
             Lifecycle.State.RESUMED ->{
-                createClient.getUSerbyID(userId)
-                    .enqueue(object: Callback<User> {
-                        override fun onResponse(call: Call<User>,
-                                                response: Response<User>
-                        ){
-                            if(response.isSuccessful){
-                                if(sharedPreferenceManager.isLoggedIn)
-                                    userItems= User(
-                                        response.body()!!.id,
-                                        response.body()!!.email,
-                                        response.body()!!.name,
-                                        response.body()!!.password,
-                                        response.body()!!.phone
-                                    )
-                            }else{
-
-                            }
-                        }
-                        override fun onFailure(call: Call<User>,t: Throwable){
-                            Toast.makeText(contextForToast, "Error onFailure" + t.message,Toast.LENGTH_LONG).show()
-                        }
-                    })
 
             }
         }
-
     }
     Column(
         modifier = Modifier.fillMaxHeight()
@@ -139,7 +114,7 @@ fun Settingpage(navController:NavHostController){
                         .clickable {
                             startLoginActivity(contextForToast)
                         }
-                        .background(Color(184,0,0)),
+                        .background(Color(184, 0, 0)),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically)
                 {
@@ -156,9 +131,8 @@ fun Settingpage(navController:NavHostController){
                 horizontalArrangement = Arrangement.SpaceBetween,
                 ){
                 Row {
-
                     Text(
-                        text = "${userItems.name}",
+                        text = data.name,
                         fontSize = 15.sp,
                         modifier = Modifier.padding(top = 10.dp,start = 5.dp)
                     )
@@ -199,13 +173,12 @@ fun Settingpage(navController:NavHostController){
                     confirmButton = {
                         TextButton(onClick = {
                             showDialog=false
-                            updateprofile.add(User(userId,textFieldEmail,textFieldName,"",""))
-                            createClient.updateProfile(userId.toString(),"","")
+                            createClient.updateProfile(userId.toString(),textFieldEmail,textFieldName)
                                 .enqueue(
-                                    object :Callback<User>{
+                                    object :Callback<Profile>{
                                         override fun onResponse(
-                                            call: Call<User>,
-                                            response: Response<User>
+                                            call: Call<Profile>,
+                                            response: Response<Profile>
                                         ) {
                                             if(response.isSuccessful){
                                                 Toast.makeText(contextForToast,
@@ -219,7 +192,7 @@ fun Settingpage(navController:NavHostController){
                                             }
                                         }
 
-                                        override fun onFailure(call: Call<User>, t: Throwable) {
+                                        override fun onFailure(call: Call<Profile>, t: Throwable) {
                                             Toast.makeText(contextForToast,
                                                 "Error on Failure"+t.message,
                                                 Toast.LENGTH_LONG).show()
@@ -256,7 +229,7 @@ fun Settingpage(navController:NavHostController){
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = "${userItems.email}",
+                    text = data.email,
                     modifier = Modifier.padding(start = 5.dp, top = 5.dp))
             }
             Spacer(modifier = Modifier.padding(5.dp))
