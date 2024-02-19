@@ -64,13 +64,13 @@ class EpisodeActivity : ComponentActivity() {
         setContent {
             var context = LocalContext.current.applicationContext
             val episodeId = intent.getIntExtra("EPISODE_ID", 0)
-            val episodeNumber=intent.getIntExtra("EPISODE_NUMBER",0)
+            val cartoonid=intent.getIntExtra("CARTOON_ID",0)
             ITOONTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ){
-                    EpisodeScaffoldLayout(episodeId,episodeNumber)
+                    EpisodeScaffoldLayout(episodeId,cartoonid)
                 }
             }
 
@@ -135,10 +135,11 @@ fun CartoonThisChapter(navHostController: NavHostController,epId: Int){
     }
 }
 @Composable
-fun EpisodeScaffoldLayout(epId:Int,epNumber:Int){
+fun EpisodeScaffoldLayout(epId:Int,cartoonid:Int){
     val navController = rememberNavController()
     val Episode = epId
-    val EpNum = epNumber
+    val cartoonid = cartoonid
+
     Scaffold(
         topBar = { EpisodeTopBar()},
         bottomBar = { EpisodeBottomBar(navController) },
@@ -150,7 +151,7 @@ fun EpisodeScaffoldLayout(epId:Int,epNumber:Int){
                 .padding(paddingValues = paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            NavGraphEpisode(navController = navController,Episode,EpNum)
+            NavGraphEpisode(navController = navController,Episode,cartoonid)
         }
     }
 }

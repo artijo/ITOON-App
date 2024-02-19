@@ -35,18 +35,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.project.itoon.Commentpage.CommentPage
+import com.project.itoon.Commentpage.Episode
 import com.project.itoon.NavBottomBar.BottomBar
 import com.project.itoon.R
 import com.project.itoon.cartoonPage.CartoonThisChapter
 
 @Composable
-fun NavGraphEpisode(navController:NavHostController,epId:Int,epNum:Int){
+fun NavGraphEpisode(navController:NavHostController,epId:Int,cartoonid:Int){
     NavHost(navController = navController,
         startDestination = EpisodeBottom.Cartoon.route){
         composable(
             route = EpisodeBottom.Comment.route
         ){
-            CommentPage(navController,epId,epNum)
+            CommentPage(navController,epId,cartoonid)
         }
         composable(
             route = EpisodeBottom.Next.route
@@ -85,9 +86,6 @@ fun EpisodeBottomBar(navController: NavHostController){
                 icon = { Icon(imageVector = screen.icon,contentDescription = null, tint = Color.White) },
                 selected = (false),
                 onClick = {
-                    if (navController.currentBackStack.value.size >= 2){
-                        navController.popBackStack()
-                    }
                     navController.navigate(screen.route)
                 }
             )

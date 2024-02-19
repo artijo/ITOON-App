@@ -41,6 +41,12 @@ interface API {
 //Comment
     @GET("comments")
     fun getComment():Call<List<commentdata>>
+
+    @GET("comments/{cid}/{eid}")
+    fun getEpcommnet(
+        @Path("cid") cartoonid:Int,
+        @Path("eid") episodeId:Int,
+    ):Call<List<commentdata>>
     @FormUrlEncoded
     @POST("insertcomment")
     fun insertComment(

@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.project.itoon.firstpageapi.Cartoon
 import kotlinx.parcelize.Parcelize
 import java.util.Objects
 
@@ -23,8 +24,3 @@ data class commentdata(
     @SerializedName("episode") val episode:Episode,
 ):Parcelable
 
-@Parcelize
-data class Episode(
-    @Expose
-    @SerializedName("episodeNumber") val episodeNumber: Int
-) : Parcelable

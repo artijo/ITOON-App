@@ -212,7 +212,7 @@ private fun ItemLayOutColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    startEpisodeActivity(context,episode.id,episode.episodeNumber)
+                    startEpisodeActivity(context,episode.id,episode.cartoonId)
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -317,10 +317,10 @@ fun SelectPage(navHostController:NavHostController){
     }
 }
 
-fun startEpisodeActivity(c: Context,episodeId:Int,episodeNum:Int){
+fun startEpisodeActivity(c: Context,episodeId:Int,cartoonid:Int){
     val intent = Intent(c, EpisodeActivity::class.java).apply {
         putExtra("EPISODE_ID",episodeId)
-        putExtra("EPISODE_NUMBER",episodeNum)
+        putExtra("CARTOON_ID",cartoonid)
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     }
     c.startActivity(intent)

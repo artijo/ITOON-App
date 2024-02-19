@@ -63,19 +63,26 @@ import com.project.itoon.EpisodeNav.EpisodeBottom
 import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.R
 import com.project.itoon.Setting.SharedPreferencesManager
+import com.project.itoon.firstpageapi.Cartoon
+import com.project.itoon.firstpageapi.Creator
+import com.project.itoon.firstpageapi.Genres
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 @SuppressLint("RestrictedApi")
 @Composable
-fun CommentPage(navController: NavHostController,epid : Int,epNum:Int){
+fun CommentPage(navController: NavHostController,epid : Int,cartoonid: Int){
     var textFieldComment by remember{ mutableStateOf("") }
     val contextForToast = LocalContext.current.applicationContext
     lateinit var sharedPreferences: SharedPreferencesManager
     sharedPreferences = SharedPreferencesManager(contextForToast)
     val userId by remember { mutableStateOf(sharedPreferences.userId) }
-    val initialcomment = commentdata("",0,0,Episode(0))
+    val initialcomment = commentdata("",0,0,Episode(0,"",0,"","",
+        0,Cartoon(0,"","","","",0,0,0, Genres(0,"","","",""),
+            Creator(0,0,"","","",
+                User(0,"","","","")))),
+        )
     var commentItems by remember { mutableStateOf(initialcomment) }
     var commentList = remember{ mutableStateListOf<commentdata>() }
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -89,7 +96,10 @@ fun CommentPage(navController: NavHostController,epid : Int,epNum:Int){
             Lifecycle.State.CREATED -> {}
             Lifecycle.State.STARTED -> {}
             Lifecycle.State.RESUMED -> {
-                showAllData(commentList,contextForToast)
+                showAllData(commentList,contextForToast,epid,cartoonid)
+                println(epid)
+                println(cartoonid)
+                println()
             }
         }
     }
@@ -197,7 +207,7 @@ fun CommentPage(navController: NavHostController,epid : Int,epNum:Int){
                         ){
                             Text(
                                 text ="User ID : ${item.userId}\n"
-                                        +"Episode : ${item.episode.episodeNumber}\n"
+                                        +"Episode : ${item.episode.epNumber}\n"
                                         +"Comment : ${item.content}",
                                 Modifier.weight(0.85f)
                             )
@@ -222,9 +232,9 @@ fun getBottomLineShape(lineThicknessDp: Dp) : Shape {
     }
 }
 
-fun showAllData(studentItemList:MutableList<commentdata>,context: Context){
+fun showAllData(studentItemList:MutableList<commentdata>,context: Context,epid: Int,cartoonid:Int){
     val createClient = API.create()
-    createClient.getComment()
+    createClient.getEpcommnet(cartoonid,epid)
         .enqueue(object : Callback<List<commentdata>> {
             override fun onResponse(call: Call<List<commentdata>>,
                                     response: Response<List<commentdata>>
