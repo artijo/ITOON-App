@@ -61,6 +61,7 @@ import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.firstpageapi.Creator
 import com.project.itoon.firstpageapi.Genres
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -189,6 +190,21 @@ fun SearchPage(navHostController: NavHostController){
                             ,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            val urltext = item.thumbnail
+                            if (urltext.startsWith("uploads")){
+                                val replace = urltext.replace("\\","/")
+                                item.thumbnail = "http://10.0.2.2:3000/"+"$replace"
+                                val pathUrl = item.thumbnail.toHttpUrl()
+                                Image(
+                                    painter = rememberAsyncImagePainter(pathUrl),
+                                    contentDescription = item.name,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .width(100.dp)
+                                        .height(100.dp)
+                                        .clip(RoundedCornerShape(10.dp))
+                                )
+                                }else{
                             Image(
                                 painter = rememberAsyncImagePainter(item.thumbnail),
                                 contentDescription = item.name,
@@ -197,7 +213,7 @@ fun SearchPage(navHostController: NavHostController){
                                     .width(100.dp)
                                     .height(100.dp)
                                     .clip(RoundedCornerShape(10.dp))
-                            )
+                            )}
 
                             Text(
                                 text = "${item.name}\n" ,
