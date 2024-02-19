@@ -65,12 +65,17 @@ class EpisodeActivity : ComponentActivity() {
             var context = LocalContext.current.applicationContext
             val episodeId = intent.getIntExtra("EPISODE_ID", 0)
             val cartoonid=intent.getIntExtra("CARTOON_ID",0)
+            var epname = intent.getStringExtra("EPISODE_NAME")
+            val epnumber = intent.getIntExtra("EPISODE_NUMBER",0)
+            if(epname == null){
+                epname = ""
+            }
             ITOONTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ){
-                    EpisodeScaffoldLayout(episodeId,cartoonid)
+                    EpisodeScaffoldLayout(episodeId,cartoonid, epname,epnumber)
                 }
             }
 
@@ -135,13 +140,15 @@ fun CartoonThisChapter(navHostController: NavHostController,epId: Int){
     }
 }
 @Composable
-fun EpisodeScaffoldLayout(epId:Int,cartoonid:Int){
+fun EpisodeScaffoldLayout(epId:Int,cartoonid:Int,epname:String,epnum:Int){
     val navController = rememberNavController()
     val Episode = epId
     val cartoonid = cartoonid
+    val epname = epname
+    val epnum = epnum
 
     Scaffold(
-        topBar = { EpisodeTopBar()},
+        topBar = { EpisodeTopBar(epname,epnum)},
         bottomBar = { EpisodeBottomBar(navController) },
         floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->

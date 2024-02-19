@@ -95,8 +95,8 @@ fun EpisodeBottomBar(navController: NavHostController){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EpisodeTopBar(){
-    val cartoonname = "ep 1"
+fun EpisodeTopBar(epname:String,epnum: Int){
+    val cartoonname = "$epname -"+" $epnum"
     TopAppBar(
         title = { Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
