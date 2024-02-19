@@ -179,12 +179,12 @@ private fun CartoonRecommend(navHostController:NavHostController){
                         .padding(horizontal = 15.dp)
                         .clickable(
                             onClick = {
-                                    clickCartoon = item
-                                    navHostController.currentBackStackEntry?.savedStateHandle?.set(
-                                        "data",
-                                        clickCartoon
-                                    )
-                                    navHostController.navigate(CartoonPage.CartoonEP.route)
+                                clickCartoon = item
+                                navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                    "data",
+                                    clickCartoon
+                                )
+                                navHostController.navigate(CartoonPage.CartoonEP.route)
                             }
                         )
                 ){
@@ -398,15 +398,10 @@ fun FirstPage(navHostController: NavHostController){
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 15.dp, bottom = 5.dp)
+                .padding(bottom = 5.dp)
         ){
-            Text(
-                text = "$count เรื่อง",
-                fontSize = 12.sp,
-                color = Color.Gray,
-            )
+            SliderImage()
         }
-        SliderImage()
         CartoonRecommend(navHostController)
         count = NewCartoonHit(navHostController)
     }

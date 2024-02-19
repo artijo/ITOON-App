@@ -8,12 +8,17 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Login
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -51,6 +56,7 @@ import com.project.itoon.LoginAndSignUp.LoginAndSignUp
 import com.project.itoon.LoginAndSignUp.LoginPage
 import com.project.itoon.LoginAndSignUp.PageITOON
 import com.project.itoon.LoginAndSignUp.Signup
+import com.project.itoon.LoginAndSignUp.startLoginActivity
 import com.project.itoon.Setting.SettingClass
 import com.project.itoon.Setting.Settingpage
 import com.project.itoon.Setting.SharedPreferencesManager
@@ -118,17 +124,16 @@ fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
 
     NavigationBar(modifier = Modifier.background(color = Color.Green)) {
         navigationItems.forEachIndexed { index, bottomBar ->
-            NavigationBarItem(selected = (selectScreen==index),
+            NavigationBarItem(selected = false,
                 onClick = {
                     if (navHostController.currentBackStack.value.size>=4){
                         navHostController.popBackStack()
                     }
-                    selectScreen = index
                     navHostController.navigate(bottomBar.route)
-                    Toast.makeText(contextForToast,"${bottomBar.name}",Toast.LENGTH_LONG).show() }, label = { Text(text = bottomBar.name) } ,icon = {
+                     }, label = { Text(text = bottomBar.name) } ,icon = {
                     Icon(painter = painterResource(id = bottomBar.icon),
                         contentDescription = null,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(25.dp)
                     ) })
         }
     }
@@ -136,11 +141,14 @@ fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
 
 
 
+@SuppressLint("RestrictedApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
 //    val data = navController.previousBackStackEntry?.savedStateHandle?.get<Toptextclass>("data")?:
 //    Toptextclass("Hi")
+    lateinit var share :SharedPreferencesManager
+    share =SharedPreferencesManager(contextForToast)
     var toptext by remember {
         mutableStateOf("ITOON")
     }
@@ -153,10 +161,12 @@ fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
                 BottomBar.Coin.route->BottomBar.Coin.name
                 BottomBar.ETC.route->BottomBar.ETC.name
                 BottomBar.MyCartoon.route->BottomBar.MyCartoon.name
+                SettingClass.Setting.route->SettingClass.Setting.name
                 else->"ITOON"
             }
         }
     }
+    if(navController.currentDestination?.route != SettingClass.Setting.route){
     TopAppBar(
         title = { Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -170,13 +180,56 @@ fun MyTopAppBar(navController: NavHostController, contextForToast: Context){
 
         }
         }, actions = {
-            IconButton(onClick = { navController.navigate(BottomBar.Favorite.route) },modifier = Modifier.size(20.dp)) {
-                Image(painter = painterResource(id = R.drawable.favorite), contentDescription = null)
+            IconButton(onClick = {
+                navController.navigate(BottomBar.MyCartoon.route)
+                                 },modifier = Modifier.size(20.dp)) {
+                Icon(imageVector = Icons.Default.Favorite, contentDescription = null
+                ,tint= Color.White
+                )
             }
-            IconButton(onClick = { navController.navigate(BottomBar.Favorite.route) },modifier = Modifier.size(20.dp)) {
-                Image(painter = painterResource(id = R.drawable.favorite), contentDescription = null)
+            Spacer(modifier = Modifier.padding(start = 10.dp))
+            IconButton(onClick = {
+                navController.navigate(BottomBar.SearchPage.route)
+                                 },modifier = Modifier.size(20.dp)) {
+                Icon(imageVector = Icons.Default.Search, contentDescription = null
+                ,tint = Color.White)
             }
-        }, colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(184,0,0)))
+        }, colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(184,0,0))
+    )
+    }
+    else{
+        TopAppBar(
+            title = { Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = toptext,
+                    letterSpacing = 1.75.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White
+                )
+                PrintCurrentRoute(navController)
+
+
+            }
+            }, actions = {
+                if (!share.isLoggedIn){
+                    IconButton(onClick = {startLoginActivity(contextForToast)},
+                        modifier = Modifier.size(20.dp))
+                    {
+                        Icon(imageVector = Icons.Filled.Login, contentDescription = null,tint = Color.White )
+                    }
+                }else{
+                    IconButton(onClick = {
+                        share.clearUserAll()
+                        Toast.makeText(contextForToast,"Logout Successfully.",
+                            Toast.LENGTH_LONG).show()
+                        navController.navigate(BottomBar.FirstPage.route)
+                    },modifier = Modifier.size(20.dp)) {
+                        Icon(imageVector = Icons.Filled.Logout, contentDescription = null,tint = Color.White )
+                    }
+                }
+            }, colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(184,0,0))
+        )
+    }
 }
 
 

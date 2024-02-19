@@ -156,29 +156,7 @@ fun Settingpage(navController:NavHostController){
                 horizontalArrangement = Arrangement.SpaceBetween,
                 ){
                 Row {
-                    Box (
-                        modifier = Modifier
-                            .border(
-                                width = 1.dp,
-                                color = Color.White,
-                                shape = RoundedCornerShape(100.dp)
-                            )
-                            .size(50.dp)
-                    ){
-                        Image(painter = painterResource(R.drawable.logo),
-                            contentDescription = "testprofilepic",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .border(
-                                    width = 1.dp,
-                                    color = Color.White,
-                                    shape = RoundedCornerShape(100.dp),
-                                )
-                                .clip(CircleShape)
 
-                        )
-
-                    }
                     Text(
                         text = "${userItems.name}",
                         fontSize = 15.sp,
@@ -312,15 +290,7 @@ fun Settingpage(navController:NavHostController){
                         fontSize = 10.sp)
                 }
             }
-            if(sharedPreferenceManager.isLoggedIn){
-            Row (Modifier.fillMaxWidth()){
-                TextButton(onClick = {
-                    sharedPreferenceManager.clearUserAll()
-                    navController.navigate(BottomBar.FirstPage.route)
-                }) {
-                    Text(text = "Logout")
-                }
-            } }
+
         }
     }
 }
