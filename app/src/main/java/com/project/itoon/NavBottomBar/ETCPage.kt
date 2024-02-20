@@ -40,11 +40,10 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
-import com.project.itoon.R
 import androidx.navigation.NavHostController
 import com.project.itoon.API
 import com.project.itoon.LoginAndSignUp.User
-
+import com.project.itoon.R
 import com.project.itoon.Setting.SettingClass
 import com.project.itoon.Setting.SharedPreferencesManager
 import retrofit2.Call
@@ -64,7 +63,7 @@ fun ETCPage(navtController: NavHostController){
     val userId by remember {
         mutableStateOf(sharedPreferenceManager.userId)
     }
-    val initialuser = User(0,"","","","")
+    val initialuser = User(0,"","","","",0)
     var userItems by remember { mutableStateOf(initialuser) }
     LaunchedEffect(lifecycleState){
         when(lifecycleState){
@@ -87,7 +86,8 @@ fun ETCPage(navtController: NavHostController){
                                         response.body()!!.email,
                                         response.body()!!.name,
                                         response.body()!!.password,
-                                        response.body()!!.phone
+                                        response.body()!!.phone?:"",
+                                        response.body()!!.coin
                                     )
                             } else {
 
@@ -131,7 +131,7 @@ fun ETCPage(navtController: NavHostController){
                                 RoundedCornerShape(100.dp)
                             ), tint = Color(218,153,43,100)
                     )
-                    Text(text = "200", fontSize = 25.sp, modifier = Modifier
+                    Text(text = "${userItems.coin}", fontSize = 25.sp, modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(start = 5.dp), textDecoration = TextDecoration.Underline)
                 }
@@ -192,7 +192,7 @@ fun ETCPage(navtController: NavHostController){
                     .padding(top = 20.dp)
                     .clickable {
                         navtController.currentBackStackEntry?.savedStateHandle?.set("data",
-                            User(userItems.id,userItems.email,userItems.name,userItems.password,userItems.phone))
+                            User(userItems.id,userItems.email,userItems.name,userItems.password,userItems.phone,userItems.coin))
                         navtController.navigate(SettingClass.Setting.route)
                     }
             ) {

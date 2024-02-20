@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,20 +20,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Send
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -56,7 +51,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.project.itoon.API
 import com.project.itoon.EpisodeNav.EpisodeBottom
@@ -81,7 +75,7 @@ fun CommentPage(navController: NavHostController,epid : Int,cartoonid: Int){
     val initialcomment = commentdata("",0,0,Episode(0,"",0,"","",
         0,Cartoon(0,"","","","",0,0,0, Genres(0,"","","",""),
             Creator(0,0,"","","",
-                User(0,"","","","")))),
+                User(0,"","","","",0)))),
         )
     var commentItems by remember { mutableStateOf(initialcomment) }
     var commentList = remember{ mutableStateListOf<commentdata>() }

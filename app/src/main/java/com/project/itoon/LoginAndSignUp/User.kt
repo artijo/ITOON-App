@@ -3,7 +3,6 @@ package com.project.itoon.LoginAndSignUp
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.project.itoon.firstpageapi.Genres
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -22,4 +21,7 @@ data class User(
 
     @Expose
     @SerializedName("phone") val phone:String,
+
+    @Expose
+    @SerializedName("coin") val coin:Int
 ): Parcelable
