@@ -147,76 +147,78 @@ fun Settingpage(navController:NavHostController){
                         tint =Color.Black
                     )
                 }
-            }
-            if(showDialog){
-                AlertDialog(
-                    onDismissRequest = {showDialog=false},
-                    title = { Text(text ="เปลี่ยนชื่อขอคุณ")},
-                    text = {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally)
-                        {
-                            OutlinedTextField(
-                                value = textFieldName,
-                                onValueChange = { textFieldName = it },
-                                label = { Text(text = "โปรดใส่ชื่อใหม่ของคุณ") }
-                            )
-
-                            OutlinedTextField(
-                                value = textFieldEmail,
-                                onValueChange = { textFieldEmail = it },
-                                label = { Text(text = "โปรดใส่อีเมลใหม่ของคุณ") }
-                            )
-                        }
-                    },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            showDialog=false
-                            createClient.updateProfile(userId.toString(),textFieldEmail,textFieldName)
-                                .enqueue(
-                                    object :Callback<Profile>{
-                                        override fun onResponse(
-                                            call: Call<Profile>,
-                                            response: Response<Profile>
-                                        ) {
-                                            if(response.isSuccessful){
-                                                Toast.makeText(contextForToast,
-                                                    "Successfully Updated",
-                                                    Toast.LENGTH_LONG).show()
-                                            }
-                                            else{
-                                                Toast.makeText(contextForToast,
-                                                    "Update Failure",
-                                                    Toast.LENGTH_LONG).show()
-                                            }
-                                        }
-
-                                        override fun onFailure(call: Call<Profile>, t: Throwable) {
-                                            Toast.makeText(contextForToast,
-                                                "Error on Failure"+t.message,
-                                                Toast.LENGTH_LONG).show()
-                                        }
-                                    }
+                if(showDialog){
+                    AlertDialog(
+                        onDismissRequest = {showDialog=false},
+                        title = { Text(text ="เปลี่ยนชื่อขอคุณ")},
+                        text = {
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally)
+                            {
+                                OutlinedTextField(
+                                    value = textFieldName,
+                                    onValueChange = { textFieldName = it },
+                                    label = { Text(text = "โปรดใส่ชื่อใหม่ของคุณ") }
                                 )
-                            textFieldName=""
-                            textFieldEmail=""
-                        }) {
-                            Text(text = "Save")
+
+                                OutlinedTextField(
+                                    value = textFieldEmail,
+                                    onValueChange = { textFieldEmail = it },
+                                    label = { Text(text = "โปรดใส่อีเมลใหม่ของคุณ") }
+                                )
+                            }
+                        },
+                        confirmButton = {
+                            TextButton(onClick = {
+
+                                createClient.updateProfile(userId.toString(),textFieldEmail,textFieldName)
+                                    .enqueue(
+                                        object :Callback<Profile>{
+                                            override fun onResponse(
+                                                call: Call<Profile>,
+                                                response: Response<Profile>
+                                            ) {
+                                                if(response.isSuccessful){
+                                                    Toast.makeText(contextForToast,
+                                                        "Successfully Updated",
+                                                        Toast.LENGTH_LONG).show()
+                                                    showDialog=false
+                                                }
+                                                else{
+                                                    Toast.makeText(contextForToast,
+                                                        "Update Failure",
+                                                        Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+
+                                            override fun onFailure(call: Call<Profile>, t: Throwable) {
+                                                Toast.makeText(contextForToast,
+                                                    "Error on Failure"+t.message,
+                                                    Toast.LENGTH_LONG).show()
+                                            }
+                                        }
+                                    )
+                                textFieldName=""
+                                textFieldEmail=""
+                            }) {
+                                Text(text = "Save")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = {
+                                showDialog=false
+                                textFieldName=""
+                                textFieldEmail=""
+                            }) {
+                                Text(text = "Cancle")
+                            }
                         }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = {
-                            showDialog=false
-                            textFieldName=""
-                            textFieldEmail=""
-                        }) {
-                            Text(text = "Cancle")
-                        }
-                    }
                     )
 
+                }
             }
+
             Spacer(modifier = Modifier.padding(5.dp))
             Divider(color = Color.LightGray, thickness = 1.dp)
             Text(text = "อีเมล",

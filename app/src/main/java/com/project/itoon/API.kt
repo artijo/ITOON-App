@@ -57,6 +57,7 @@ interface API {
     ):Call<commentdata>
 
 //    updateprofile
+    @FormUrlEncoded
     @PUT("profile/{id}")
     fun updateProfile(
     @Path("id") id:String,
