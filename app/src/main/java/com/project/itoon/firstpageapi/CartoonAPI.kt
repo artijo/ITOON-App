@@ -5,8 +5,13 @@ import com.project.itoon.cartoonPage.imgEp
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
+import java.util.Date
 
 interface CartoonAPI {
 
@@ -36,6 +41,15 @@ interface CartoonAPI {
     fun getImgCartoon(
         @Path("epId") id: Int
     ):Call<List<imgEp>>
+
+
+
+    @GET("edithistory/{uid}/{cid}/{epnum}")
+    fun updatehistory(
+        @Path("uid") uid:String,
+        @Path("cid") cid:String,
+        @Path("epnum") epnum:String,
+    ):Call<edithistory>
 
     companion object{
         fun create():CartoonAPI{

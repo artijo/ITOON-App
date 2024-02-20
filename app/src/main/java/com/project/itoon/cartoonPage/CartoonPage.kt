@@ -3,6 +3,7 @@ package com.project.itoon.cartoonPage
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -56,14 +57,17 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.LoginAndSignUp.LoginActivity
 import com.project.itoon.LoginAndSignUp.User
+import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.firstpageapi.Creator
 import com.project.itoon.firstpageapi.Genres
+import com.project.itoon.firstpageapi.edithistory
 import com.project.itoon.ui.theme.ITOONTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Date
 
 sealed class CartoonPage(val route:String,val name:String){
     data object CartoonEP: CartoonPage("CartoonEP_Page","หน้าเลือกตอน")
@@ -195,7 +199,10 @@ private fun ItemLayOutColumn(
 ){
     val navController = rememberNavController()
     val thumbnailtext by remember{ mutableStateOf(episode.thumbnail) }
-
+    val contextForToast = LocalContext.current.applicationContext
+    lateinit var sharedPreferenceManager : SharedPreferencesManager
+    sharedPreferenceManager = SharedPreferencesManager(context = contextForToast)
+    val userId by remember{ mutableStateOf(sharedPreferenceManager.userId) }
     var episodeurl by remember { mutableStateOf(
         if (thumbnailtext.isNotEmpty()) {
             Uri.parse("http://10.0.2.2:3000/"+"${thumbnailtext}")
@@ -212,8 +219,10 @@ private fun ItemLayOutColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    startEpisodeActivity(context,episode.id,episode.cartoonId
-                    ,episode.name,episode.episodeNumber)
+                    updatehistoryfuntion(userId,episode.cartoonId,episode.episodeNumber)
+                    startEpisodeActivity(
+                        context, episode.id, episode.cartoonId, episode.name, episode.episodeNumber
+                    )
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -327,5 +336,22 @@ fun startEpisodeActivity(c: Context,episodeId:Int,cartoonid:Int,epname:String,ep
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     }
     c.startActivity(intent)
+
 }
 
+
+fun updatehistoryfuntion(uid:Int,cid:Int,epnum:Int){
+    val creatClient = CartoonAPI.create()
+    creatClient.updatehistory(uid.toString(),cid.toString(),epnum.toString())
+        .enqueue(object : Callback<edithistory>{
+            override fun onResponse(call: Call<edithistory>, response: Response<edithistory>) {
+                Log.i("check","onrespond")
+            }
+
+            override fun onFailure(call: Call<edithistory>, t: Throwable) {
+                Log.i("check","onfail")
+            }
+        }
+
+        )
+}
