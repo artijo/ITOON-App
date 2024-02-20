@@ -344,6 +344,5 @@ fun updatehistoryfuntion(uid:Int,cid:Int,epnum:Int){
                 Log.i("check","onfail")
             }
         }
-
         )
 }

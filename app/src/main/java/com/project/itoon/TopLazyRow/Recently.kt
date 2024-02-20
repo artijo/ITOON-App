@@ -1,8 +1,10 @@
 package com.project.itoon.TopLazyRow
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,7 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.ShowTextTest
+import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
 import retrofit2.Call
@@ -46,22 +50,34 @@ import retrofit2.Response
 fun Recently(navHostController: NavHostController){
     val createClient = CartoonAPI.create()
     val cartoonList  = remember {
-        mutableStateListOf<Cartoon>()
+        mutableStateListOf<allhistory>()
     }
     val contextForToast = LocalContext.current.applicationContext
-
+    lateinit var sharedPreferenceManager : SharedPreferencesManager
+    sharedPreferenceManager = SharedPreferencesManager(context = contextForToast)
+    val userId by remember{ mutableStateOf(sharedPreferenceManager.userId) }
     cartoonList.clear()
-    createClient.retrieveCartoon()
-        .enqueue(object :Callback<List<Cartoon>>{
-            override fun onResponse(call: Call<List<Cartoon>>, response: Response<List<Cartoon>>) {
+    createClient.allhistory(userId.toString())
+        .enqueue(object :Callback<List<allhistory>>{
+            override fun onResponse(call: Call<List<allhistory>>, response: Response<List<allhistory>>) {
+                Log.i("data",response.body().toString())
+                Log.i("data","response.body().toString()")
+
                 response.body()?.forEach {
-                    cartoonList.add(Cartoon(it.id, it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId, it.genres
-                    ,it.creator))
+                    cartoonList.add(allhistory(
+                        it.id,it.userId,it.cartoonId,it.episodeId,
+                        Cartoonhis(it.cartoon.name,
+                            Creatorhis(Userhis(it.user.name)),it.cartoon.thumbnail,it.cartoon.description,it.cartoon.releaseDate,it.cartoon.totalEpisode
+                        ),
+                        Userhis(it.user.name),
+                        Episodehis(it.episode.episodeNumber)
+                    ))
                 }
             }
 
-            override fun onFailure(call: Call<List<Cartoon>>, t: Throwable) {
+            override fun onFailure(call: Call<List<allhistory>>, t: Throwable) {
                 Toast.makeText(contextForToast,"Error on Failure"+t.message,Toast.LENGTH_LONG).show()
+                Log.i("data","error")
             }
         })
 
@@ -73,13 +89,9 @@ fun Recently(navHostController: NavHostController){
     }
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .border(5.dp, Color.Magenta),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Text(text = "RecentlyPage")
         LazyColumn(verticalArrangement = Arrangement.Center,
             contentPadding = PaddingValues(horizontal = 15.dp)
@@ -90,10 +102,15 @@ fun Recently(navHostController: NavHostController){
                     modifier = Modifier
                         .width(360.dp)
                         .padding(bottom = 10.dp)
+                        .clickable (
+                            onClick = {
+
+                            }
+                        )
                 ){
                     Image(
-                        painter = rememberAsyncImagePainter(item.thumbnail),
-                        contentDescription = item.name,
+                        painter = rememberAsyncImagePainter(item.cartoon.thumbnail),
+                        contentDescription = item.cartoon.name,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .width(45.dp)
@@ -105,7 +122,7 @@ fun Recently(navHostController: NavHostController){
                         Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text= item.name,
+                            text= item.cartoon.name,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color.Black,
@@ -114,16 +131,7 @@ fun Recently(navHostController: NavHostController){
                             lineHeight = 3.sp,
                             modifier = Modifier.fillMaxWidth()
                         )
-                        Text(
-                            text= item.genres.name,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.Gray,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            lineHeight = 1.sp,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+
                     }
                 }
             }

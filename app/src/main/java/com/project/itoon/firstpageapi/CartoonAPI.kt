@@ -1,5 +1,6 @@
 package com.project.itoon.firstpageapi
 
+import com.project.itoon.TopLazyRow.allhistory
 import com.project.itoon.cartoonPage.CartoonAllEp
 import com.project.itoon.cartoonPage.imgEp
 import retrofit2.Call
@@ -50,6 +51,11 @@ interface CartoonAPI {
         @Path("cid") cid:String,
         @Path("epnum") epnum:String,
     ):Call<edithistory>
+
+    @GET("allhistory/{uid}")
+    fun allhistory(
+        @Path("uid") uid: String
+    ):Call<List<allhistory>>
 
     companion object{
         fun create():CartoonAPI{
