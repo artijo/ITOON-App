@@ -1,7 +1,14 @@
 package com.project.itoon.Setting
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.Intent.ACTION_SHOW_APP_INFO
+import android.os.Bundle
+import android.provider.Settings.ACTION_WIFI_SETTINGS
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,7 +29,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -40,17 +50,22 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.getContextForLanguage
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import com.project.itoon.API
+import com.project.itoon.LoginAndSignUp.LoginActivity
+import com.project.itoon.LoginAndSignUp.LoginAndSignUp
 import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.LoginAndSignUp.startLoginActivity
+import com.project.itoon.MainActivity
+import com.project.itoon.ui.theme.ITOONTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-@SuppressLint("SuspiciousIndentation")
+
 @Composable
 fun Settingpage(navController:NavHostController){
     val contextForToast = LocalContext.current.applicationContext
@@ -61,7 +76,7 @@ fun Settingpage(navController:NavHostController){
     var userItems by remember { mutableStateOf(initialuser) }
     var updateprofile = remember { mutableStateListOf<User>() }
     val lifecycleOwner = LocalLifecycleOwner.current
-    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState() 
     var showDialog by remember { mutableStateOf(false) }
     lateinit var sharedPreferenceManager : SharedPreferencesManager
     sharedPreferenceManager = SharedPreferencesManager(context = contextForToast)
@@ -218,36 +233,8 @@ fun Settingpage(navController:NavHostController){
             Spacer(modifier = Modifier.padding(5.dp))
                 }
             Divider(color = Color.LightGray, thickness = 1.dp)
-            Text(text = "การแจ้งเตือน",
-                fontSize = 15.sp,
-                modifier = Modifier.padding(top = 5.dp))
-            Row (
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ){
-                Row {
-                    Icon(
-                        imageVector = Icons.Default.NotificationsOff ,
-                        contentDescription = "notification",
-                        modifier = Modifier.padding(top=5.dp)
-                    )
-                    Text(text = "การแจ้งเตือนเปิดอยู่หากต้องการปิด\nไปที่ตั้งค่าของอุปกรณ์ของคุณ",
-                        fontSize = 12.sp,
-                        modifier = Modifier.padding(top=2.dp)
-                    )
-                }
-                Button(onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(Color.Black)
-                ) {
-                    Text(
-                        text = "ตั้งค่าอุปกรณ์" ,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 10.sp)
-                }
-            }
-
         }
     }
 }
+
 
