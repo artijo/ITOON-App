@@ -35,4 +35,6 @@ data class Userhis(
 data class Episodehis(
     @Expose
     @SerializedName("episodeNumber") val episodeNumber: Int,
+    @Expose
+    @SerializedName("name") val episodeName:String
 )
