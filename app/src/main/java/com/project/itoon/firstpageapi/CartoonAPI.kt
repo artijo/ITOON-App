@@ -3,16 +3,19 @@ package com.project.itoon.firstpageapi
 import com.project.itoon.TopLazyRow.allhistory
 import com.project.itoon.cartoonPage.CartoonAllEp
 import com.project.itoon.cartoonPage.imgEp
+import com.project.itoon.favoritebutton.FavClass
+import com.project.itoon.favoritebutton.Status
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import java.util.Date
 
 interface CartoonAPI {
 
@@ -42,6 +45,25 @@ interface CartoonAPI {
     fun getImgCartoon(
         @Path("epId") id: Int
     ):Call<List<imgEp>>
+
+    @GET("fav/{id}/{cartoonId}")
+    fun isFav(
+        @Path("id") id: Int,
+        @Path("cartoonId") cartoonId: Int
+    ): Call<Status>
+
+
+    @GET("favInsert/{id}/{cartoonId}")
+    fun addFav(
+        @Path("id") id: Int,
+        @Path("cartoonId") cartoonId: Int
+    ): Call<Status>
+
+    @DELETE("fav/{id}/{cartoonId}")
+    fun unFav(
+        @Path("id") id: Int,
+        @Path("cartoonId") cartoonId: Int
+    ): Call<Status>
 
 
 

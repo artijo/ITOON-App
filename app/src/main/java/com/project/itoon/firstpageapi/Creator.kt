@@ -10,7 +10,6 @@ import kotlinx.parcelize.Parcelize
 data class Creator(
     @Expose
     @SerializedName("id") val id:Int,
-
     @Expose
     @SerializedName("userId") val userid:Int,
     @Expose

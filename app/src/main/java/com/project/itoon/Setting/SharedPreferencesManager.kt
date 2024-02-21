@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 
-class SharedPreferencesManager(context: Context) {
+class SharedPreferencesManager(context: Context){
     companion object{
         private const val KEY_IS_LOGGED_IN ="is_logged_in"
         private const val KEY_USER_EMAIL ="user_email"

@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.project.itoon.LoginAndSignUp.LoginPage
 import com.project.itoon.LoginAndSignUp.Signup
 import com.project.itoon.NavBottomBar.MainScreen
+import com.project.itoon.favoritebutton.FavoriteButton
 import com.project.itoon.ui.theme.ITOONTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //                    MenuLazyrow()
                     MainScreen()
+//                    FavoriteButton(1001)
 //                    TestPayment()
 //                    CartoonThisChapter()
 //                    if you want to call first page just use TestCall() function

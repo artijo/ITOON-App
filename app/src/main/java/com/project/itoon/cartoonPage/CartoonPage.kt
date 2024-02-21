@@ -51,6 +51,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.Setting.SharedPreferencesManager
+import com.project.itoon.favoritebutton.FavoriteButton
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.firstpageapi.Creator
@@ -134,6 +135,11 @@ fun CartoonThumbnail(navController:NavHostController){
                             )
                         }
                     }
+//                    Favorite Button
+                    Box(modifier = Modifier.align(Alignment.BottomEnd)){
+                        FavoriteButton(data.id,data.name)
+                    }
+
                     Box(
                         modifier = Modifier
                             .padding(start = 20.dp,top = 75.dp)
@@ -211,7 +217,7 @@ private fun ItemLayOutColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    updatehistoryfuntion(userId,episode.cartoonId,episode.episodeNumber)
+                    updatehistoryfuntion(userId, episode.cartoonId, episode.episodeNumber)
                     startEpisodeActivity(
                         context, episode.id, episode.cartoonId, episode.name, episode.episodeNumber
                     )
