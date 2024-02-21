@@ -17,6 +17,4 @@ data class edithistory (
     @Expose
     @SerializedName("viewDate") val viewDate:Date,
 
-    @Expose
-    @SerializedName("epnum") val epnum:Int
-)
+    )

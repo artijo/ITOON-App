@@ -2,6 +2,7 @@
 
 package com.project.itoon
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -307,6 +308,8 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
                                     onClick = {
 //                                        isOpen = true
 //                                        idTextCartoon.value = item.name
+                                        Log.i("checkdata",item.toString())
+
                                         navHostController.navigate( BottomBar.ETC.route)
                                         clickCartoon = item
                                         navHostController.currentBackStackEntry?.savedStateHandle?.set(

@@ -1,5 +1,6 @@
 package com.project.itoon.NavBottomBar
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,10 +23,11 @@ import com.project.itoon.MenuLazyrow
 import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.TopLazyRow.NavGraphTopApp
 
+@SuppressLint("RestrictedApi")
 @Composable
-fun MyCarToonPage(){
+fun MyCarToonPage(navHostController: NavHostController){
     val contextForToast = LocalContext.current.applicationContext
-    var navHostController = rememberNavController()
+    var navController = rememberNavController()
 
     lateinit var sharedPreferences:SharedPreferencesManager
     sharedPreferences = SharedPreferencesManager(contextForToast)
@@ -55,7 +57,8 @@ fun MyCarToonPage(){
                 .padding(paddingValues = paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            NavGraphTopApp(navHostController = navHostController)
+
+            NavGraphTopApp(navController)
         }
     }
 }

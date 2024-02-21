@@ -1,5 +1,6 @@
 package com.project.itoon.TopLazyRow
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.project.itoon.NavBottomBar.BottomBar
 import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.ShowTextTest
 import com.project.itoon.cartoonPage.CartoonPage
@@ -46,11 +48,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun Recently(navHostController: NavHostController){
     val createClient = CartoonAPI.create()
     val cartoonList  = remember {
-        mutableStateListOf<allhistory>()
+        mutableStateListOf<Cartoon>()
     }
     val contextForToast = LocalContext.current.applicationContext
     lateinit var sharedPreferenceManager : SharedPreferencesManager
@@ -64,14 +67,9 @@ fun Recently(navHostController: NavHostController){
                 Log.i("data","response.body().toString()")
 
                 response.body()?.forEach {
-                    cartoonList.add(allhistory(
-                        it.id,it.userId,it.cartoonId,it.episodeId,
-                        Cartoonhis(it.cartoon.name,
-                            Creatorhis(Userhis(it.user.name)),it.cartoon.thumbnail,it.cartoon.description,it.cartoon.releaseDate,it.cartoon.totalEpisode
-                        ),
-                        Userhis(it.user.name),
-                        Episodehis(it.episode.episodeNumber)
-                    ))
+                    cartoonList.add(
+                        Cartoon(it.cartoonId,it.cartoon.name,it.cartoon.description,it.cartoon.releaseDate,it.cartoon.thumbnail,it.cartoon.totalEpisodes,it.cartoon.creatorId,it.cartoon.genreId,it.cartoon.genres,it.cartoon.creator)
+                    )
                 }
             }
 
@@ -96,8 +94,11 @@ fun Recently(navHostController: NavHostController){
         LazyColumn(verticalArrangement = Arrangement.Center,
             contentPadding = PaddingValues(horizontal = 15.dp)
         ){
+            var clickCartoon:Cartoon
             items(cartoonList){
                     item ->
+                val urltext = item.thumbnail
+
                 Row (
                     modifier = Modifier
                         .width(360.dp)
@@ -109,8 +110,8 @@ fun Recently(navHostController: NavHostController){
                         )
                 ){
                     Image(
-                        painter = rememberAsyncImagePainter(item.cartoon.thumbnail),
-                        contentDescription = item.cartoon.name,
+                        painter = rememberAsyncImagePainter(item.thumbnail),
+                        contentDescription = item.name,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .width(45.dp)
@@ -122,7 +123,7 @@ fun Recently(navHostController: NavHostController){
                         Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text= item.cartoon.name,
+                            text= item.name,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color.Black,

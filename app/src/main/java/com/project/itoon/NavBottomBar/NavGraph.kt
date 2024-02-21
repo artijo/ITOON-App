@@ -73,12 +73,13 @@ fun NavGraph(navHostController: NavHostController) {
     val context = LocalContext.current.applicationContext
     lateinit var share : SharedPreferencesManager
     share = SharedPreferencesManager(context)
+    val navController = rememberNavController()
     NavHost(navController = navHostController, startDestination = BottomBar.FirstPage.route , route = "MainPage") {
         composable(route = BottomBar.FirstPage.route) {
             FirstPage(navHostController)
         }
         composable(route = BottomBar.MyCartoon.route) {
-                MyCarToonPage()
+                MyCarToonPage(navController)
         }
 
         composable(route = BottomBar.Coin.route) {
@@ -105,6 +106,7 @@ fun NavGraph(navHostController: NavHostController) {
         composable(route = BottomBar.SearchPage.route) {
             SearchPage(navHostController)
         }
+
 
     }
 }

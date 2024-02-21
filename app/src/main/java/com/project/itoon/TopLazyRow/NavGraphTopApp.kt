@@ -13,6 +13,7 @@ import com.project.itoon.TopLazyRow.TopLazyRow
 
 @Composable
 fun NavGraphTopApp(navHostController: NavHostController){
+
     NavHost(navController = navHostController, startDestination = TopLazyRow.Recently.route){
         composable(route = TopLazyRow.Recently.route){
             Recently(navHostController)
