@@ -11,6 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -91,70 +92,59 @@ fun SearchPage(navHostController: NavHostController){
             }
         }
     }
-    Column {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(5.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ){
-            Text(
-                text = "Search:",
-                fontSize = 20.sp
-            )
-            OutlinedTextField(
-                modifier = Modifier
-                    .width(230.dp)
-                    .padding(10.dp),
-                value = textFieldName,
-                onValueChange = { textFieldName = it },
-                label = { Text(text = "Cartoon name") },
-                trailingIcon =  {Icon(imageVector = Icons.Default.Search, contentDescription = null,
-                    Modifier.clickable {
-                        if (textFieldName.trim().isEmpty()) {
-                            showAllCartoon(cartoonItemsList, contextForToast)
-                        } else {
-                            cartoonItemsList.clear()
-                            createClient.SearchCartoon(textFieldName)
-                                .enqueue(object : Callback<List<Cartoon>> {
-                                    override fun onResponse(
-                                        call: Call<List<Cartoon>>,
-                                        response: Response<List<Cartoon>>
-                                    ) {
+    Column (horizontalAlignment = Alignment.CenterHorizontally){
+        Spacer(modifier = Modifier.padding(5.dp))
+        OutlinedTextField(
+            modifier = Modifier
+                .width(280.dp)
+                .height(50.dp),
+            shape = RoundedCornerShape(10.dp),
+            value = textFieldName,
+            onValueChange = { textFieldName = it },
 
-                                        if (response.isSuccessful) {
-                                            Toast.makeText(
-                                                contextForToast,
-                                                "${response!!.body()?.size}", Toast.LENGTH_LONG
-                                            ).show()
-                                            response!!.body()?.forEach {
-                                                Log.i("Data",it.toString())
-                                                cartoonItemsList.add(it)
-                                            }
+            trailingIcon =  {Icon(imageVector = Icons.Default.Search, contentDescription = null,
+                Modifier.clickable {
+                    if (textFieldName.trim().isEmpty()) {
+                        showAllCartoon(cartoonItemsList, contextForToast)
+                    } else {
+                        cartoonItemsList.clear()
+                        createClient.SearchCartoon(textFieldName)
+                            .enqueue(object : Callback<List<Cartoon>> {
+                                override fun onResponse(
+                                    call: Call<List<Cartoon>>,
+                                    response: Response<List<Cartoon>>
+                                ) {
 
-                                        } else {
-                                            Toast.makeText(
-                                                contextForToast,
-                                                "Cartoon not Found", Toast.LENGTH_LONG
-                                            ).show()
-                                        }
-                                    }
-
-                                    override fun onFailure(call: Call<List<Cartoon>>, t: Throwable) {
+                                    if (response.isSuccessful) {
                                         Toast.makeText(
-                                            contextForToast, "Error onFailure at search " + t.message,
-                                            Toast.LENGTH_LONG
+                                            contextForToast,
+                                            "${response!!.body()?.size}", Toast.LENGTH_LONG
+                                        ).show()
+                                        response!!.body()?.forEach {
+                                            Log.i("Data",it.toString())
+                                            cartoonItemsList.add(it)
+                                        }
+
+                                    } else {
+                                        Toast.makeText(
+                                            contextForToast,
+                                            "Cartoon not Found", Toast.LENGTH_LONG
                                         ).show()
                                     }
-                                })
-                        }
-                    })
+                                }
+
+                                override fun onFailure(call: Call<List<Cartoon>>, t: Throwable) {
+                                    Toast.makeText(
+                                        contextForToast, "Error onFailure at search " + t.message,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            })
                     }
-                )}
-
-
-
+                })
+            }
+        )
+        Spacer(modifier = Modifier.padding(5.dp))
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
@@ -217,7 +207,9 @@ fun SearchPage(navHostController: NavHostController){
 
                             Text(
                                 text = "${item.name}\n" ,
-                                Modifier.weight(0.85f).padding(start = 10.dp),
+                                Modifier
+                                    .weight(0.85f)
+                                    .padding(start = 10.dp),
                                 textAlign = TextAlign.Justify,
                                 fontSize = 15.sp
                             )
@@ -233,7 +225,7 @@ fun SearchPage(navHostController: NavHostController){
 
 }
 
-private fun showAllCartoon(cartoonItemsList: MutableList<Cartoon>, context: Context) {
+fun showAllCartoon(cartoonItemsList: MutableList<Cartoon>, context: Context) {
     val createClient = CartoonAPI.create()
     createClient.retrieveCartoon()
         .enqueue(object : Callback<List<Cartoon>> {
