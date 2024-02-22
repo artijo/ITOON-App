@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import com.project.itoon.API
+import com.project.itoon.Config
 import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.R
 import com.project.itoon.Setting.SettingClass
@@ -148,7 +149,7 @@ fun ETCPage(navtController: NavHostController){
                 Button(onClick = {
                     val urlIntent = Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("http://10.52.201.0:5173/coin-transaction")
+                        Uri.parse("${Config().WebClientBaseUrl}/coin-transaction")
                     )
                     ctx.startActivity(urlIntent)
                                  },colors=ButtonDefaults.buttonColors(Color(184,0,0)),
@@ -211,7 +212,7 @@ fun ETCPage(navtController: NavHostController){
                     .clickable {
                         val urlIntent = Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse("http://10.52.201.0:5173/login")
+                            Uri.parse("${Config().WebClientBaseUrl}")
                         )
                         ctx.startActivity(urlIntent)
                     }

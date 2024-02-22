@@ -121,30 +121,44 @@ fun Recently(navHostController: NavHostController){
                                         item.eplist.episode.episodeNumber
                                     )
                                 }
-                            )
+                            ),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Image(
-                            painter = rememberAsyncImagePainter(item.cartoonlist.thumbnail),
-                            contentDescription = item.cartoonlist.name,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .width(45.dp)
-                                .height(45.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                        )
-                        Spacer(modifier = Modifier.width(width = 10.dp))
-                        Column(
-                            Modifier.fillMaxWidth()
+
+                        Row(verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Image(
+                                painter = rememberAsyncImagePainter(item.cartoonlist.thumbnail),
+                                contentDescription = item.cartoonlist.name,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .width(45.dp)
+                                    .height(45.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                            )
+                            Spacer(modifier = Modifier.width(width = 10.dp))
                             Text(
                                 text = item.cartoonlist.name,
-                                fontSize = 12.sp,
+                                fontSize = 15.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Black,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                                 lineHeight = 3.sp,
-                                modifier = Modifier.fillMaxWidth()
+                            )
+
+                        }
+                        Spacer(modifier = Modifier.width(30.dp))
+                        Column(Modifier.align(Alignment.CenterVertically)
+                        ) {
+                            Text(
+                                text = "#"+item.eplist.episode.episodeNumber.toString(),
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Black,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                lineHeight = 3.sp,
                             )
 
                         }
