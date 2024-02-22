@@ -4,9 +4,7 @@ import com.project.itoon.Commentpage.commentdata
 import com.project.itoon.LoginAndSignUp.LoginClass
 import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.Setting.Profile
-import com.project.itoon.favoritebutton.Status
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Field
@@ -73,7 +71,7 @@ interface API {
     companion object{
         fun create():API{
             val usr : API = Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000/")
+                .baseUrl(Config().APIBaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(API::class.java)
