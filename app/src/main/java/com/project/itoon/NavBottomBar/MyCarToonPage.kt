@@ -25,9 +25,9 @@ import com.project.itoon.TopLazyRow.NavGraphTopApp
 
 @SuppressLint("RestrictedApi")
 @Composable
-fun MyCarToonPage(navHostController: NavHostController){
+fun MyCarToonPage(LazynavHostController: NavHostController){
     val contextForToast = LocalContext.current.applicationContext
-    var navController = rememberNavController()
+    var navHostController = rememberNavController()
 
     lateinit var sharedPreferences:SharedPreferencesManager
     sharedPreferences = SharedPreferencesManager(contextForToast)
@@ -58,7 +58,7 @@ fun MyCarToonPage(navHostController: NavHostController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            NavGraphTopApp(navController)
+            NavGraphTopApp(navHostController)
         }
     }
 }
