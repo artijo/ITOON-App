@@ -4,6 +4,8 @@ import com.project.itoon.Config
 import com.project.itoon.TopLazyRow.allhistory
 import com.project.itoon.cartoonPage.CartoonAllEp
 import com.project.itoon.cartoonPage.imgEp
+import com.project.itoon.favoritebutton.FavClass
+import com.project.itoon.favoritebutton.ShowFavClass
 import com.project.itoon.favoritebutton.Status
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -60,7 +62,10 @@ interface CartoonAPI {
         @Path("cartoonId") cartoonId: Int
     ): Call<Status>
 
-
+    @GET("showfav/{uid}")
+    fun showallfav(
+        @Path("uid") uid: String
+    ):Call<List<ShowFavClass>>
 
     @GET("edithistory/{uid}/{cid}/{epnum}")
     fun updatehistory(
