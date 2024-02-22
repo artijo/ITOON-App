@@ -1,15 +1,10 @@
 package com.project.itoon.TopLazyRow
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -20,14 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,16 +36,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.project.itoon.LoginAndSignUp.LoginAndSignUp
-import com.project.itoon.LoginAndSignUp.startLoginActivity
-import com.project.itoon.NavBottomBar.BottomBar
 import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.ShowTextTest
-import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.cartoonPage.startEpisodeActivity
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
-import com.project.itoon.ui.theme.ITOONTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -92,7 +76,7 @@ fun Recently(navHostController: NavHostController){
 
                 response.body()?.forEach {
                     itemList.add(
-                        Item(Cartoon(it.cartoonId,it.cartoon.name,it.cartoon.description,it.cartoon.releaseDate,it.cartoon.thumbnail,it.cartoon.totalEpisodes,it.cartoon.creatorId,it.cartoon.genreId,it.cartoon.genres,it.cartoon.creator),
+                        Item(Cartoon(it.cartoonId,it.cartoon.name,it.cartoon.description,it.cartoon.releaseDate,it.cartoon.thumbnail,it.cartoon.totalEpisodes,it.cartoon.creatorId,it.cartoon.genreId,it.cartoon.genres,it.cartoon.creator,it.cartoon.paid,it.cartoon.price),
                             allhistory(it.id,it.userId,it.cartoonId,it.episodeId,it.cartoon,it.user,it.episode))
                     )
                 }

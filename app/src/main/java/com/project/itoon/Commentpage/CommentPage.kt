@@ -75,7 +75,7 @@ fun CommentPage(navController: NavHostController,epid : Int,cartoonid: Int){
     val initialcomment = commentdata("",0,0,Episode(0,"",0,"","",
         0,Cartoon(0,"","","","",0,0,0, Genres(0,"","","",""),
             Creator(0,0,"","","",
-                User(0,"","","","",0)))),
+                User(0,"","","","",0)),false,0) ),
         )
     var commentItems by remember { mutableStateOf(initialcomment) }
     var commentList = remember{ mutableStateListOf<commentdata>() }

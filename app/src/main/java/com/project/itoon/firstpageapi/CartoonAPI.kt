@@ -74,6 +74,12 @@ interface CartoonAPI {
         @Path("uid") uid: String
     ):Call<List<allhistory>>
 
+    @GET("boughtCartoon/{cartoonId}/{userId}")
+    fun boughtCartoon(
+        @Path("cartoonId") cartoonId: Int,
+        @Path("userId") userId: Int
+    ):Call<boughCartoon>
+
     companion object{
         fun create():CartoonAPI{
             val cartoonClient:CartoonAPI = Retrofit.Builder()

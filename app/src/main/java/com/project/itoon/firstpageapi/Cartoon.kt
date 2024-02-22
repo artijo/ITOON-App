@@ -37,5 +37,19 @@ data class Cartoon(
     @Expose
     @SerializedName("creator")val creator:Creator?,
 
+    @Expose
+    @SerializedName("paid") val paid:Boolean,
+
+    @Expose
+    @SerializedName("price") val price:Int,
+
     ): Parcelable
+
+data class boughCartoon(
+    @Expose
+    @SerializedName("status") var status:String,
+
+    @Expose
+    @SerializedName("message") var message:String,
+)
 

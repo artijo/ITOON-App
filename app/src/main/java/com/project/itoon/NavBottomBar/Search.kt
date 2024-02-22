@@ -3,10 +3,8 @@ package com.project.itoon.NavBottomBar
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import android.view.KeyEvent
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,16 +18,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -42,10 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -56,12 +48,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
-import com.project.itoon.firstpageapi.Creator
-import com.project.itoon.firstpageapi.Genres
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.Call
 import retrofit2.Callback
@@ -246,7 +235,9 @@ fun showAllCartoon(cartoonItemsList: MutableList<Cartoon>, context: Context) {
                             it.creatorId,
                             it.genreId,
                             it.genres,
-                            it.creator
+                            it.creator,
+                            it.paid,
+                            it.price
                         )
                     )
                 }

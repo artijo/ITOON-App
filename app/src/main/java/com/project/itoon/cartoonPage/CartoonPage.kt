@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.project.itoon.Config
 import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.favoritebutton.FavoriteButton
@@ -56,6 +57,7 @@ import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.firstpageapi.Creator
 import com.project.itoon.firstpageapi.Genres
+import com.project.itoon.firstpageapi.boughCartoon
 import com.project.itoon.firstpageapi.edithistory
 import com.project.itoon.ui.theme.ITOONTheme
 import retrofit2.Call
@@ -74,7 +76,7 @@ fun CartoonThumbnail(navController:NavHostController){
     val data = navController.previousBackStackEntry?.savedStateHandle?.get<Cartoon>("data")?:
     Cartoon(0,"","","","",0,
         0,0, Genres(0,"","","",""),
-        Creator(0,0,"","","", User(0,"","","","",0))
+        Creator(0,0,"","","", User(0,"","","","",0)), false,0
     )
 
     var name by remember{ mutableStateOf(data.name) }
@@ -203,7 +205,7 @@ private fun ItemLayOutColumn(
     val userId by remember{ mutableStateOf(sharedPreferenceManager.userId) }
     var episodeurl by remember { mutableStateOf(
         if (thumbnailtext.isNotEmpty()) {
-            Uri.parse("http://10.0.2.2:3000/"+"${thumbnailtext}")
+            Uri.parse(Config().APIBaseUrl+"${thumbnailtext}")
         } else {
             null
         }
@@ -265,8 +267,12 @@ fun CartoonAllEp(navController:NavHostController){
     val data = navController.previousBackStackEntry?.savedStateHandle?.get<Cartoon>("data")?:
     Cartoon(0,"","","","",0,
         0,0, Genres(0,"","","","")
-            , Creator(0,0,"","","" ,User(0,"","","","",0))
+            , Creator(0,0,"","","" ,User(0,"","","","",0)), false,0
     )
+    lateinit var sharedPreferenceManager : SharedPreferencesManager
+    sharedPreferenceManager = SharedPreferencesManager(context = contextForToast)
+    val userId by remember{ mutableStateOf(sharedPreferenceManager.userId) }
+    var boughcartoon by remember{ mutableStateOf(fetchBoughtCartoon(data.id,userId,contextForToast)) }
 
     LaunchedEffect(true){
         createClient.getAEC(data.id)
@@ -295,11 +301,22 @@ fun CartoonAllEp(navController:NavHostController){
     Column(
         Modifier.fillMaxWidth()
     ) {
-        allEpisode.forEach{item->
-            ItemLayOutColumn(episode = item)
+        if(data.paid){
+            if(boughcartoon.status == "ok" && boughcartoon.message == "bought"){
+                allEpisode.forEach {
+                    ItemLayOutColumn(it)
+                }
+            }else{
+                Text(text = "คุณยังไม่ได้ซื้อการ์ตูนนี้ เดี๋ยวไปซื้อก่อนนะครับ ขอทำฟังก์ชันซื้อให้เสร็จก่อนนะครับ")
+            }
+        }else{
+            allEpisode.forEach { item ->
+                ItemLayOutColumn(episode = item)
+            }
         }
     }
 }
+
 
 
 
@@ -351,4 +368,24 @@ fun updatehistoryfuntion(uid:Int,cid:Int,epnum:Int){
             }
         }
         )
+}
+
+fun fetchBoughtCartoon(cartoonId:Int,userId:Int, context: Context):boughCartoon{
+    val createClient = CartoonAPI.create()
+    var boughcartoon = boughCartoon("","")
+    createClient.boughtCartoon(cartoonId,userId)
+        .enqueue(object : Callback<boughCartoon>{
+            override fun onResponse(call: Call<boughCartoon>, response: Response<boughCartoon>) {
+                if(response.body() != null){
+                    boughcartoon.status = response.body()!!.status
+                    boughcartoon.message = response.body()!!.message
+                }
+            }
+
+            override fun onFailure(call: Call<boughCartoon>, t: Throwable) {
+                Log.i("check","onfail")
+            }
+        }
+        )
+    return boughcartoon
 }
