@@ -23,11 +23,14 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.project.itoon.API
 import com.project.itoon.Config
 import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.Setting.SharedPreferencesManager
@@ -58,6 +62,7 @@ import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.firstpageapi.Creator
 import com.project.itoon.firstpageapi.Genres
 import com.project.itoon.firstpageapi.boughCartoon
+import com.project.itoon.firstpageapi.buycartoonstatus
 import com.project.itoon.firstpageapi.edithistory
 import com.project.itoon.ui.theme.ITOONTheme
 import retrofit2.Call
@@ -262,6 +267,7 @@ private fun ItemLayOutColumn(
 @Composable
 fun CartoonAllEp(navController:NavHostController){
     val createClient = CartoonAPI.create()
+    val createAPI = API.create()
     val allEpisode = remember { mutableStateListOf<CartoonAllEp>() }
     val contextForToast = LocalContext.current.applicationContext
     val data = navController.previousBackStackEntry?.savedStateHandle?.get<Cartoon>("data")?:
@@ -273,6 +279,8 @@ fun CartoonAllEp(navController:NavHostController){
     sharedPreferenceManager = SharedPreferencesManager(context = contextForToast)
     val userId by remember{ mutableStateOf(sharedPreferenceManager.userId) }
     var boughcartoon by remember{ mutableStateOf(fetchBoughtCartoon(data.id,userId,contextForToast)) }
+    var user by remember{ mutableStateOf(User(0,"","","","",0)) }
+    var buyDialog by remember{ mutableStateOf(false) }
 
     LaunchedEffect(true){
         createClient.getAEC(data.id)
@@ -297,6 +305,22 @@ fun CartoonAllEp(navController:NavHostController){
                     Toast.makeText(contextForToast,"Error on Failure" + t.message, Toast.LENGTH_LONG).show()
                 }
         })
+
+        createAPI.getUSerbyID(userId)
+            .enqueue(object : Callback<User>{
+                override fun onResponse(call: Call<User>, response: Response<User>) {
+                    if(response.body() != null){
+                        user = response.body()!!
+                        Toast.makeText(contextForToast,"User : ${user.name}",Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<User>, t: Throwable) {
+                    Log.i("check","onfail")
+                    Toast.makeText(contextForToast,"Error on Failure"+t.message,Toast.LENGTH_LONG).show()
+                }
+            }
+            )
     }
     Column(
         Modifier.fillMaxWidth()
@@ -308,6 +332,53 @@ fun CartoonAllEp(navController:NavHostController){
                 }
             }else{
                 Text(text = "คุณยังไม่ได้ซื้อการ์ตูนนี้ เดี๋ยวไปซื้อก่อนนะครับ ขอทำฟังก์ชันซื้อให้เสร็จก่อนนะครับ")
+                Text(text = "ราคา ${data.price} เหรียญ คุณมีเหรียญ ${user.coin} เหรียญ")
+                if(data.price > user.coin){
+                    Text(text = "คุณมีเหรียญไม่พอ ไปเติมเงินก่อนนะครับ")
+                }else {
+                    Button(onClick = {
+                        buyDialog = true
+                    }) {
+                        Text(text = "ซื้อ")
+                    }
+                    if(buyDialog){
+                        AlertDialog(onDismissRequest = { buyDialog = false },
+                            title= { Text(text = "ซื้อการ์ตูน")},
+                            text = { Text(text = "คุณต้องการซื้อการ์ตูนเรื่อง ${data.name} ใช่ไหม?")},
+                            confirmButton = {
+                                TextButton(onClick = {
+                                    buyDialog=false
+                                    createClient.buyCartoon(data.id,userId)
+                                        .enqueue(object : Callback<buycartoonstatus>{
+                                            override fun onResponse(call: Call<buycartoonstatus>, response: Response<buycartoonstatus>) {
+                                                Log.i("check","onrespond")
+                                               navController.navigate("CartoonEP_Page"){
+                                                  navController.previousBackStackEntry?.savedStateHandle?.set("data",data)
+                                                }
+                                            }
+
+                                            override fun onFailure(call: Call<buycartoonstatus>, t: Throwable) {
+                                                Log.i("check","onfail")
+                                            }
+                                        }
+                                        )
+
+                                }) {
+                                    Text(text = "ใช่")
+                                }
+                            },
+                            dismissButton = {
+                                TextButton(onClick = {
+                                    buyDialog=false
+                                }) {
+                                    Text(text = "ไม่")
+                                }
+                            },
+
+                            )
+                    }
+
+                }
             }
         }else{
             allEpisode.forEach { item ->
@@ -389,3 +460,19 @@ fun fetchBoughtCartoon(cartoonId:Int,userId:Int, context: Context):boughCartoon{
         )
     return boughcartoon
 }
+
+fun buyCartoon(cartoonId:Int,userId:Int,context: Context){
+    val createClient = CartoonAPI.create()
+    createClient.buyCartoon(cartoonId,userId)
+        .enqueue(object : Callback<buycartoonstatus>{
+            override fun onResponse(call: Call<buycartoonstatus>, response: Response<buycartoonstatus>) {
+                Log.i("check","onrespond")
+            }
+
+            override fun onFailure(call: Call<buycartoonstatus>, t: Throwable) {
+                Log.i("check","onfail")
+            }
+        }
+        )
+}
+

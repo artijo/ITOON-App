@@ -52,4 +52,11 @@ data class boughCartoon(
     @Expose
     @SerializedName("message") var message:String,
 )
+data class buycartoonstatus(
+    @Expose
+    @SerializedName("status") var status:String,
+
+    @Expose
+    @SerializedName("message") var message:String,
+)
 
