@@ -72,12 +72,11 @@ fun CommentPage(navController: NavHostController,epid : Int,cartoonid: Int){
     lateinit var sharedPreferences: SharedPreferencesManager
     sharedPreferences = SharedPreferencesManager(contextForToast)
     val userId by remember { mutableStateOf(sharedPreferences.userId) }
-    val initialcomment = commentdata("",0,0,Episode(0,"",0,"","",
+    val initialcomment = commentdata("",0,User(0,"","","","",0),0,Episode(0,"",0,"","",
         0,Cartoon(0,"","","","",0,0,0, Genres(0,"","","",""),
             Creator(0,0,"","","",
                 User(0,"","","","",0)),false,0) ),
         )
-    var commentItems by remember { mutableStateOf(initialcomment) }
     var commentList = remember{ mutableStateListOf<commentdata>() }
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
@@ -90,10 +89,7 @@ fun CommentPage(navController: NavHostController,epid : Int,cartoonid: Int){
             Lifecycle.State.CREATED -> {}
             Lifecycle.State.STARTED -> {}
             Lifecycle.State.RESUMED -> {
-                showAllData(commentList,contextForToast,epid,cartoonid)
-                println(epid)
-                println(cartoonid)
-                println()
+                showAllComment(commentList,contextForToast,epid,cartoonid)
             }
         }
     }
@@ -200,7 +196,7 @@ fun CommentPage(navController: NavHostController,epid : Int,cartoonid: Int){
                                 .padding(10.dp)
                         ){
                             Text(
-                                text ="User ID : ${item.userId}\n"
+                                text ="Name : ${item.user.name}\n"
                                         +"Episode : ${item.episode.epNumber}\n"
                                         +"Comment : ${item.content}",
                                 Modifier.weight(0.85f)
@@ -226,7 +222,7 @@ fun getBottomLineShape(lineThicknessDp: Dp) : Shape {
     }
 }
 
-fun showAllData(studentItemList:MutableList<commentdata>,context: Context,epid: Int,cartoonid:Int){
+fun showAllComment(studentItemList:MutableList<commentdata>,context: Context,epid: Int,cartoonid:Int){
     val createClient = API.create()
     createClient.getEpcommnet(cartoonid,epid)
         .enqueue(object : Callback<List<commentdata>> {
@@ -235,7 +231,7 @@ fun showAllData(studentItemList:MutableList<commentdata>,context: Context,epid: 
             ) {
                 studentItemList.clear()
                 response.body()?.forEach {
-                    studentItemList.add(commentdata(it.content,it.userId,it.episodeId,it.episode))
+                    studentItemList.add(commentdata(it.content,it.userId,it.user,it.episodeId,it.episode))
                     Log.i("episodeID",it.episode.toString())
                 }
             }

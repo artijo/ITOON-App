@@ -40,8 +40,10 @@ interface API {
     ):Call<LoginClass>
 
 //Comment
-    @GET("comments")
-    fun getComment():Call<List<commentdata>>
+    @GET("usercomment/{uid}")
+    fun getUserComment(
+        @Path("uid") userId:Int,
+    ):Call<List<commentdata>>
 
     @GET("comments/{cid}/{eid}")
     fun getEpcommnet(

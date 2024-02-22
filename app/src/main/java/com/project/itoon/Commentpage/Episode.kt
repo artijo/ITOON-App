@@ -25,5 +25,5 @@ data class Episode(
     @Expose
     @SerializedName("cartoonId") val cartoonID: Int,
     @Expose
-    @SerializedName("cartoons")val cartoons:Cartoon
+    @SerializedName("cartoon")val cartoon:Cartoon
 ) : Parcelable
