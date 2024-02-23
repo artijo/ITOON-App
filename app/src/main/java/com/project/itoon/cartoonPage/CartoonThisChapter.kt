@@ -1,55 +1,39 @@
 package com.project.itoon.cartoonPage
 
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Text
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
+import com.project.itoon.Config
 import com.project.itoon.EpisodeNav.EpisodeBottomBar
 import com.project.itoon.EpisodeNav.EpisodeTopBar
 import com.project.itoon.EpisodeNav.NavGraphEpisode
-
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.layout.ContentScale
-
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import coil.compose.rememberAsyncImagePainter
-import com.project.itoon.LoginAndSignUp.LoginAndSignUp
-import com.project.itoon.LoginAndSignUp.LoginPage
-import com.project.itoon.LoginAndSignUp.PageITOON
-import com.project.itoon.LoginAndSignUp.Signup
-import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.ui.theme.ITOONTheme
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -122,20 +106,16 @@ fun CartoonThisChapter(navHostController: NavHostController,epId: Int){
     ){
         itemsIndexed(items = pageImgList) { index, item ->
             val pathFromDatabase = item.pathUrl.replace("\\", "/")
-            val path: String = "http://10.0.2.2:3000/$pathFromDatabase"
+            val path: String = "${Config().APIBaseUrl}/$pathFromDatabase"
             val pathURL = path.toHttpUrl()
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(550.dp)
-            ) {
-                Image(
-                    painter = rememberAsyncImagePainter(pathURL),
-                    contentDescription = null,
-                    Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Fit
-                )
-            }
+            Image(
+                painter = rememberAsyncImagePainter(
+                    pathURL
+                ),
+                contentDescription = null,
+                modifier = Modifier.fillMaxWidth().height(1250.dp),
+                contentScale = ContentScale.Fit
+            )
         }
     }
 }

@@ -210,7 +210,7 @@ private fun ItemLayOutColumn(
     val userId by remember{ mutableStateOf(sharedPreferenceManager.userId) }
     var episodeurl by remember { mutableStateOf(
         if (thumbnailtext.isNotEmpty()) {
-            Uri.parse(Config().APIBaseUrl+"${thumbnailtext}")
+            Uri.parse(Config().APIBaseUrl+"/${thumbnailtext}")
         } else {
             null
         }

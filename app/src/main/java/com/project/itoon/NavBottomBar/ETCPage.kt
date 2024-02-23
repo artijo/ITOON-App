@@ -178,12 +178,12 @@ fun ETCPage(navtController: NavHostController){
                     .weight(1f, true)
                     .padding(top = 20.dp)
                     .clickable {
-                        navtController.navigate(BottomBar.SearchPage.route)
+                        navtController.navigate(BottomBar.RegcreatorPage.route)
                     }
             ) {
 
                 Icon(imageVector = Icons.Default.Search, contentDescription = null,Modifier.size(25.dp))
-                Text(text = "ค้นหา")
+                Text(text = "สมัครเป็น Creator")
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

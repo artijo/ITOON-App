@@ -329,7 +329,7 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
                             ){
                                 if (urltext.startsWith("uploads")){
                                     val replace = urltext.replace("\\","/")
-                                    item.thumbnail = "http://10.0.2.2:3000/"+"$replace"
+                                    item.thumbnail = "${Config().APIBaseUrl}/"+"$replace"
                                     val pathUrl = item.thumbnail.toHttpUrl()
                                     println(pathUrl)
                                     Image(

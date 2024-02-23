@@ -1,6 +1,7 @@
 package com.project.itoon
 
 import com.project.itoon.Commentpage.commentdata
+import com.project.itoon.LoginAndSignUp.Creator
 import com.project.itoon.LoginAndSignUp.LoginClass
 import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.Setting.Profile
@@ -66,6 +67,17 @@ interface API {
     @Field("email") email: String,
     @Field("name") name: String
     ):Call<Profile>
+
+    @FormUrlEncoded
+    @POST("creator/reg")
+    fun regCreator(
+        @Field("userId") userId:Int
+    ):Call<Creator>
+
+    @GET("creator/{id}")
+    fun getCreator(
+        @Path("id") id:Int
+    ):Call<Creator>
 
 
 

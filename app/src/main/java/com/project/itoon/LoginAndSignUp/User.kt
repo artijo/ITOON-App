@@ -25,3 +25,14 @@ data class User(
     @Expose
     @SerializedName("coin") val coin:Int
 ): Parcelable
+
+data class Creator(
+    @Expose
+    @SerializedName("id") val id:Int,
+
+    @Expose
+    @SerializedName("userId") val userId:Int,
+
+    @Expose
+    @SerializedName("status") val status:String,
+)
