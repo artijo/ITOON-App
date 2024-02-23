@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -142,9 +143,11 @@ fun Recently(navHostController: NavHostController){
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Black,
-                                maxLines = 1,
+                                maxLines = 2,
                                 overflow = TextOverflow.Ellipsis,
-                                lineHeight = 3.sp,
+                                lineHeight = 15.sp,
+                                modifier = Modifier.width(230.dp)
+
                             )
 
                         }

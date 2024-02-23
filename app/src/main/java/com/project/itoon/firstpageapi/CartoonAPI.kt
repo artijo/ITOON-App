@@ -66,7 +66,7 @@ interface CartoonAPI {
 
     @GET("showfav/{uid}")
     fun showallfav(
-        @Path("uid") uid: String
+        @Path("uid") uid: Int
     ):Call<List<ShowFavClass>>
 
     @GET("edithistory/{uid}/{cid}/{epnum}")

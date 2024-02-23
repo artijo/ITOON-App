@@ -52,13 +52,9 @@ fun Comment(navHostController: NavHostController){
                 Genres(0,"","","",""),
             com.project.itoon.firstpageapi.Creator(0,0,"","","",
                 User(0,"","","","",0)
-<<<<<<< Updated upstream
             )
             ,false,0)
-=======
-            ),false,0
-            )
->>>>>>> Stashed changes
+
         ),
     )
     var commentList = remember{ mutableStateListOf<commentdata>() }
