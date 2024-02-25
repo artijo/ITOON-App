@@ -174,6 +174,7 @@ private fun CartoonRecommend(navHostController:NavHostController){
         ){
             cartoonList.forEach{ item ->
                 var clickCartoon : Cartoon
+                val urltext = item.thumbnail
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -193,16 +194,34 @@ private fun CartoonRecommend(navHostController:NavHostController){
                         modifier = Modifier
                             .width(360.dp)
                             .padding(bottom = 10.dp)
-                    ){
-                        Image(
-                            painter = rememberAsyncImagePainter(item.thumbnail),
-                            contentDescription = item.name,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .width(45.dp)
-                                .height(45.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                        )
+                    ) {
+                        if (urltext.startsWith("uploads")) {
+                            val replace = urltext.replace("\\", "/")
+                            item.thumbnail = "${Config().APIBaseUrl}/" + "$replace"
+                            val pathUrl = item.thumbnail.toHttpUrl()
+                            println(pathUrl)
+                            Image(
+                                painter = rememberAsyncImagePainter(pathUrl),
+                                contentDescription = "",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(5.dp))
+                                        .width(50.dp)
+                                        .height(50.dp)
+                            )
+                        } else {
+                            println(item.thumbnail)
+                            Image(
+                                painter = rememberAsyncImagePainter(item.thumbnail),
+                                contentDescription = "",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(5.dp))
+                                    .width(50.dp)
+                                    .height(50.dp)
+                            )
+                        }
+
                         Spacer(modifier = Modifier.width(width = 10.dp))
                         Column(
                             Modifier
@@ -210,7 +229,7 @@ private fun CartoonRecommend(navHostController:NavHostController){
                                 .padding(top = 10.dp)
                         ) {
                             Text(
-                                text= item.name,
+                                text = item.name,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Black,
@@ -220,7 +239,7 @@ private fun CartoonRecommend(navHostController:NavHostController){
                                 modifier = Modifier.fillMaxWidth()
                             )
                             Text(
-                                text= item.genres.name,
+                                text = item.genres.name,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Gray,

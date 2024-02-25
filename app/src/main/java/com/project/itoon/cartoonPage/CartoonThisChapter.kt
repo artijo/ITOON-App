@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -26,10 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import coil.size.Scale
+import coil.size.Size
 import com.project.itoon.Config
 import com.project.itoon.EpisodeNav.EpisodeBottomBar
 import com.project.itoon.EpisodeNav.EpisodeTopBar
@@ -101,19 +102,25 @@ fun CartoonThisChapter(navHostController: NavHostController,epId: Int){
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ){
         itemsIndexed(items = pageImgList) { index, item ->
+
             val pathFromDatabase = item.pathUrl.replace("\\", "/")
             val path: String = "${Config().APIBaseUrl}/$pathFromDatabase"
             val pathURL = path.toHttpUrl()
+            val model = ImageRequest.Builder(LocalContext.current.applicationContext)
+                .data(pathURL)
+                .size(Size.ORIGINAL)
+                .scale(Scale.FIT)
+                .crossfade(true)
+                .build()
+            val painter = rememberAsyncImagePainter(model = model)
             Image(
-                painter = rememberAsyncImagePainter(
-                    pathURL
-                ),
+                painter = painter,
                 contentDescription = null,
-                modifier = Modifier.fillMaxWidth().height(1250.dp),
-                contentScale = ContentScale.Fit
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.FillWidth
             )
         }
     }
