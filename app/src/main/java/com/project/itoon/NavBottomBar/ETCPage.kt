@@ -181,8 +181,7 @@ fun ETCPage(navtController: NavHostController){
                         navtController.navigate(BottomBar.RegcreatorPage.route)
                     }
             ) {
-
-                Icon(imageVector = Icons.Default.Search, contentDescription = null,Modifier.size(25.dp))
+                Icon(painter = painterResource(id = R.drawable.writer), contentDescription = null,Modifier.size(25.dp))
                 Text(text = "สมัครเป็น Creator")
             }
             Column(
@@ -193,8 +192,17 @@ fun ETCPage(navtController: NavHostController){
                     .weight(1f, true)
                     .padding(top = 20.dp)
                     .clickable {
-                        navtController.currentBackStackEntry?.savedStateHandle?.set("data",
-                            User(userItems.id,userItems.email,userItems.name,userItems.password,userItems.phone,userItems.coin))
+                        navtController.currentBackStackEntry?.savedStateHandle?.set(
+                            "data",
+                            User(
+                                userItems.id,
+                                userItems.email,
+                                userItems.name,
+                                userItems.password,
+                                userItems.phone,
+                                userItems.coin
+                            )
+                        )
                         navtController.navigate(SettingClass.Setting.route)
                     }
             ) {

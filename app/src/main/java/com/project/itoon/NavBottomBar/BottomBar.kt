@@ -11,5 +11,5 @@ sealed class BottomBar(val route:String,val name:String,val icon: Int){
     object FirstPage: BottomBar(route = "firstpage_screen", name = "หน้าหลัก", icon = R.drawable.logo)
 
     object SearchPage:BottomBar(route = "searchpage_screen" ,name ="ค้นหา", icon = R.drawable.search_interface_symbol)
-    object RegcreatorPage:BottomBar(route = "regcreator_screen" ,name ="สมัครเป็น Creator", icon = R.drawable.favorite)
+    object RegcreatorPage:BottomBar(route = "regcreator_screen" ,name ="สมัครเป็น Creator", icon = R.drawable.writer)
 }
