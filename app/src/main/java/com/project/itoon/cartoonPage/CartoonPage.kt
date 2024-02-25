@@ -3,11 +3,8 @@ package com.project.itoon.cartoonPage
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,10 +29,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -60,11 +53,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.API
-import com.project.itoon.CartoonNav.CartoonTopApp
-import com.project.itoon.CartoonNav.NavGraphCartoon
 import com.project.itoon.Config
 import com.project.itoon.LoginAndSignUp.User
-import com.project.itoon.NavBottomBar.MyBottomBar
 import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.favoritebutton.FavoriteButton
 import com.project.itoon.firstpageapi.Cartoon
@@ -436,15 +426,7 @@ fun startEpisodeActivity(c: Context,episodeId:Int,cartoonid:Int,epname:String,ep
 }
 
 
-fun startCartoonActivity(context: Context,cartoonId: Int,cartoonName:String,navHostController: NavHostController
-){
-    val intent=Intent(context,CartoonActivity::class.java).apply {
-        putExtra("CARTOON_ID",cartoonId)
-        putExtra("CARTOON_NAME",cartoonName)
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-    }
-    context.startActivity(intent)
-}
+
 
 fun updatehistoryfuntion(uid:Int,cid:Int,epnum:Int){
     val creatClient = CartoonAPI.create()
@@ -497,49 +479,6 @@ fun buyCartoon(cartoonId:Int,userId:Int,context: Context){
 }
 
 
-class CartoonActivity: ComponentActivity(){
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            var context = LocalContext.current.applicationContext
-            val cartoonid = intent.getIntExtra("CARTOON_ID",0)
-            var cartoonname = intent.getStringExtra("CARTOON_NAME")
-            if (cartoonname==null){
-                cartoonname=""
-            }
-            Log.i("databeforeScaffold","${cartoonid} ${cartoonname}")
-            ITOONTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    CartoonScaffoldLayout(cartoonid, cartoonname)
-                }
-            }
-        }
-    }
-}
 
 
-@Composable
-fun CartoonScaffoldLayout(cartoonid:Int,cartoonName:String){
-    val navController = rememberNavController()
-    val contextForToast = LocalContext.current.applicationContext
-    val cartoonid = cartoonid
-    val cartoonName = cartoonName
-    Log.i("datainscaffCartoon","${cartoonName} ${cartoonid}")
-    Scaffold(
-        topBar = { CartoonTopApp(cartoonName = cartoonName)},
-        bottomBar = { MyBottomBar(navHostController = navController, contextForToast = contextForToast)},
-        floatingActionButtonPosition = FabPosition.End
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues = paddingValues),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            NavGraphCartoon(navHostController = navController, cartoonId = cartoonid, cartoonName = cartoonName)
-        }
-    }
-}
+

@@ -44,14 +44,6 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".cartoonPage.CartoonActivity"
-            android:exported="true"
-            android:label="Cartoon"
-            android:theme="@style/Theme.AppCompat">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

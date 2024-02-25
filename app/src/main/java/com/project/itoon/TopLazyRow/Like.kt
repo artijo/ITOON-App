@@ -1,12 +1,8 @@
 package com.project.itoon.TopLazyRow
 
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,15 +10,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,13 +37,10 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.ShowTextTest
-import com.project.itoon.cartoonPage.startCartoonActivity
-import com.project.itoon.cartoonPage.startEpisodeActivity
 import com.project.itoon.favoritebutton.ItemFav
 import com.project.itoon.favoritebutton.ShowFavClass
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
-import com.project.itoon.ui.theme.ITOONTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -73,6 +63,7 @@ fun Like(navController:NavHostController){
     val userId by remember{ mutableStateOf(sharedPreferenceManager.userId) }
     cartoonList.clear()
     favlist.clear()
+    itemList.clear()
     creatClient.showallfav(userId)
         .enqueue(object :Callback<List<ShowFavClass>>{
             override fun onResponse(
@@ -120,12 +111,7 @@ fun Like(navController:NavHostController){
                         .padding(bottom = 10.dp)
                         .clickable(
                             onClick = {
-                                startCartoonActivity(
-                                    contextForToast,
-                                    item.cartoonlist.id,
-                                    item.cartoonlist.name,
-                                    navController
-                                )
+                                
                             }
                         ),
                     horizontalArrangement = Arrangement.SpaceBetween
