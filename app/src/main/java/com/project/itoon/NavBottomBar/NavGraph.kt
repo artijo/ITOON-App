@@ -2,6 +2,8 @@ package com.project.itoon.NavBottomBar
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -43,6 +45,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.project.itoon.Config
 import com.project.itoon.FirstPage
 import com.project.itoon.LoginAndSignUp.LoginPage
 import com.project.itoon.LoginAndSignUp.PageITOON
@@ -114,6 +117,7 @@ fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
     var selectScreen by remember {
         mutableStateOf(0)
     }
+    val ctx = LocalContext.current
 
 
     NavigationBar(modifier = Modifier.background(color = Color.Green)) {
@@ -123,7 +127,15 @@ fun MyBottomBar(navHostController: NavHostController, contextForToast: Context){
                     if (navHostController.currentBackStack.value.size>=4){
                         navHostController.popBackStack()
                     }
-                    navHostController.navigate(bottomBar.route)
+                    if(bottomBar.route=="coinpage_screen"){
+                        val urlIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("${Config().WebClientBaseUrl}/coin-transaction")
+                        )
+                        ctx.startActivity(urlIntent)
+                    }else{
+                        navHostController.navigate(bottomBar.route)
+                    }
                      }, label = { Text(text = bottomBar.name) } ,icon = {
                     Icon(painter = painterResource(id = bottomBar.icon),
                         contentDescription = null,

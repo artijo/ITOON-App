@@ -97,7 +97,6 @@ private fun CallApi(epId:Int): SnapshotStateList<imgEp> {
 
 @Composable
 fun CartoonThisChapter(navHostController: NavHostController,epId: Int){
-
     val pageImgList = CallApi(epId)
     LazyColumn(
         modifier = Modifier.fillMaxSize(),

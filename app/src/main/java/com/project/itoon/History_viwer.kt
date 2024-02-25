@@ -37,7 +37,6 @@ fun MenuLazyrow(navHostController: NavHostController){
         TopLazyRow.Recently,
         TopLazyRow.Like,
         TopLazyRow.Bought,
-        TopLazyRow.Creator,
         TopLazyRow.Comment
     )
     Row(

@@ -26,10 +26,6 @@ fun NavGraphTopApp(navHostController: NavHostController){
             Bought(navHostController)
         }
 
-        composable(route = TopLazyRow.Creator.route){
-            Creator(navHostController)
-        }
-
         composable(route = TopLazyRow.Comment.route){
             Comment(navHostController)
         }
