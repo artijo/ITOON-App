@@ -14,8 +14,6 @@ fun Bought(navHostController: NavHostController){
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-
     ) {
 
         Text(text = "BoughtPage")
