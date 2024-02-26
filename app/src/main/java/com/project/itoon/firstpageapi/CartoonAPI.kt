@@ -1,6 +1,7 @@
 package com.project.itoon.firstpageapi
 
 import com.project.itoon.Config
+import com.project.itoon.TopLazyRow.BoughtCartoon
 import com.project.itoon.TopLazyRow.allhistory
 import com.project.itoon.cartoonPage.CartoonAllEp
 import com.project.itoon.cartoonPage.imgEp
@@ -93,6 +94,12 @@ interface CartoonAPI {
         @Field("cartoonid") cartoonId: Int,
         @Field("userId") userId: Int
     ):Call<buycartoonstatus>
+
+    @GET("mycartoon/bought/{cartoonId}/{userId}")
+    fun showbuyCartoon(
+        @Path("cartoonId") cartoonId: Int,
+        @Path("userId") userId: Int
+    ):Call<List<BoughtCartoon>>
 
     companion object{
         fun create():CartoonAPI{
