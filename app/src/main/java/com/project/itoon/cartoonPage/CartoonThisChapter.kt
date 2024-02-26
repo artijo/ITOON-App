@@ -109,13 +109,14 @@ fun CartoonThisChapter(navHostController: NavHostController,epId: Int){
             val pathFromDatabase = item.pathUrl.replace("\\", "/")
             val path: String = "${Config().APIBaseUrl}/$pathFromDatabase"
             val pathURL = path.toHttpUrl()
-            val model = ImageRequest.Builder(LocalContext.current.applicationContext)
+            val model = ImageRequest.Builder(LocalContext.current)
                 .data(pathURL)
                 .size(Size.ORIGINAL)
                 .scale(Scale.FIT)
                 .crossfade(true)
                 .build()
             val painter = rememberAsyncImagePainter(model = model)
+
             Image(
                 painter = painter,
                 contentDescription = null,
