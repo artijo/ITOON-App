@@ -1,14 +1,13 @@
 package com.project.itoon.cartoonPage
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -27,17 +26,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ErrorResult
 import coil.request.ImageRequest
-import coil.size.Scale
-import coil.size.Size
+import coil.request.SuccessResult
 import com.project.itoon.Config
 import com.project.itoon.EpisodeNav.EpisodeBottomBar
 import com.project.itoon.EpisodeNav.EpisodeTopBar
 import com.project.itoon.EpisodeNav.NavGraphEpisode
+import com.project.itoon.R
 import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.ui.theme.ITOONTheme
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -68,6 +68,7 @@ class EpisodeActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 private fun CallApi(epId:Int): SnapshotStateList<imgEp> {
     val createClient = CartoonAPI.create()
@@ -96,33 +97,61 @@ private fun CallApi(epId:Int): SnapshotStateList<imgEp> {
     return pageImgList
 }
 
+@SuppressLint("RememberReturnType")
 @Composable
 fun CartoonThisChapter(navHostController: NavHostController,epId: Int){
     val pageImgList = CallApi(epId)
+    val context = LocalContext.current
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         itemsIndexed(items = pageImgList) { index, item ->
+            val path: String = "${Config().APIBaseUrl}/${item.pathUrl}"
 
-            val pathFromDatabase = item.pathUrl.replace("\\", "/")
-            val path: String = "${Config().APIBaseUrl}/$pathFromDatabase"
-            val pathURL = path.toHttpUrl()
-            val model = ImageRequest.Builder(LocalContext.current)
-                .data(pathURL)
-                .size(Size.ORIGINAL)
-                .scale(Scale.FIT)
-                .crossfade(true)
+            val listener = object : ImageRequest.Listener {
+                override fun onError(request: ImageRequest, result: ErrorResult) {
+                    super.onError(request, result)
+                }
+
+                override fun onSuccess(request: ImageRequest, result: SuccessResult) {
+                    super.onSuccess(request, result)
+                }
+            }
+            val imageRequest = ImageRequest.Builder(context)
+                .data(path)
+                .listener(listener)
+                .memoryCacheKey(path)
+                .diskCacheKey(path)
+                .placeholder(R.drawable.loading)
+                .fallback(R.drawable.loading)
+                .diskCachePolicy(CachePolicy.ENABLED)
+                .memoryCachePolicy(CachePolicy.ENABLED)
                 .build()
-            val painter = rememberAsyncImagePainter(model = model)
 
-            Image(
-                painter = painter,
-                contentDescription = null,
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.FillWidth
+            AsyncImage(
+                model = imageRequest,
+                contentDescription = "Image Description",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
             )
+
+//            val painter2 = rememberImagePainter(
+//                data = path,
+//                builder = {
+//                    crossfade(true)
+//                    placeholder(R.drawable.loading)
+//                    size(Size.ORIGINAL)
+//                    scale(Scale.FIT)
+//                }
+//            )
+//                Image(
+//                    painter = painter2,
+//                    contentDescription = null,
+//                    modifier = Modifier.fillMaxWidth(),
+//                    contentScale = ContentScale.FillWidth
+//                )
         }
     }
 }
