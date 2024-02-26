@@ -95,9 +95,8 @@ interface CartoonAPI {
         @Field("userId") userId: Int
     ):Call<buycartoonstatus>
 
-    @GET("mycartoon/bought/{cartoonId}/{userId}")
+    @GET("getboughtcartoon/{userId}")
     fun showbuyCartoon(
-        @Path("cartoonId") cartoonId: Int,
         @Path("userId") userId: Int
     ):Call<List<BoughtCartoon>>
 

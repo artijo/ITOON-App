@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.project.itoon.TopLazyRow.Bought
+import com.project.itoon.TopLazyRow.MyBuyCartoon
 import com.project.itoon.TopLazyRow.Comment
 import com.project.itoon.TopLazyRow.Creator
 import com.project.itoon.TopLazyRow.Like
@@ -23,7 +23,7 @@ fun NavGraphTopApp(navHostController: NavHostController){
         }
 
         composable(route = TopLazyRow.Bought.route){
-            Bought(navHostController)
+            MyBuyCartoon(navHostController)
         }
 
         composable(route = TopLazyRow.Comment.route){

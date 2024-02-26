@@ -14,5 +14,5 @@ data class BoughtCartoon(
     @Expose
     @SerializedName("cartoonId") val cartoonId: Int,
     @Expose
-    @SerializedName("Cartoons") val cartoons: Cartoon,
+    @SerializedName("cartoon") val cartoon: Cartoon,
 )
