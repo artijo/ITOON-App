@@ -132,26 +132,10 @@ fun CartoonThisChapter(navHostController: NavHostController,epId: Int){
 
             AsyncImage(
                 model = imageRequest,
-                contentDescription = "Image Description",
+                contentDescription = item.page.toString(),
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillWidth,
             )
-
-//            val painter2 = rememberImagePainter(
-//                data = path,
-//                builder = {
-//                    crossfade(true)
-//                    placeholder(R.drawable.loading)
-//                    size(Size.ORIGINAL)
-//                    scale(Scale.FIT)
-//                }
-//            )
-//                Image(
-//                    painter = painter2,
-//                    contentDescription = null,
-//                    modifier = Modifier.fillMaxWidth(),
-//                    contentScale = ContentScale.FillWidth
-//                )
         }
     }
 }
