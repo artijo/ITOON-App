@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,12 +37,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.project.itoon.Config
 import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.ShowTextTest
 import com.project.itoon.favoritebutton.ItemFav
 import com.project.itoon.favoritebutton.ShowFavClass
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -111,36 +115,65 @@ fun Like(navController:NavHostController){
                         .padding(bottom = 10.dp)
                         .clickable(
                             onClick = {
-                                
+
                             }
                         ),
-                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    Box(modifier = Modifier
+                        .width(90.dp)
+                        .height(80.dp)
 
-                    Row(verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            painter = rememberAsyncImagePainter(item.cartoonlist.thumbnail),
-                            contentDescription = item.cartoonlist.name,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .width(45.dp)
-                                .height(45.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                        )
-                        Spacer(modifier = Modifier.width(width = 10.dp))
+
+                    ){
+                        if (urltext.startsWith("uploads")){
+                            val replace = urltext.replace("\\","/")
+                            item.cartoonlist.thumbnail = "${Config().APIBaseUrl}/"+"$replace"
+                            val pathUrl = item.cartoonlist.thumbnail.toHttpUrl()
+                            println(pathUrl)
+                            Image(
+                                painter = rememberAsyncImagePainter(pathUrl) ,
+                                contentDescription = "",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(5.dp))
+                                    .fillMaxSize()
+
+                            )
+                        }else{
+                            println(item.cartoonlist.thumbnail)
+                            Image(
+                                painter = rememberAsyncImagePainter(item.cartoonlist.thumbnail) ,
+                                contentDescription = "",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(5.dp))
+                                    .fillMaxSize()
+
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(30.dp))
+                    Column (Modifier.width(150.dp), verticalArrangement = Arrangement.Center){
                         Text(
                             text = item.cartoonlist.name,
                             fontSize = 15.sp,
-                            fontWeight = FontWeight.Medium,
                             color = Color.Black,
+                            fontWeight = FontWeight.Medium,
                             maxLines = 2,
+                            style = LocalTextStyle.current.copy(lineHeight = 15.sp),
                             overflow = TextOverflow.Ellipsis,
-                            lineHeight = 15.sp,
-                            modifier = Modifier.width(230.dp)
 
-                        )
+
+                            )
+                        Text(
+                            text= item.cartoonlist.genres.name,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Gray,
+
+                            )
                     }
+
                 }
             }
         }
