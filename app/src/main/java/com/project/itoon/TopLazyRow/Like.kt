@@ -101,7 +101,8 @@ fun Like(navController:NavHostController){
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Favorite Cartoon")
+        Text(text = "รายการที่ถูกใจ")
+        Spacer(modifier = Modifier.padding(10.dp))
         LazyColumn(
             contentPadding = PaddingValues(horizontal = 15.dp),
         ){

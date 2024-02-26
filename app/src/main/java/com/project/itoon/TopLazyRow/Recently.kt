@@ -104,7 +104,8 @@ fun Recently(navHostController: NavHostController){
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "RecentlyPage")
+        Text(text = "เมื่อเร็วๆนี้")
+        Spacer(modifier = Modifier.padding(10.dp))
         LazyColumn(
             contentPadding = PaddingValues(horizontal = 15.dp),
         ){

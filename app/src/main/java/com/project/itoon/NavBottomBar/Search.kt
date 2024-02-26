@@ -7,9 +7,11 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -48,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.project.itoon.Config
 import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
@@ -141,6 +144,7 @@ fun SearchPage(navHostController: NavHostController){
                 items = cartoonItemsList,
                 itemContent = { index, item ->
                     var clickCartoon : Cartoon
+
                     Card(
                         modifier = Modifier
                             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -170,29 +174,39 @@ fun SearchPage(navHostController: NavHostController){
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             val urltext = item.thumbnail
-                            if (urltext.startsWith("uploads")){
-                                val replace = urltext.replace("\\","/")
-                                item.thumbnail = "http://10.0.2.2:3000/"+"$replace"
-                                val pathUrl = item.thumbnail.toHttpUrl()
-                                Image(
-                                    painter = rememberAsyncImagePainter(pathUrl),
-                                    contentDescription = item.name,
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier
-                                        .width(100.dp)
-                                        .height(100.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                )
+                            Box(modifier = Modifier
+                                .width(90.dp)
+                                .height(80.dp)
+
+
+                            ){
+                                if (urltext.startsWith("uploads")){
+                                    val replace = urltext.replace("\\","/")
+                                    item.thumbnail = "${Config().APIBaseUrl}/"+"$replace"
+                                    val pathUrl = item.thumbnail.toHttpUrl()
+                                    println(pathUrl)
+                                    Image(
+                                        painter = rememberAsyncImagePainter(pathUrl) ,
+                                        contentDescription = "",
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(5.dp))
+                                            .fillMaxSize()
+
+                                    )
                                 }else{
-                            Image(
-                                painter = rememberAsyncImagePainter(item.thumbnail),
-                                contentDescription = item.name,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .width(100.dp)
-                                    .height(100.dp)
-                                    .clip(RoundedCornerShape(10.dp))
-                            )}
+                                    println(item.thumbnail)
+                                    Image(
+                                        painter = rememberAsyncImagePainter(item.thumbnail) ,
+                                        contentDescription = "",
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(5.dp))
+                                            .fillMaxSize()
+
+                                    )
+                                }
+                            }
 
                             Text(
                                 text = "${item.name}\n" ,
