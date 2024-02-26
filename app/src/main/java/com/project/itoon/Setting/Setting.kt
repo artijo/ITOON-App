@@ -54,11 +54,13 @@ import androidx.core.content.ContextCompat.getContextForLanguage
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import com.project.itoon.API
+import com.project.itoon.EpisodeNav.EpisodeBottom
 import com.project.itoon.LoginAndSignUp.LoginActivity
 import com.project.itoon.LoginAndSignUp.LoginAndSignUp
 import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.LoginAndSignUp.startLoginActivity
 import com.project.itoon.MainActivity
+import com.project.itoon.NavBottomBar.BottomBar
 import com.project.itoon.ui.theme.ITOONTheme
 import retrofit2.Call
 import retrofit2.Callback
@@ -66,6 +68,7 @@ import retrofit2.Response
 
 
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun Settingpage(navController:NavHostController){
     val contextForToast = LocalContext.current.applicationContext
@@ -161,7 +164,8 @@ fun Settingpage(navController:NavHostController){
                                 OutlinedTextField(
                                     value = textFieldEmail,
                                     onValueChange = { textFieldEmail = it },
-                                    label = { Text(text = "โปรดใส่อีเมลใหม่ของคุณ") }
+                                    label = { Text(text = "โปรดใส่อีเมลใหม่ของคุณ") },
+                                    enabled = false
                                 )
                             }
                         },
@@ -171,6 +175,7 @@ fun Settingpage(navController:NavHostController){
                                 createClient.updateProfile(userId.toString(),textFieldEmail,textFieldName)
                                     .enqueue(
                                         object :Callback<Profile>{
+                                            @SuppressLint("RestrictedApi")
                                             override fun onResponse(
                                                 call: Call<Profile>,
                                                 response: Response<Profile>
@@ -197,6 +202,10 @@ fun Settingpage(navController:NavHostController){
                                     )
                                 textFieldName=""
                                 textFieldEmail=""
+                                if (navController.currentBackStack.value.size >= 2){
+                                    navController.popBackStack()
+                                }
+                                navController.navigate(BottomBar.ETC.route)
                             }) {
                                 Text(text = "Save")
                             }

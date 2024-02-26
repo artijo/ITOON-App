@@ -38,6 +38,7 @@ import com.project.itoon.Commentpage.CommentPage
 import com.project.itoon.Commentpage.Episode
 import com.project.itoon.NavBottomBar.BottomBar
 import com.project.itoon.R
+import com.project.itoon.cartoonPage.CartoonAllEp
 import com.project.itoon.cartoonPage.CartoonThisChapter
 
 @Composable
@@ -70,26 +71,37 @@ fun NavGraphEpisode(navController:NavHostController,epId:Int,cartoonid:Int){
 @SuppressLint("RestrictedApi")
 @Composable
 fun EpisodeBottomBar(navController: NavHostController){
-    val navigationItems = listOf(
-        EpisodeBottom.Comment,
-        EpisodeBottom.Back,
-        EpisodeBottom.Next
-    )
-    NavigationBar (
+//    val navigationItems = listOf(
+//        EpisodeBottom.Comment,
+//        EpisodeBottom.Back,
+//        EpisodeBottom.Next
+//    )
+//    NavigationBar (
+//        modifier = Modifier
+//            .height(60.dp),
+//            containerColor = Color(184,0,0),
+//        contentColor = Color.Transparent
+//    ){
+//        navigationItems.forEachIndexed{index, screen ->
+//            NavigationBarItem(
+//                icon = { Icon(imageVector = screen.icon,contentDescription = null, tint = Color.White) },
+//                selected = (false),
+//                onClick = {
+//                    navController.navigate(screen.route)
+//                }
+//            )
+//        }
+//    }
+    NavigationBar(
         modifier = Modifier
             .height(60.dp),
             containerColor = Color(184,0,0),
         contentColor = Color.Transparent
-    ){
-        navigationItems.forEachIndexed{index, screen ->
-            NavigationBarItem(
-                icon = { Icon(imageVector = screen.icon,contentDescription = null, tint = Color.White) },
-                selected = (false),
-                onClick = {
-                    navController.navigate(screen.route)
-                }
-            )
-        }
+    ) {
+        NavigationBarItem(icon = { Icon(imageVector = EpisodeBottom.Comment.icon, contentDescription = null, tint = Color.White) },
+            onClick = {
+                navController.navigate(EpisodeBottom.Comment.route) },
+            selected = false)
     }
 }
 

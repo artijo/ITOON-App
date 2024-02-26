@@ -143,21 +143,26 @@ fun CommentPage(navController: NavHostController,epid : Int,cartoonid: Int){
                 Modifier
                     .clickable
                     {
+                        if (textFieldComment.isEmpty()){
+                            Toast.makeText(contextForToast,"Please Insert Comment",Toast.LENGTH_LONG).show()
+                        }
+                        if(textFieldComment != ""){
                         createClient.insertComment(textFieldComment,userId,epid)
                             .enqueue(object : Callback<commentdata>{
                                 override fun onResponse(call: Call<commentdata>, response: Response<commentdata>) {
                                     if(response.isSuccessful){
                                         textFieldComment = ""
+                                        if (navController.currentBackStack.value.size >= 2){
+                                            navController.popBackStack()
+                                        }
+                                        navController.navigate(EpisodeBottom.Comment.route)
                                     }
                                 }
                                 override fun onFailure(call: Call<commentdata>, t: Throwable) {
                                     Toast.makeText(contextForToast,"Cant Upload Comment To Server", Toast.LENGTH_LONG).show()
                                 }
                             })
-                        if (navController.currentBackStack.value.size >= 2){
-                            navController.popBackStack()
-                        }
-                        navController.navigate(EpisodeBottom.Comment.route)
+                    }
                     }
                     .height(30.dp)
                     .width(70.dp)
