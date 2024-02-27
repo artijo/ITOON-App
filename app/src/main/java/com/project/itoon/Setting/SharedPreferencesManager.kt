@@ -9,7 +9,6 @@ class SharedPreferencesManager(context: Context){
         private const val KEY_IS_LOGGED_IN ="is_logged_in"
         private const val KEY_USER_EMAIL ="user_email"
         private const val KEY_USER_ID = "user_id"
-        private const val KEY_SHOW_TB = "show_tb"
     }
 
     private val preferences: SharedPreferences =
@@ -17,10 +16,6 @@ class SharedPreferencesManager(context: Context){
     var isLoggedIn:Boolean
         get() = preferences.getBoolean(KEY_IS_LOGGED_IN,false)
         set(value) = preferences.edit().putBoolean(KEY_IS_LOGGED_IN,value).apply()
-
-    var isShow: Boolean
-        get() = preferences.getBoolean(KEY_SHOW_TB,false)
-        set(value) = preferences.edit().putBoolean(KEY_SHOW_TB,value).apply()
 
     var userEmail : String?
         get() = preferences.getString(KEY_USER_EMAIL,null)
@@ -37,10 +32,6 @@ class SharedPreferencesManager(context: Context){
     }
     fun clearUserlogin(){
         preferences.edit{remove(KEY_IS_LOGGED_IN)}
-    }
-
-    fun clearShow(){
-        preferences.edit{remove(KEY_SHOW_TB)}
     }
 
 }

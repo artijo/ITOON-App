@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.SpaceAround
 import androidx.compose.foundation.layout.Box
@@ -44,6 +45,7 @@ import com.project.itoon.Commentpage.getBottomLineShape
 import com.project.itoon.Config
 import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.Setting.SharedPreferencesManager
+import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.firstpageapi.Genres
@@ -53,7 +55,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun MyBuyCartoon(navHostController: NavHostController){
+fun MyBuyCartoon(navController: NavHostController){
     val contextForToast = LocalContext.current.applicationContext
     lateinit var sharedPreferences: SharedPreferencesManager
     sharedPreferences = SharedPreferencesManager(contextForToast)
@@ -64,6 +66,7 @@ fun MyBuyCartoon(navHostController: NavHostController){
             User(0,"","","","",0)),
         false,0))
     var boughtList = remember{ mutableStateListOf<BoughtCartoon>() }
+    var cartoonList = remember{ mutableStateListOf<Cartoon>() }
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
     LaunchedEffect(lifecycleState) {
@@ -83,12 +86,21 @@ fun MyBuyCartoon(navHostController: NavHostController){
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ){
+            var clickCartoon:Cartoon
             itemsIndexed(items = boughtList,
             ){index,item->
                 Card(
                     modifier = Modifier
                         .padding(horizontal = 8.dp, vertical = 8.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .clickable {
+                            clickCartoon = item.cartoon
+                            navController.currentBackStackEntry?.savedStateHandle?.set(
+                                "data",
+                                clickCartoon
+                            )
+                            navController.navigate(CartoonPage.CartoonEP.route)
+                        },
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White,
                     ),
@@ -103,6 +115,7 @@ fun MyBuyCartoon(navHostController: NavHostController){
                         Box(modifier = Modifier
                             .width(90.dp)
                             .height(80.dp)
+
                         ){
                             val urltext = item.cartoon.thumbnail
                             if (urltext.startsWith("uploads")){
