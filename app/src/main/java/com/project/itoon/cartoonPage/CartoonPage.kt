@@ -23,12 +23,16 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -45,6 +49,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,6 +60,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.API
 import com.project.itoon.Config
 import com.project.itoon.LoginAndSignUp.User
+import com.project.itoon.R
 import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.favoritebutton.FavoriteButton
 import com.project.itoon.firstpageapi.Cartoon
@@ -327,7 +333,9 @@ fun CartoonAllEp(navController:NavHostController){
             )
     }
     Column(
-        Modifier.fillMaxWidth()
+        Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
     ) {
         if(data.paid){
             if(boughcartoon.status == "ok" && boughcartoon.message == "bought"){
@@ -335,15 +343,26 @@ fun CartoonAllEp(navController:NavHostController){
                     ItemLayOutColumn(it)
                 }
             }else{
-                Text(text = "คุณยังไม่ได้ซื้อการ์ตูนนี้ เดี๋ยวไปซื้อก่อนนะครับ ขอทำฟังก์ชันซื้อให้เสร็จก่อนนะครับ")
-                Text(text = "ราคา ${data.price} เหรียญ คุณมีเหรียญ ${user.coin} เหรียญ")
+                Text(text = "คุณยังไม่ได้ซื้อการ์ตูนนี้ โปรดซื้อการ์ตูนเรื่องนี้ก่อนครับ")
+                Spacer(modifier = Modifier.padding(10.dp))
+                Row (Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center){
+                    Icon(painter = painterResource(id = R.drawable.effect), contentDescription = null, modifier = Modifier.size(30.dp), tint = Color.Unspecified)
+                    Text(text = "ราคา ${data.price} เหรียญ คุณมีเหรียญ ${user.coin} เหรียญ")
+                }
+                Spacer(modifier = Modifier.padding(10.dp))
                 if(data.price > user.coin){
                     Text(text = "คุณมีเหรียญไม่พอ ไปเติมเงินก่อนนะครับ")
                 }else {
-                    Button(onClick = {
-                        buyDialog = true
-                    }) {
-                        Text(text = "ซื้อ")
+                    Row (
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(end = 10.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center){
+                        Button(onClick = {
+                            buyDialog = true
+                        }, colors = ButtonDefaults.buttonColors(Color(184,0,0)),
+                        ) {
+                            Text(text = "ซื้อ")
+                        }
                     }
                     if(buyDialog){
                         AlertDialog(onDismissRequest = { buyDialog = false },

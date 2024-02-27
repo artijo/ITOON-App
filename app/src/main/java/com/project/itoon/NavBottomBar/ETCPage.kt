@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -176,7 +178,7 @@ fun ETCPage(navtController: NavHostController){
                 modifier = Modifier
                     .border(1.dp, Color(0, 0, 0, 25))
                     .weight(1f, true)
-                    .padding(top = 20.dp)
+                    .height(70.dp)
                     .clickable {
                         navtController.navigate(BottomBar.RegcreatorPage.route)
                     }
@@ -190,7 +192,7 @@ fun ETCPage(navtController: NavHostController){
                 modifier = Modifier
                     .border(1.dp, Color(0, 0, 0, 25))
                     .weight(1f, true)
-                    .padding(top = 20.dp)
+                    .height(70.dp)
                     .clickable {
                         navtController.currentBackStackEntry?.savedStateHandle?.set(
                             "data",
@@ -216,7 +218,7 @@ fun ETCPage(navtController: NavHostController){
                 modifier = Modifier
                     .border(1.dp, Color(0, 0, 0, 25))
                     .weight(1f, true)
-                    .padding(top = 20.dp)
+                    .height(70.dp)
                     .clickable {
                         val urlIntent = Intent(
                             Intent.ACTION_VIEW,
@@ -228,8 +230,31 @@ fun ETCPage(navtController: NavHostController){
                 Icon(painter = painterResource(id = R.drawable.edit), contentDescription = null,Modifier.size(25.dp))
                 Text(text = "วาดการ์ตูน")
             }
+
             
-            
+        }
+        Row (
+            ){
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .border(1.dp, Color(0, 0, 0, 25))
+//                    .weight(1f, true)
+
+                    .height(70.dp)
+                    .width(137.dp)
+                    .clickable {
+                        val urlIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("${Config().WebClientBaseUrl}/creator/cartoon")
+                        )
+                        ctx.startActivity(urlIntent)
+                    }
+            ) {
+                Icon(painter = painterResource(id = R.drawable.edit), contentDescription = null,Modifier.size(25.dp))
+                Text(text = "จัดการการ์ตูน")
+            }
         }
     }
 }
