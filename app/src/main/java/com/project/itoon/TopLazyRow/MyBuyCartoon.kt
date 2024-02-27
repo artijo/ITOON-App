@@ -77,7 +77,9 @@ fun MyBuyCartoon(navHostController: NavHostController){
             }
         }
     }
-    Column {
+    Column(
+        Modifier.padding(top = 65.dp)
+    ) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ){

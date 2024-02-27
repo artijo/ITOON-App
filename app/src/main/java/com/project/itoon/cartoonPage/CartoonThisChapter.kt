@@ -35,6 +35,7 @@ import com.project.itoon.Config
 import com.project.itoon.EpisodeNav.EpisodeBottomBar
 import com.project.itoon.EpisodeNav.EpisodeTopBar
 import com.project.itoon.EpisodeNav.NavGraphEpisode
+import com.project.itoon.NavBottomBar.MainScreen
 import com.project.itoon.R
 import com.project.itoon.firstpageapi.CartoonAPI
 import com.project.itoon.ui.theme.ITOONTheme

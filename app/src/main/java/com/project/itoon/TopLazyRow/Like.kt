@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -38,8 +39,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.Config
+import com.project.itoon.NavBottomBar.BottomBar
 import com.project.itoon.Setting.SharedPreferencesManager
 import com.project.itoon.ShowTextTest
+import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.favoritebutton.ItemFav
 import com.project.itoon.favoritebutton.ShowFavClass
 import com.project.itoon.firstpageapi.Cartoon
@@ -65,31 +68,55 @@ fun Like(navController:NavHostController){
     lateinit var sharedPreferenceManager : SharedPreferencesManager
     sharedPreferenceManager = SharedPreferencesManager(context = contextForToast)
     val userId by remember{ mutableStateOf(sharedPreferenceManager.userId) }
-    cartoonList.clear()
-    favlist.clear()
-    itemList.clear()
-    creatClient.showallfav(userId)
-        .enqueue(object :Callback<List<ShowFavClass>>{
-            override fun onResponse(
-                call: Call<List<ShowFavClass>>,
-                response: Response<List<ShowFavClass>>
-            ) {
-                Log.i("datafav",response.body().toString())
-                response.body()?.forEach{
-                    itemList.add(
-                        ItemFav(
-                            Cartoon(it.cartoonId,it.cartoon.name,it.cartoon.description,it.cartoon.releaseDate,it.cartoon.thumbnail,it.cartoon.totalEpisodes,it.cartoon.creatorId,it.cartoon.genreId,it.cartoon.genres,it.cartoon.creator,it.cartoon.paid,it.cartoon.price),
-                            ShowFavClass(it.id,it.userId,it.cartoonId,it.favoriteDate,it.cartoon,it.user)
-                        )
-                    )
-                }
-            }
 
-            override fun onFailure(call: Call<List<ShowFavClass>>, t: Throwable) {
-                Toast.makeText(contextForToast,t.message, Toast.LENGTH_LONG).show()
-                Log.i("datafav","error")
-            }
-        })
+
+    LaunchedEffect(true) {
+        cartoonList.clear()
+        favlist.clear()
+        itemList.clear()
+        creatClient.showallfav(userId)
+            .enqueue(object : Callback<List<ShowFavClass>> {
+                override fun onResponse(
+                    call: Call<List<ShowFavClass>>,
+                    response: Response<List<ShowFavClass>>
+                ) {
+                    Log.i("datafav", response.body().toString())
+                    response.body()?.forEach {
+                        itemList.add(
+                            ItemFav(
+                                Cartoon(
+                                    it.cartoonId,
+                                    it.cartoon.name,
+                                    it.cartoon.description,
+                                    it.cartoon.releaseDate,
+                                    it.cartoon.thumbnail,
+                                    it.cartoon.totalEpisodes,
+                                    it.cartoon.creatorId,
+                                    it.cartoon.genreId,
+                                    it.cartoon.genres,
+                                    it.cartoon.creator,
+                                    it.cartoon.paid,
+                                    it.cartoon.price
+                                ),
+                                ShowFavClass(
+                                    it.id,
+                                    it.userId,
+                                    it.cartoonId,
+                                    it.favoriteDate,
+                                    it.cartoon,
+                                    it.user
+                                )
+                            )
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<List<ShowFavClass>>, t: Throwable) {
+                    Toast.makeText(contextForToast, t.message, Toast.LENGTH_LONG).show()
+                    Log.i("datafav", "error")
+                }
+            })
+    }
     var isOpen by remember { mutableStateOf(false) }
     val idTextCartoon = remember { mutableStateOf("") }
     if(isOpen){
@@ -98,7 +125,9 @@ fun Like(navController:NavHostController){
     }
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(top = 65.dp)
+        ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "รายการที่ถูกใจ")
@@ -116,7 +145,12 @@ fun Like(navController:NavHostController){
                         .padding(bottom = 10.dp)
                         .clickable(
                             onClick = {
-
+                                clickCartoon = item.cartoonlist
+                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                    "data",
+                                    clickCartoon
+                                )
+                                navController.navigate(CartoonPage.CartoonEP.route)
                             }
                         ),
                 ) {

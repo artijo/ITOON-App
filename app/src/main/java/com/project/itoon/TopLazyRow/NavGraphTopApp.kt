@@ -1,6 +1,12 @@
 package com.project.itoon.TopLazyRow
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,10 +16,11 @@ import com.project.itoon.TopLazyRow.Creator
 import com.project.itoon.TopLazyRow.Like
 import com.project.itoon.TopLazyRow.Recently
 import com.project.itoon.TopLazyRow.TopLazyRow
+import com.project.itoon.cartoonPage.CartoonPage
+import com.project.itoon.cartoonPage.SelectPage
 
 @Composable
 fun NavGraphTopApp(navHostController: NavHostController){
-
     NavHost(navController = navHostController, startDestination = TopLazyRow.Recently.route){
         composable(route = TopLazyRow.Recently.route){
             Recently(navHostController)
@@ -28,6 +35,9 @@ fun NavGraphTopApp(navHostController: NavHostController){
 
         composable(route = TopLazyRow.Comment.route){
             Comment(navHostController)
+        }
+        composable(route = CartoonPage.CartoonEP.route){
+            SelectPage(navHostController)
         }
     }
 }

@@ -101,7 +101,9 @@ fun Recently(navHostController: NavHostController){
     }
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(top = 65.dp)
+        ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "เมื่อเร็วๆนี้")

@@ -1,6 +1,7 @@
 package com.project.itoon
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,6 +34,8 @@ import com.project.itoon.TopLazyRow.TopLazyRow
 @Composable
 fun MenuLazyrow(navHostController: NavHostController){
 
+    val currentRoute = navHostController.currentBackStackEntry?.destination?.route
+    Log.i("kuy",currentRoute.toString())
     val TopNavItems = listOf(
         TopLazyRow.Recently,
         TopLazyRow.Like,
@@ -67,7 +70,7 @@ fun MenuLayout(
     navHostController: NavHostController,
 ){
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
     Row {
         TextButton(onClick = {

@@ -70,7 +70,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 sealed class CartoonPage(val route:String,val name:String){
-    data object CartoonEP: CartoonPage("CartoonEP_Page","หน้าเลือกตอน")
+    data object CartoonEP: CartoonPage("CartoonEP_Page","SelectPage")
 }
 
 
@@ -178,12 +178,16 @@ fun CartoonThumbnail(navController:NavHostController){
                                     lineHeight = 20.sp
                                 )
                                 Spacer(modifier = Modifier.padding(20.dp))
-                                Text(
-                                    text="${data.description}",
-                                    fontSize = 17.sp,
-                                    color = Color.White,
-                                    lineHeight = 18.sp
-                                )
+                                Box (
+                                    Modifier.verticalScroll(rememberScrollState())
+                                ){
+                                    Text(
+                                        text="${data.description}",
+                                        fontSize = 17.sp,
+                                        color = Color.White,
+                                        lineHeight = 18.sp
+                                    )
+                                }
                             }
                         }
                     }
@@ -403,6 +407,9 @@ fun Example(){
 @Composable
 fun SelectPage(navHostController:NavHostController){
 //    var navHostController = rememberNavController()
+    val contextForToast = LocalContext.current.applicationContext
+    val currentRoute = navHostController.currentBackStackEntry?.destination?.route // Call route name
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -422,7 +429,6 @@ fun startEpisodeActivity(c: Context,episodeId:Int,cartoonid:Int,epname:String,ep
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     }
     c.startActivity(intent)
-
 }
 
 
