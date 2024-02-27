@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -84,8 +85,10 @@ fun Comment(navHostController: NavHostController){
         }
     }
     Column (
-        Modifier.padding(top = 65.dp)
+        Modifier.padding(top = 65.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
+        Text(text = "คอมเมนท์ของฉัน")
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ){
@@ -113,7 +116,8 @@ fun Comment(navHostController: NavHostController){
                                     +"Cartoon Name : ${item.episode.cartoon.name}\n"
                                     +"Episode : ${item.episode.epNumber}\n"
                                     +"Comment : ${item.content}",
-                            Modifier.weight(0.85f)
+                            Modifier
+                                .weight(0.85f)
                                 .padding(10.dp)
                         )
                     }

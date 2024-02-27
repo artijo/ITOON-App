@@ -81,8 +81,10 @@ fun MyBuyCartoon(navController: NavHostController){
         }
     }
     Column(
-        Modifier.padding(top = 65.dp)
+        Modifier.padding(top = 65.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(text = "การ์ตูนที่ซื้อแล้ว")
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ){
@@ -107,7 +109,6 @@ fun MyBuyCartoon(navController: NavHostController){
                 ){
                     Row (
                         Modifier
-                            .border(2.dp, color = Color.Red, shape = RoundedCornerShape(13.dp))
                             .padding(10.dp)
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically

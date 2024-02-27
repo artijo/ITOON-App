@@ -406,10 +406,6 @@ fun Example(){
 
 @Composable
 fun SelectPage(navHostController:NavHostController){
-//    var navHostController = rememberNavController()
-    val contextForToast = LocalContext.current.applicationContext
-    val currentRoute = navHostController.currentBackStackEntry?.destination?.route // Call route name
-
     Column(
         modifier = Modifier
             .fillMaxSize()
