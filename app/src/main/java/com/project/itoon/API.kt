@@ -1,10 +1,13 @@
 package com.project.itoon
 
 import com.project.itoon.Commentpage.commentdata
+import com.project.itoon.LoginAndSignUp.AllEmail
 import com.project.itoon.LoginAndSignUp.Creator
 import com.project.itoon.LoginAndSignUp.LoginClass
+import com.project.itoon.LoginAndSignUp.PageITOON
 import com.project.itoon.LoginAndSignUp.User
 import com.project.itoon.Setting.Profile
+import com.project.itoon.firstpageapi.Forgotpass
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -79,9 +82,15 @@ interface API {
         @Path("id") id:Int
     ):Call<Creator>
 
+    @FormUrlEncoded
+    @POST("forgotpassword")
+    fun forgotpassword(
+        @Field("email") email: String,
+        @Field("password") password: String
+    ):Call<Forgotpass>
 
-
-
+    @GET("findallemail")
+    fun allemail():Call<List<AllEmail>>
     companion object{
         fun create():API{
             val usr : API = Retrofit.Builder()

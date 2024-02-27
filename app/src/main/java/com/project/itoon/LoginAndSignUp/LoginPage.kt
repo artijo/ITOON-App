@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -99,6 +100,8 @@ class LoginActivity : ComponentActivity() {
 sealed class PageITOON(val route:String){
     object Login: PageITOON("Login_Page")
     object SignUp: PageITOON("Signup_Page")
+
+    object Forgotpassword:PageITOON("Forgotpassword_page")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -156,6 +159,9 @@ fun LoginPage(navHostController: NavHostController)
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
 
+    val itemlist = remember {
+        mutableStateListOf<AllEmail>()
+    }
     LaunchedEffect(lifecycleState){
         when(lifecycleState){
             Lifecycle.State.DESTROYED -> {}
@@ -188,7 +194,9 @@ fun LoginPage(navHostController: NavHostController)
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             , horizontalAlignment = Alignment.End){
-            TextButton(onClick = {}) {
+            TextButton(onClick = {
+                navHostController.navigate(PageITOON.Forgotpassword.route)
+            }) {
                 Text(text = "ลืมรหัสผ่าน",color = Color.Black,modifier = Modifier.alpha(0.5f))
             }
         }
@@ -261,6 +269,9 @@ fun LoginAndSignUp(){
         }
         composable(PageITOON.SignUp.route){
             Signup(navController)
+        }
+        composable(PageITOON.Forgotpassword.route){
+            ForgotPassword(navController)
         }
     }
 }
