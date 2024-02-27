@@ -164,8 +164,8 @@ fun CommentPage(navController: NavHostController,epid : Int,cartoonid: Int){
                             })
                     }
                     }
-                    .height(30.dp)
-                    .width(70.dp)
+                    .height(20.dp)
+                    .width(100.dp)
             ) {
                 Row {
                     Text(text = "Sent")
