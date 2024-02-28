@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -84,7 +85,6 @@ fun MyBuyCartoon(navController: NavHostController){
         Modifier.padding(top = 65.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "การ์ตูนที่ซื้อแล้ว")
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ){
@@ -152,9 +152,14 @@ fun MyBuyCartoon(navController: NavHostController){
                                 .padding(start = 15.dp)
                         ){
                             Text(
-                                text = "${item.cartoon.name}\n"
-                                        +"Total Episode : ${item.cartoon.totalEpisodes}",
-                                fontSize = 17.sp
+                                text = "${item.cartoon.name}",
+                                fontSize = 15.sp,
+                            )
+                            Text(
+                                text = "${item.cartoon.genres.name}",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Gray,
                             )
                         }
                     }

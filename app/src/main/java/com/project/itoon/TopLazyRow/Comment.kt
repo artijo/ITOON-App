@@ -88,7 +88,6 @@ fun Comment(navHostController: NavHostController){
         Modifier.padding(top = 65.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Text(text = "คอมเมนท์ของฉัน")
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ){

@@ -99,14 +99,14 @@ fun ForgotPassword(navHostController: NavHostController){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Text(text = "Forget Password", fontSize = 25.sp, fontWeight = FontWeight.Bold)
+        Text(text = "ลืมรหัสผ่าน", fontSize = 25.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.padding(30.dp))
         Row (
             Modifier
                 .width(350.dp)
                 .height(70.dp)){
             Column {
-                Text(text = "Email:")
+                Text(text = "อี-เมล:")
                 BasicTextField(value = email,
                     onValueChange = {email = it},
                     Modifier
@@ -127,7 +127,7 @@ fun ForgotPassword(navHostController: NavHostController){
                 .width(350.dp)
                 .height(70.dp)) {
             Column {
-                Text(text = "Password:")
+                Text(text = "กรอกรหัสผ่านใหม่:")
                BasicTextField(value = password,
                     onValueChange = {password = it},
                    Modifier
@@ -149,7 +149,7 @@ fun ForgotPassword(navHostController: NavHostController){
                 .width(350.dp)
                 .height(70.dp)) {
             Column {
-                Text(text = "Comfirm password:")
+                Text(text = "ยืนยันรหัสผ่าน:")
                 BasicTextField(value = confirmpassword,
                     onValueChange = {confirmpassword = it},
                     Modifier
@@ -182,6 +182,7 @@ fun ForgotPassword(navHostController: NavHostController){
                             .enqueue(object :Callback<Forgotpass>{
                                 override fun onResponse(call: Call<Forgotpass>, response: Response<Forgotpass>) {
                                     itemList.add(Forgotpass(response.body()?.email,response.body()?.password))
+                                    Toast.makeText(contextForToast,"เปลี่ยนรหัสผ่านเรียบร้อย",Toast.LENGTH_LONG).show()
                                 }
 
                                 override fun onFailure(call: Call<Forgotpass>, t: Throwable) {

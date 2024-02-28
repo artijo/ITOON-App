@@ -2,6 +2,7 @@
 
 package com.project.itoon
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -38,6 +39,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,7 +51,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+
+
+import com.project.itoon.NavBottomBar.BottomBar
+import com.project.itoon.TopLazyRow.Item
+import com.project.itoon.TopLazyRow.allhistory
+
 import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
@@ -58,23 +67,40 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Objects
 
+@Composable
+private fun callApi(contextForToast : Context): SnapshotStateList<Cartoon> {
+    val createClient = CartoonAPI.create()
+    val listCartoon = remember { mutableStateListOf<Cartoon>() }
+    LaunchedEffect(true){
+        createClient.getSlider()
+            .enqueue(object: Callback<List<Cartoon>>{
+                override fun onResponse(call: Call<List<Cartoon>>,
+                                        response: Response<List<Cartoon>>
+                ){
+                    response.body()?.forEach{
+                        listCartoon.add(Cartoon(it.id , it.name, it.description, it.releaseDate, it.thumbnail, it.totalEpisodes, it.creatorId, it.genreId, it.genres,
+                            it.creator, it.paid, it.price))
+                    }
+                }
 
+                override fun onFailure(call: Call<List<Cartoon>>, t: Throwable) {
+                    Toast.makeText(contextForToast,"Error on Failure" + t.message, Toast.LENGTH_LONG).show()
+                }
+            })
+    }
+    return listCartoon
+
+}
 
 //sliderImage ****************************************
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun SliderImage(modifier: Modifier = Modifier){
-    val images = listOf(
-        "https://reapertrans.com/wp-content/uploads/2023/01/Reaper-of-the-Drifting-Moon.png",
-        "https://citly.me/7ShLx",
-        "https://reapertrans.com/wp-content/uploads/2023/08/Martial-God-Regressed-to-Level-2-slide.png",
-    )
-
-    val pagerState = rememberPagerState(pageCount = {
-        images.size
-    })
-
+private fun SliderImage(navHostController: NavHostController){
+    val contextForToast = LocalContext.current.applicationContext
+    val listCartoon = callApi(contextForToast)
+    val pagerState = rememberPagerState(pageCount = { listCartoon.size })
     LaunchedEffect(Unit){
         while (true){
             delay(3000)
@@ -84,29 +110,54 @@ private fun SliderImage(modifier: Modifier = Modifier){
     }
 
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Box(modifier = modifier.wrapContentSize()){
+        Box(modifier = Modifier.wrapContentSize()){
             HorizontalPager(state = pagerState,
             ){
-                    currentPage ->
+                currentPage ->
+                val urltext = listCartoon[currentPage].thumbnail
+                var clickCartoon : Cartoon
                 Box(modifier = Modifier.fillMaxSize()){
                     Card(
-                        modifier
+                        Modifier
                             .wrapContentSize()
-                            .height(200.dp),
+                            .height(300.dp)
+                            .clickable {
+                                clickCartoon = listCartoon[currentPage]
+                                navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                    "data",
+                                    clickCartoon
+                                )
+                                navHostController.navigate(CartoonPage.CartoonEP.route)
+                            },
                         shape = RoundedCornerShape(0.dp),
                         elevation = CardDefaults.cardElevation(0.dp),
                     ){
-                        Image(
-                            painter =  rememberAsyncImagePainter(images[currentPage]),
-                            contentDescription = "Image ${currentPage+1}",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxSize()
-                        )
+                        if (urltext.startsWith("uploads")){
+                            val replace = urltext.replace("\\", "/")
+                            listCartoon[currentPage].thumbnail = "${Config().APIBaseUrl}/" + "$replace"
+                            val pathUrl = listCartoon[currentPage].thumbnail.toHttpUrl()
+                            Image(
+                                painter =  rememberAsyncImagePainter(pathUrl),
+                                contentDescription = "Image ${currentPage+1}",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxSize()
+                            )
+                        }else{
+                            Image(
+                                painter =  rememberAsyncImagePainter(listCartoon[currentPage].thumbnail),
+                                contentDescription = "Image ${currentPage+1}",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxSize()
+                            )
+                        }
+
                     }
                     Box(
                         modifier = Modifier
@@ -114,7 +165,7 @@ private fun SliderImage(modifier: Modifier = Modifier){
                             .align(Alignment.BottomEnd)
                     ){
                         Text(
-                            text = "${currentPage+1} / ${images.size}",
+                            text = "${currentPage+1} / ${listCartoon.size}",
                             fontSize = 12.sp,
                             color = Color.White,
                         )
@@ -205,8 +256,8 @@ private fun CartoonRecommend(navHostController:NavHostController){
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(5.dp))
-                                        .width(50.dp)
-                                        .height(50.dp)
+                                    .width(50.dp)
+                                    .height(50.dp)
                             )
                         } else {
                             println(item.thumbnail)
@@ -326,7 +377,11 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
                                     onClick = {
 //                                        isOpen = true
 //                                        idTextCartoon.value = item.name
-                                        Log.i("checkdata",item.toString())
+                                        Log.i("checkdata", item.toString())
+
+
+
+                                        navHostController.navigate(BottomBar.ETC.route)
 
                                         clickCartoon = item
                                         navHostController.currentBackStackEntry?.savedStateHandle?.set(
@@ -420,7 +475,7 @@ fun FirstPage(navHostController: NavHostController){
                 .fillMaxWidth()
                 .padding(bottom = 5.dp)
         ){
-            SliderImage()
+            SliderImage(navHostController)
         }
         CartoonRecommend(navHostController)
         count = NewCartoonHit(navHostController)

@@ -58,8 +58,10 @@ import coil.compose.rememberAsyncImagePainter
 import com.project.itoon.API
 import com.project.itoon.Config
 import com.project.itoon.LoginAndSignUp.User
+import com.project.itoon.NavBottomBar.BottomBar
 import com.project.itoon.R
 import com.project.itoon.Setting.SharedPreferencesManager
+import com.project.itoon.TopLazyRow.TopLazyRow
 import com.project.itoon.favoritebutton.FavoriteButton
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
@@ -157,7 +159,7 @@ fun CartoonThumbnail(navController:NavHostController){
                     ){
                         Box(modifier =
                         Modifier
-                            .size(250.dp)
+                            .size(275.dp)
                         ) {
                             Column (
                                 Modifier.fillMaxSize()
@@ -333,7 +335,6 @@ fun CartoonAllEp(navController:NavHostController){
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(15.dp)
     ) {
         if(data.paid){
             if(boughcartoon.status == "ok" && boughcartoon.message == "bought"){
@@ -341,8 +342,10 @@ fun CartoonAllEp(navController:NavHostController){
                     ItemLayOutColumn(it)
                 }
             }else{
-                Text(text = "คุณยังไม่ได้ซื้อการ์ตูนนี้ โปรดซื้อการ์ตูนเรื่องนี้ก่อนครับ")
-                Spacer(modifier = Modifier.padding(10.dp))
+
+                Text(text = "คุณยังไม่ได้ซื้อการ์ตูนนี้ โปรดซื้อการ์ตูนเรื่องนี้ก่อนครับ",
+                    modifier = Modifier.padding(15.dp))
+
                 Row (Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center){
                     Icon(painter = painterResource(id = R.drawable.effect), contentDescription = null, modifier = Modifier.size(30.dp), tint = Color.Unspecified)
                     Text(text = "ราคา ${data.price} เหรียญ คุณมีเหรียญ ${user.coin} เหรียญ")
@@ -373,10 +376,16 @@ fun CartoonAllEp(navController:NavHostController){
                                         .enqueue(object : Callback<buycartoonstatus>{
                                             override fun onResponse(call: Call<buycartoonstatus>, response: Response<buycartoonstatus>) {
                                                 Log.i("check","onrespond")
+
                                                 Toast.makeText(contextForToast,"ซื้อการ์ตูนเรื่อง ${data.name} สำเร็จ",Toast.LENGTH_LONG).show()
                                                navController.navigateUp()
-                                            }
 
+                                               navController.navigate(BottomBar.FirstPage.route){
+                                                  navController.previousBackStackEntry?.savedStateHandle?.set("data",data)
+                                                }
+                                                Toast.makeText(contextForToast,"ซื้อการ์ตูนสำเร็จ",Toast.LENGTH_LONG).show()
+
+                                            }
                                             override fun onFailure(call: Call<buycartoonstatus>, t: Throwable) {
                                                 Log.i("check","onfail")
                                             }

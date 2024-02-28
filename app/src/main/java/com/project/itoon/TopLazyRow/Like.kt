@@ -130,8 +130,6 @@ fun Like(navController:NavHostController){
         ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "รายการที่ถูกใจ")
-        Spacer(modifier = Modifier.padding(10.dp))
         LazyColumn(
             contentPadding = PaddingValues(horizontal = 15.dp),
         ){
