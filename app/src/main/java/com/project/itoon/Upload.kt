@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -34,15 +35,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UploadForm(){
     var title by remember {
         mutableStateOf("")
     }
     var description by remember {
+        mutableStateOf("")
+    }
+    var email by remember {
         mutableStateOf("")
     }
     var file by remember {
@@ -54,11 +60,17 @@ fun UploadForm(){
     var cat2 by remember {
         mutableStateOf("")
     }
-    var selectImages by remember { mutableStateOf(listOf<Uri>()) }
-    val galleryLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) {
-            selectImages = it
-        }
+    var imgUrl by remember {
+        mutableStateOf<Uri?>(null)
+    }
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        imgUrl = it
+    }
+//    var selectImages by remember { mutableStateOf(listOf<Uri>()) }
+//    val galleryLauncher =
+//        rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) {
+//            selectImages = it
+//        }
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)) {
@@ -68,8 +80,19 @@ fun UploadForm(){
                 modifier = Modifier
                     .wrapContentSize()
                     .padding(10.dp)
+                    .height(100.dp)
+                    .background(
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(8.dp),
+                    ),
+                colors = ButtonDefaults.buttonColors(Color.Gray),
+                border = BorderStroke(2.dp, Color.Black)
             ) {
-                Text(text = "Pick Image From Gallery")
+                Text(
+                    text = "อัปโหลดรูปภาพ",
+                    color = Color.White,
+                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                )
             }
         }
         Text(text = "ประเภท")
@@ -104,6 +127,15 @@ fun UploadForm(){
             )
         }
         Text(text = "อีเมล")
+        Column {
+            BasicTextField(value = email, onValueChange = {email=it},modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    border = BorderStroke(1.dp, color = Color.Red),
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .padding(20.dp))
+        }
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
             Button(onClick = { /*TODO*/ }, modifier = Modifier
                 .width(129.dp)
