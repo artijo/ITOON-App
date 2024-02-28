@@ -23,10 +23,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -375,9 +373,8 @@ fun CartoonAllEp(navController:NavHostController){
                                         .enqueue(object : Callback<buycartoonstatus>{
                                             override fun onResponse(call: Call<buycartoonstatus>, response: Response<buycartoonstatus>) {
                                                 Log.i("check","onrespond")
-                                               navController.navigate("CartoonEP_Page"){
-                                                  navController.previousBackStackEntry?.savedStateHandle?.set("data",data)
-                                                }
+                                                Toast.makeText(contextForToast,"ซื้อการ์ตูนเรื่อง ${data.name} สำเร็จ",Toast.LENGTH_LONG).show()
+                                               navController.navigateUp()
                                             }
 
                                             override fun onFailure(call: Call<buycartoonstatus>, t: Throwable) {

@@ -50,7 +50,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.project.itoon.NavBottomBar.BottomBar
 import com.project.itoon.cartoonPage.CartoonPage
 import com.project.itoon.firstpageapi.Cartoon
 import com.project.itoon.firstpageapi.CartoonAPI
@@ -329,7 +328,6 @@ private fun NewCartoonHit(navHostController: NavHostController): Int {
 //                                        idTextCartoon.value = item.name
                                         Log.i("checkdata",item.toString())
 
-                                        navHostController.navigate( BottomBar.ETC.route)
                                         clickCartoon = item
                                         navHostController.currentBackStackEntry?.savedStateHandle?.set(
                                             "data",
