@@ -121,22 +121,20 @@ fun CommentPage(navController: NavHostController,epid : Int,cartoonid: Int){
             OutlinedTextField(
                 value = textFieldComment,
                 onValueChange = {textFieldComment = it},
-                label = { Text(text = "Comment", 
-                    modifier = Modifier
-                        .padding(top = 12.dp))
+                label = { Text(text = "Comment")
                         },
                 trailingIcon = { Icon(imageVector = Icons.Default.Edit,
                     contentDescription = null)},
                 modifier = Modifier
-                    .width(200.dp)
-                    .height(100.dp)
+                    .width(300.dp)
+                    .height(75.dp)
                     .padding(top = 10.dp)
             )
         }
         Spacer(modifier = Modifier.padding(top = 10.dp))
         Row (
             modifier = Modifier
-                .padding(start = 219.dp),
+                .padding(start = 325.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
             Box(
@@ -174,7 +172,7 @@ fun CommentPage(navController: NavHostController,epid : Int,cartoonid: Int){
                 }
             }
         }
-        Spacer(modifier = Modifier .padding(top = 50.dp))
+        Spacer(modifier = Modifier .padding(top = 20.dp))
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(5.dp)
             ){

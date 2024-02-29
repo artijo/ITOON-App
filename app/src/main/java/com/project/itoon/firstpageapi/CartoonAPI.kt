@@ -25,6 +25,10 @@ interface CartoonAPI {
     @GET("recCartoon")
     fun recAllCartoon(): Call<List<Cartoon>>
 
+    @GET("/sliderCartoon")
+    fun getSlider():Call<List<Cartoon>>
+
+
     @GET("Cartoon/{cartoonid}")
     fun getCartoon(
         @Path("cartoonid")id:Int
